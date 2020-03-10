@@ -24,9 +24,9 @@ class Mapbox extends Component {
     eleDiff: 0,
     currentDrawMode: null,
     features: [],
-    // route: { routeCoordinates: [], markerCoordinates: [] },
     isLoading: true,
-    selectedMarker: null
+    selectedMarker: null,
+    markerInfo: ""
   };
   render() {
     const {
@@ -36,9 +36,9 @@ class Mapbox extends Component {
       startEle,
       endEle,
       eleDiff,
-      currentDrawMode,
       isLoading,
-      selectedMarker
+      selectedMarker,
+      markerInfo
     } = this.state;
     const {
       onDrawCreate,
@@ -48,8 +48,9 @@ class Mapbox extends Component {
       onDrawDelete,
       onClickMap,
       handleSaveRoute,
-      handleMarkerInfo,
-      handlePopup
+      handlePopup,
+      handleMarkerForm,
+      handleMarkerFormChange
     } = this;
     return (
       <div className="map">
@@ -60,16 +61,6 @@ class Mapbox extends Component {
             <li>End Elevation · {endEle} meters</li>
             <li>Elevation Diff · {eleDiff} meters</li>
           </ul>
-        </div>
-        {/* {currentDrawMode === "draw_point" && ( */}
-        <div>
-          <form>
-            <label>
-              Submit marker info:
-              <input type="text" />
-            </label>
-            <button onClick={handleMarkerInfo}>submit info</button>
-          </form>
         </div>
         <div>
           <button onClick={handleSaveRoute}>Save route</button>
@@ -253,7 +244,13 @@ class Mapbox extends Component {
                 coordinates={selectedMarker.geometry.coordinates}
                 onClick={handlePopup}
               >
-                <p>hello</p>
+                <form onSubmit={handleMarkerForm}>
+                  <input
+                    type="text"
+                    onChange={handleMarkerFormChange}
+                    value={markerInfo}
+                  />
+                </form>
               </Popup>
             )}
           </Map>
@@ -272,7 +269,12 @@ class Mapbox extends Component {
       prevState.currentDrawMode !== currentDrawMode &&
       currentDrawMode === "draw_line_string"
     ) {
-      this.setState({ calculatedDistance: 0 });
+      this.setState({
+        calculatedDistance: 0,
+        startEle: 0,
+        endEle: 0,
+        eleDiff: 0
+      });
     }
   }
 
@@ -370,33 +372,18 @@ class Mapbox extends Component {
   };
 
   onDrawCreate = ({ features }) => {
-    this.setState(currentState => {
-      return { features: [...currentState.features, features[0]] };
-    });
-    // const { currentDrawMode } = this.state;
-    // const coordinates = features[0].geometry.coordinates;
-    // if (currentDrawMode === "draw_line_string") {
-    //   this.setState(currentState => {
-    //     return {
-    //       route: { ...currentState.route, routeCoordinates: coordinates },
-    //       coordinates: []
-    //     };
-    //   });
-    // }
-    // if (currentDrawMode === "draw_point") {
-    //   this.setState(currentState => {
-    //     return {
-    //       route: {
-    //         ...currentState.route,
-    //         markerCoordinates: [
-    //           ...currentState.route.markerCoordinates,
-    //           coordinates
-    //         ]
-    //       },
-    //       coordinates: []
-    //     };
-    //   });
-    // }
+    const { currentDrawMode } = this.state;
+    if (currentDrawMode === "draw_line_string") {
+      this.setState(currentState => {
+        return { features: [...currentState.features, features[0]] };
+      });
+    }
+    if (currentDrawMode === "draw_point") {
+      this.setState(currentState => {
+        const pointFeatures = { ...features[0], markerComments: [] };
+        return { features: [...currentState.features, pointFeatures] };
+      });
+    }
   };
 
   // onDrawUpdate = ({ features }) => {
@@ -405,24 +392,46 @@ class Mapbox extends Component {
 
   onDrawSelectionChange = ({ features }) => {
     const { currentDrawMode } = this.state;
-    if (features[0] !== undefined) {
+    if (features.length) {
       if (features[0].geometry.type === "Point") {
-        this.setState({ selectedMarker: features[0] });
+        this.setState({ selectedMarker: features[0], markerInfo: "" });
       }
     }
     if (!features.length && currentDrawMode === "draw_line_string") {
       this.setState({ calculatedDistance: 0 });
-    }
+    } else if (!features.length && currentDrawMode === "simple_select")
+      this.setState({ selectedMarker: null });
   };
 
   onDrawDelete = e => {
-    this.setState({ calculatedDistance: 0 });
+    this.setState({
+      calculatedDistance: 0,
+      startEle: 0,
+      endEle: 0,
+      eleDiff: 0
+    });
   };
 
   handleSaveRoute = e => {};
 
-  handlePopup = e => {
-    console.log(e);
+  handlePopup = e => {};
+
+  handleMarkerForm = e => {
+    const { features, selectedMarker, markerInfo } = this.state;
+    e.preventDefault();
+    const newFeatures = features.map(feature => {
+      if (feature.id === selectedMarker.id) {
+        return {
+          ...feature,
+          markerComments: [...feature.markerComments, markerInfo]
+        };
+      } else return feature;
+    });
+    this.setState({ features: newFeatures, markerInfo: "" });
+  };
+
+  handleMarkerFormChange = e => {
+    this.setState({ markerInfo: e.target.value });
   };
 }
 export default Mapbox;
