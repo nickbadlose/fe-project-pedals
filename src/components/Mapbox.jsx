@@ -3,35 +3,53 @@ import ReactMapboxGl from "react-mapbox-gl";
 import DrawControl from "react-mapbox-gl-draw";
 import { point, distance } from "@turf/turf";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import axios from "axios";
+
 const Map = ReactMapboxGl({
   accessToken:
     "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA"
 });
+
+const mapboxTerrainToken =
+  "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
+
 class Mapbox extends Component {
   state = {
-    selected: { coordinates: [] },
-    calculatedDistance: 0,
     coordinates: [],
+    calculatedDistance: 0,
     center: [-2.2426, 53.4808],
     zoom: [10],
+    startEle: 0,
+    endEle: 0,
+    eleDiff: 0,
     currentDrawMode: null
   };
   render() {
-    const { calculatedDistance, center, zoom } = this.state;
+    const {
+      calculatedDistance,
+      center,
+      zoom,
+      startEle,
+      endEle,
+      eleDiff
+    } = this.state;
     const {
       onDrawCreate,
       onDrawUpdate,
       onDrawModeChange,
       onDrawSelectionChange,
       onDrawDelete,
-      onClickMap,
-      handleButtonClick
+      onClickMap
     } = this;
     return (
       <div className="map">
         <div>
-          {calculatedDistance}{" "}
-          <button onClick={handleButtonClick}>Reset</button>
+          <ul>
+            <li>Distance · {calculatedDistance.toFixed(2)} miles </li>
+            <li>Starting Elevation · {startEle} meters</li>
+            <li>End Elevation · {endEle} meters</li>
+            <li>Elevation Diff · {eleDiff} meters</li>
+          </ul>
         </div>
         <Map
           style="mapbox://styles/mapbox/streets-v9" // eslint-disable-line
@@ -195,9 +213,10 @@ class Mapbox extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { currentDrawMode } = this.state;
     if (
-      prevState.currentDrawMode !== this.state.currentDrawMode &&
-      this.state.currentDrawMode === "draw_line_string"
+      prevState.currentDrawMode !== currentDrawMode &&
+      currentDrawMode === "draw_line_string"
     ) {
       this.setState({ calculatedDistance: 0 });
     }
@@ -208,31 +227,28 @@ class Mapbox extends Component {
   };
 
   onClickMap = (map, event) => {
+    const { currentDrawMode } = this.state;
+    const { calculateDistance, calculateElevation } = this;
     event.preventDefault();
-    if (this.state.currentDrawMode === "draw_line_string") {
+    if (currentDrawMode === "draw_line_string") {
       const { lng, lat } = event.lngLat;
       const selectedCo = [lng, lat];
       this.setState(
         prevState => {
-          const prevCo = prevState.selected.coordinates;
-          const newCo = { selected: { coordinates: [...prevCo, selectedCo] } };
+          const prevCo = prevState.coordinates;
+          const newCo = { coordinates: [...prevCo, selectedCo] };
           return newCo;
         },
         () => {
-          this.calculateDistance();
+          calculateDistance();
+          calculateElevation();
         }
       );
     }
   };
 
-  handleButtonClick = event => {
-    this.setState({ calculatedDistance: 0 });
-  };
-
   calculateDistance = () => {
-    const { calculatedDistance } = this.state;
-
-    const { coordinates } = this.state.selected;
+    const { calculatedDistance, coordinates } = this.state;
     if (coordinates.length > 1) {
       const length = coordinates.length;
       const from = point(coordinates[length - 2]);
@@ -243,16 +259,44 @@ class Mapbox extends Component {
     }
   };
 
+  calculateElevation = () => {
+    const { coordinates, startEle } = this.state;
+    const { length } = coordinates;
+    const start = coordinates[0];
+    const end = coordinates[length - 1];
+
+    let lng = start[0];
+    let lat = start[1];
+
+    if (length > 1) {
+      lng = end[0];
+      lat = end[1];
+    }
+
+    axios
+      .get(
+        `https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/${lng},${lat}.json?layers=contour&limit=50&access_token=${mapboxTerrainToken}`
+      )
+      .then(({ data: { features } }) => {
+        const elevations = [];
+
+        features.forEach(feature => {
+          const { ele } = feature.properties;
+          elevations.push(ele);
+        });
+
+        const maxEle = Math.max(...elevations);
+
+        if (length <= 1) {
+          this.setState({ startEle: maxEle });
+        } else {
+          this.setState({ endEle: maxEle, eleDiff: startEle - maxEle });
+        }
+      });
+  };
+
   onDrawCreate = ({ features }) => {
-    const { coordinates, type } = features[0].geometry;
-    this.setState(currentState => {
-      return {
-        ...currentState,
-        coordinates,
-        type,
-        selected: { coordinates: [] }
-      };
-    });
+    this.setState({ coordinates: [] });
   };
 
   // onDrawUpdate = ({ features }) => {
@@ -260,16 +304,14 @@ class Mapbox extends Component {
   // };
 
   onDrawSelectionChange = ({ features }) => {
-    console.dir(features);
-    console.log("selectionChange");
-    if (!features.length && this.state.currentDrawMode === "draw_line_string") {
+    const { currentDrawMode } = this.state;
+    if (!features.length && currentDrawMode === "draw_line_string") {
       this.setState({ calculatedDistance: 0 });
     }
   };
 
   onDrawDelete = e => {
     this.setState({ calculatedDistance: 0 });
-    console.dir(e);
   };
 }
 export default Mapbox;
