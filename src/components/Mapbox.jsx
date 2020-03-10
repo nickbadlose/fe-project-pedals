@@ -70,6 +70,20 @@ class Mapbox extends Component {
             styles={[
               // ACTIVE (being drawn)
               // line stroke
+
+              {
+                id: "gl-draw_point",
+                type: "circle",
+                filter: [
+                  "all",
+                  ["==", "$type", "Point"],
+                  ["!=", "mode", "static"]
+                ],
+                paint: {
+                  "circle-radius": 3,
+                  "circle-color": "#D20C0C"
+                }
+              },
               {
                 id: "gl-draw-line",
                 type: "line",
@@ -296,6 +310,7 @@ class Mapbox extends Component {
   };
 
   onDrawCreate = ({ features }) => {
+    console.log(features);
     this.setState({ coordinates: [] });
   };
 
