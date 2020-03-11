@@ -41,8 +41,7 @@ class Mapbox extends Component {
       eleDiff,
       isLoading,
       selectedMarker,
-      markerInfo,
-      markerType
+      markerInfo
     } = this.state;
     const {
       onDrawCreate,

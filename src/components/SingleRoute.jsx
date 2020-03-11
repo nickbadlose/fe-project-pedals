@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
 import attractionFlag from "../components/icons/location-pin.png";
 import warningFlag from "../components/icons/warning-flag.png";
+import Reviews from "./Reviews";
+import RouteAttractions from "./RouteAttractions";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -110,6 +112,8 @@ class SingleRoute extends Component {
             </Popup>
           )}
         </Map>
+        <RouteAttractions features={features} />
+        <Reviews />
       </div>
     );
   }
