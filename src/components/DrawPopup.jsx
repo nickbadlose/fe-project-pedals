@@ -1,12 +1,13 @@
 import React from "react";
+import { Popup } from "react-mapbox-gl";
 
 const DrawPopup = props => {
+  const {selectedMarker, handleMarkerForm, handleMarkerFormChange, markerInfo} = props
   return (
     <div>
       {(selectedMarker && selectedMarker.comments.length === 0)&& (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={handlePopup}
               >
                 <form onSubmit={handleMarkerForm}>
                   <input

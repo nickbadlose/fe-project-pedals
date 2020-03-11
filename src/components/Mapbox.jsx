@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import ReactMapboxGl, { Popup } from "react-mapbox-gl";
+import ReactMapboxGl from "react-mapbox-gl";
 import DrawControl from "react-mapbox-gl-draw";
 import { point, distance } from "@turf/turf";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import axios from "axios";
+import DrawPopup from "./DrawPopup";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -49,7 +50,6 @@ class Mapbox extends Component {
       onDrawDelete,
       onClickMap,
       handleSaveRoute,
-      handlePopup,
       handleMarkerForm,
       handleMarkerFormChange
     } = this;
@@ -240,29 +240,7 @@ class Mapbox extends Component {
                 }
               ]}
             />
-            {(selectedMarker && selectedMarker.comments.length === 0)&& (
-              <Popup
-                coordinates={selectedMarker.geometry.coordinates}
-                onClick={handlePopup}
-              >
-                <form onSubmit={handleMarkerForm}>
-                  <input
-                    type="text"
-                    onChange={handleMarkerFormChange}
-                    value={markerInfo}
-                  />
-                </form>
-              </Popup>
-            )}
-            {(selectedMarker && selectedMarker.comments.length !== 0 )&& (
-              <Popup
-                coordinates={selectedMarker.geometry.coordinates}
-              >
-                <p>{selectedMarker.comments[0]}</p>
-                
-              </Popup>
-            )}
-            
+            <DrawPopup selectedMarker={selectedMarker} handleMarkerForm={handleMarkerForm} handleMarkerFormChange={handleMarkerFormChange} markerInfo={markerInfo} />
           </Map>
         )}
       </div>
@@ -443,7 +421,7 @@ class Mapbox extends Component {
 
   handleSaveRoute = e => {};
 
-  handlePopup = e => {};
+  // handlePopup = e => {};
 
   handleMarkerForm = e => {
     const { features, selectedMarker, markerInfo } = this.state;
