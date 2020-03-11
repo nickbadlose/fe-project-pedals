@@ -28,6 +28,7 @@ class Mapbox extends Component {
     isLoading: true,
     selectedMarker: null,
     markerInfo: "",
+    routeName: ""
   };
   render() {
     const {
@@ -37,10 +38,9 @@ class Mapbox extends Component {
       startEle,
       endEle,
       eleDiff,
-      features,
       isLoading,
       selectedMarker,
-      markerInfo,
+      markerInfo
     } = this.state;
     const {
       onDrawCreate,
@@ -64,7 +64,13 @@ class Mapbox extends Component {
           </ul>
         </div>
         <div>
-          <button onClick={handleSaveRoute}>Save route</button>
+          <form>
+            <label>
+              Route name
+              <input required onChange={this.handleRouteNameInput} />
+            </label>
+            <button onClick={handleSaveRoute}>Save route</button>
+          </form>
         </div>
         {/* )} */}
         {isLoading ? (
@@ -240,7 +246,12 @@ class Mapbox extends Component {
                 }
               ]}
             />
-            <DrawPopup selectedMarker={selectedMarker} handleMarkerForm={handleMarkerForm} handleMarkerFormChange={handleMarkerFormChange} markerInfo={markerInfo} />
+            <DrawPopup
+              selectedMarker={selectedMarker}
+              handleMarkerForm={handleMarkerForm}
+              handleMarkerFormChange={handleMarkerFormChange}
+              markerInfo={markerInfo}
+            />
           </Map>
         )}
       </div>
@@ -265,6 +276,10 @@ class Mapbox extends Component {
       });
     }
   }
+
+  handleRouteNameInput = e => {
+    this.setState({ routeName: e.target.value });
+  };
 
   getCurrentLocation = () => {
     const options = {
@@ -385,12 +400,14 @@ class Mapbox extends Component {
         // if the selected feature is a point and exists in the features array in state, add the current comment input to the comments for that selected input. This is so that we display the comments once they are input.
         const selectedFeature = this.state.features.filter(feature => {
           if (feature.id === features[0].id) {
-
-            return feature
+            return feature;
           }
-        })
+        });
         const comments = selectedFeature[0].markerComments;
-        this.setState({ selectedMarker: {...features[0], comments}, markerInfo: ""});
+        this.setState({
+          selectedMarker: { ...features[0], comments },
+          markerInfo: ""
+        });
       }
     }
     if (!features.length && currentDrawMode === "draw_line_string") {
@@ -401,13 +418,13 @@ class Mapbox extends Component {
 
   onDrawDelete = e => {
     //executed when delete button is clicked. Taking the selected feature and removing it from the features array, resetting the count for distance and elevation and resetting the selected marker so it no longer displays a deleted marker.
-    const {features} = this.state
+    const { features } = this.state;
 
     const newFeatures = features.filter(feature => {
-      if (e.features[0].id !== feature.id){
-        return feature
+      if (e.features[0].id !== feature.id) {
+        return feature;
       }
-    })
+    });
 
     this.setState({
       calculatedDistance: 0,
@@ -434,9 +451,16 @@ class Mapbox extends Component {
         };
       } else return feature;
     });
-    this.setState((currentState) => { 
+    this.setState(currentState => {
       // adding the comments to features array so that it is stored, and also to the selected marker so that it is displayed on screen
-      return { selectedMarker: {...currentState.selectedMarker, comments: [markerInfo]}, features: newFeatures }});
+      return {
+        selectedMarker: {
+          ...currentState.selectedMarker,
+          comments: [markerInfo]
+        },
+        features: newFeatures
+      };
+    });
   };
 
   handleMarkerFormChange = e => {
