@@ -26,7 +26,7 @@ class Mapbox extends Component {
     features: [],
     isLoading: true,
     selectedMarker: null,
-    markerInfo: ""
+    markerInfo: "",
   };
   render() {
     const {
@@ -36,9 +36,10 @@ class Mapbox extends Component {
       startEle,
       endEle,
       eleDiff,
+      features,
       isLoading,
       selectedMarker,
-      markerInfo
+      markerInfo,
     } = this.state;
     const {
       onDrawCreate,
@@ -239,7 +240,7 @@ class Mapbox extends Component {
                 }
               ]}
             />
-            {selectedMarker && (
+            {(selectedMarker && selectedMarker.comments.length === 0)&& (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
                 onClick={handlePopup}
@@ -253,6 +254,23 @@ class Mapbox extends Component {
                 </form>
               </Popup>
             )}
+            {(selectedMarker && selectedMarker.comments.length !== 0 )&& (
+              <Popup
+                coordinates={selectedMarker.geometry.coordinates}
+                // onClick={handlePopup}
+              >
+                <p>{selectedMarker.comments[0]}</p>
+                {/* <p>{features.filter(feature => {
+                  if (feature.id === selectedMarker.id) {
+                    return feature.markerComments
+                  }
+                })}</p> */}
+              </Popup>
+            )}
+            {//take selected marker id and match it to feature_id from features in state
+            //if feature_id has comments, display comments
+            //if feature_id doesnt have comments, display input box
+            }
           </Map>
         )}
       </div>
@@ -392,9 +410,22 @@ class Mapbox extends Component {
 
   onDrawSelectionChange = ({ features }) => {
     const { currentDrawMode } = this.state;
+
     if (features.length) {
       if (features[0].geometry.type === "Point") {
-        this.setState({ selectedMarker: features[0], markerInfo: "" });
+        console.log(features[0], '<<<< CLICKED FEATURE')
+        console.log(this.state.features, '<<<<< STATE')
+        console.log(this.state.selectedMarker, '<<<<< SELECTED MARKER')
+        const selectedFeature = this.state.features.filter(feature => {
+          if (feature.id === features[0].id) {
+
+            return feature
+          }
+        })
+        const comments = selectedFeature[0].markerComments;
+        console.log(selectedFeature, '<<<< feature from filter')
+        console.log(comments, '<<<< COMMENTS')
+        this.setState({ selectedMarker: {...features[0], comments}, markerInfo: ""});
       }
     }
     if (!features.length && currentDrawMode === "draw_line_string") {
@@ -427,7 +458,8 @@ class Mapbox extends Component {
         };
       } else return feature;
     });
-    this.setState({ features: newFeatures, markerInfo: "" });
+    this.setState((currentState) => { // adding the comments to features array and the selected marker
+      return { selectedMarker: {...currentState.selectedMarker, comments: [markerInfo]}, features: newFeatures }});
   };
 
   handleMarkerFormChange = e => {
