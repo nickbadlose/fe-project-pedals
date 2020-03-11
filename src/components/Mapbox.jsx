@@ -28,7 +28,8 @@ class Mapbox extends Component {
     isLoading: true,
     selectedMarker: null,
     markerInfo: "",
-    routeName: ""
+    routeName: "",
+    markerType: "attraction"
   };
   render() {
     const {
@@ -40,7 +41,8 @@ class Mapbox extends Component {
       eleDiff,
       isLoading,
       selectedMarker,
-      markerInfo
+      markerInfo,
+      markerType
     } = this.state;
     const {
       onDrawCreate,
@@ -51,7 +53,8 @@ class Mapbox extends Component {
       onClickMap,
       handleSaveRoute,
       handleMarkerForm,
-      handleMarkerFormChange
+      handleMarkerFormChange,
+      setMarkerType
     } = this;
     return (
       <div className="map">
@@ -251,6 +254,7 @@ class Mapbox extends Component {
               handleMarkerForm={handleMarkerForm}
               handleMarkerFormChange={handleMarkerFormChange}
               markerInfo={markerInfo}
+              setMarkerType={setMarkerType}
             />
           </Map>
         )}
@@ -276,6 +280,10 @@ class Mapbox extends Component {
       });
     }
   }
+
+  setMarkerType = markerType => {
+    this.setState({ markerType });
+  };
 
   handleRouteNameInput = e => {
     this.setState({ routeName: e.target.value });
@@ -441,13 +449,14 @@ class Mapbox extends Component {
   // handlePopup = e => {};
 
   handleMarkerForm = e => {
-    const { features, selectedMarker, markerInfo } = this.state;
+    const { features, selectedMarker, markerInfo, markerType } = this.state;
     e.preventDefault();
     const newFeatures = features.map(feature => {
       if (feature.id === selectedMarker.id) {
         return {
           ...feature,
-          markerComments: [...feature.markerComments, markerInfo]
+          markerComments: [markerInfo],
+          markerType
         };
       } else return feature;
     });

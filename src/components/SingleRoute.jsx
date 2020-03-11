@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
-import location from "../components/icons/location-pin.png";
+import attractionFlag from "../components/icons/location-pin.png";
+import warningFlag from "../components/icons/warning-flag.png";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -34,7 +35,8 @@ class SingleRoute extends Component {
           coordinates: [-2.245278926116555, 53.48020142417977],
           type: "Point"
         },
-        markerComments: ["canal pusher"]
+        markerComments: ["canal pusher"],
+        markerType: "warning"
       },
       {
         id: "5758f5346eceea68c082b427b8f34d83",
@@ -44,7 +46,8 @@ class SingleRoute extends Component {
           coordinates: [-2.2448123582680353, 53.4810583735227],
           type: "Point"
         },
-        markerComments: ["nice cafe"]
+        markerComments: ["nice cafe"],
+        markerType: "attraction"
       }
     ],
     calculatedDistance: 4,
@@ -75,6 +78,12 @@ class SingleRoute extends Component {
                 </Layer>
               );
             } else if (feature.geometry.type === "Point") {
+              let markerImage;
+              if (feature.markerType === "attraction") {
+                markerImage = attractionFlag;
+              } else {
+                markerImage = warningFlag;
+              }
               return (
                 <Marker
                   coordinates={feature.geometry.coordinates}
@@ -82,7 +91,7 @@ class SingleRoute extends Component {
                 >
                   <img
                     alt="pin marker"
-                    src={location}
+                    src={markerImage}
                     height="30px"
                     onClick={() => {
                       this.setSelectedMarker(feature);
