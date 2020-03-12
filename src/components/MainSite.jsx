@@ -1,7 +1,6 @@
 import React from "react";
 import { Router } from "@reach/router";
 import Navigation from "./Navigation";
-import Header from "./Header";
 import HomePage from "./HomePage";
 import SavedRoutes from "./SavedRoutes";
 import UserPage from "./UserPage";
