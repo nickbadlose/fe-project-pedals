@@ -3,273 +3,478 @@ import ReactMapboxGl from "react-mapbox-gl";
 import DrawControl from "react-mapbox-gl-draw";
 import { point, distance } from "@turf/turf";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import axios from "axios";
+import DrawPopup from "./DrawPopup";
+
 const Map = ReactMapboxGl({
   accessToken:
     "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA"
 });
+
+const mapboxTerrainToken =
+  "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
+
 class Mapbox extends Component {
   state = {
-    selected: { coordinates: [] },
-    distance: 0,
     coordinates: [],
-    mode: null,
-    center: [-2.2426, 53.4808],
+    calculatedDistance: 0,
+    center: [],
     zoom: [10],
-    currentMode: null
+    startEle: 0,
+    endEle: 0,
+    eleDiff: 0,
+    currentDrawMode: null,
+    features: [],
+    isLoading: true,
+    selectedMarker: null,
+    markerInfo: "",
+    routeName: "",
+    markerType: "attraction"
   };
   render() {
-    const { distance, center, zoom } = this.state;
+    const {
+      calculatedDistance,
+      center,
+      zoom,
+      startEle,
+      endEle,
+      eleDiff,
+      isLoading,
+      selectedMarker,
+      markerInfo
+    } = this.state;
+    const {
+      onDrawCreate,
+      onDrawUpdate,
+      onDrawModeChange,
+      onDrawSelectionChange,
+      onDrawDelete,
+      onClickMap,
+      handleSaveRoute,
+      handleMarkerForm,
+      handleMarkerFormChange,
+      setMarkerType
+    } = this;
     return (
       <div className="map">
         <div>
-          {this.state.distance}{" "}
-          <button onClick={this.handleButtonClick}>Reset</button>
+          <ul>
+            <li>Distance · {calculatedDistance.toFixed(2)} miles </li>
+            <li>Starting Elevation · {startEle} meters</li>
+            <li>End Elevation · {endEle} meters</li>
+            <li>Elevation Diff · {eleDiff} meters</li>
+          </ul>
         </div>
-        <Map
-          style="mapbox://styles/mapbox/streets-v9" // eslint-disable-line
-          containerStyle={{
-            height: "600px",
-            width: "90vw"
-          }}
-          center={this.state.center}
-          zoom={this.state.zoom}
-          onClick={this.onClickMap}
-        >
-          <DrawControl
-            onDrawCreate={this.onDrawCreate}
-            onDrawUpdate={this.onDrawUpdate}
-            onDrawModeChange={this.onDrawModeChange}
-            onDrawActionable={this.onDrawActionable}
-            onDrawRender={this.onDrawRender}
-            onDrawSelectionChange={this.onDrawSelectionChange}
-            onDrawDelete={this.onDrawDelete}
-            // styles={
-            //   [
-            // ACTIVE (being drawn)
-            // line stroke
-            // {
-            //   id: "gl-draw-line",
-            //   type: "line",
-            //   filter: [
-            //     "all",
-            //     ["==", "$type", "LineString"],
-            //     ["!=", "mode", "static"]
-            //   ],
-            //   layout: {
-            //     "line-cap": "round",
-            //     "line-join": "round"
-            //   },
-            //   paint: {
-            //     "line-color": "#D20C0C",
-            //     "line-dasharray": [0.2, 2],
-            //     "line-width": 2
-            //   }
-            // }
-            // polygon fill
-            // {
-            //   id: "gl-draw-polygon-fill",
-            //   type: "fill",
-            //   filter: [
-            //     "all",
-            //     ["==", "$type", "Polygon"],
-            //     ["!=", "mode", "static"]
-            //   ],
-            //   paint: {
-            //     "fill-color": "#D20C0C",
-            //     "fill-outline-color": "#D20C0C",
-            //     "fill-opacity": 0.1
-            //   }
-            // },
-            // // polygon outline stroke
-            // // This doesn't style the first edge of the polygon, which uses the line stroke styling instead
-            // {
-            //   id: "gl-draw-polygon-stroke-active",
-            //   type: "line",
-            //   filter: [
-            //     "all",
-            //     ["==", "$type", "Polygon"],
-            //     ["!=", "mode", "static"]
-            //   ],
-            //   layout: {
-            //     "line-cap": "round",
-            //     "line-join": "round"
-            //   },
-            //   paint: {
-            //     "line-color": "#D20C0C",
-            //     "line-dasharray": [0.2, 2],
-            //     "line-width": 2
-            //   }
-            // },
-            // // vertex point halos
-            // // {
-            // //   id: "gl-draw-polygon-and-line-vertex-halo-active",
-            // //   type: "circle",
-            // //   filter: [
-            // //     "all",
-            // //     ["==", "meta", "vertex"],
-            // //     ["==", "$type", "Point"],
-            // //     ["!=", "mode", "static"]
-            // //   ],
-            // //   paint: {
-            // //     "circle-radius": 5,
-            // //     "circle-color": "#FFF"
-            // //   }
-            // // },
-            // // vertex points
-            // // {
-            // //   id: "gl-draw-polygon-and-line-vertex-active",
-            // //   type: "circle",
-            // //   filter: [
-            // //     "all",
-            // //     ["==", "meta", "vertex"],
-            // //     ["==", "$type", "Point"],
-            // //     ["!=", "mode", "static"]
-            // //   ],
-            // //   paint: {
-            // //     "circle-radius": 3,
-            // //     "circle-color": "#D20C0C"
-            // //   }
-            // // },
-            // // INACTIVE (static, already drawn)
-            // // line stroke
-            // {
-            //   id: "gl-draw-line-static",
-            //   type: "line",
-            //   filter: [
-            //     "all",
-            //     ["==", "$type", "LineString"],
-            //     ["==", "mode", "static"]
-            //   ],
-            //   layout: {
-            //     "line-cap": "round",
-            //     "line-join": "round"
-            //   },
-            //   paint: {
-            //     "line-color": "#000",
-            //     "line-width": 3
-            //   }
-            // },
-            // // polygon fill
-            // {
-            //   id: "gl-draw-polygon-fill-static",
-            //   type: "fill",
-            //   filter: [
-            //     "all",
-            //     ["==", "$type", "Polygon"],
-            //     ["==", "mode", "static"]
-            //   ],
-            //   paint: {
-            //     "fill-color": "#000",
-            //     "fill-outline-color": "#000",
-            //     "fill-opacity": 0.1
-            //   }
-            // },
-            // // polygon outline
-            // {
-            //   id: "gl-draw-polygon-stroke-static",
-            //   type: "line",
-            //   filter: [
-            //     "all",
-            //     ["==", "$type", "Polygon"],
-            //     ["==", "mode", "static"]
-            //   ],
-            //   layout: {
-            //     "line-cap": "round",
-            //     "line-join": "round"
-            //   },
-            //   paint: {
-            //     "line-color": "#000",
-            //     "line-width": 3
-            //   }
-            // }
-            // ]
-            // }
-          />
-        </Map>
+        <div>
+          <form>
+            <label>
+              Route name
+              <input required onChange={this.handleRouteNameInput} />
+            </label>
+            <button onClick={handleSaveRoute}>Save route</button>
+          </form>
+        </div>
+        {/* )} */}
+        {isLoading ? (
+          <p>...Loading</p>
+        ) : (
+          <Map
+            style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
+            containerStyle={{
+              height: "600px",
+              width: "90vw"
+            }}
+            center={center}
+            zoom={zoom}
+            onClick={onClickMap}
+          >
+            <DrawControl
+              onDrawCreate={onDrawCreate}
+              onDrawUpdate={onDrawUpdate}
+              onDrawModeChange={onDrawModeChange}
+              onDrawSelectionChange={onDrawSelectionChange}
+              onDrawDelete={onDrawDelete}
+              styles={[
+                // ACTIVE (being drawn)
+                // line stroke
+
+                {
+                  id: "gl-draw_point",
+                  type: "circle",
+                  filter: [
+                    "all",
+                    ["==", "$type", "Point"],
+                    ["!=", "mode", "static"]
+                  ],
+                  paint: {
+                    "circle-radius": 3,
+                    "circle-color": "#D20C0C"
+                  }
+                },
+                {
+                  id: "gl-draw-line",
+                  type: "line",
+                  filter: [
+                    "all",
+                    ["==", "$type", "LineString"],
+                    ["!=", "mode", "static"]
+                  ],
+                  layout: {
+                    "line-cap": "round",
+                    "line-join": "round"
+                  },
+                  paint: {
+                    "line-color": "#D20C0C",
+                    // "line-dasharray": [0.2, 2],
+                    "line-width": 2
+                  }
+                },
+                // polygon fill
+                {
+                  id: "gl-draw-polygon-fill",
+                  type: "fill",
+                  filter: [
+                    "all",
+                    ["==", "$type", "Polygon"],
+                    ["!=", "mode", "static"]
+                  ],
+                  paint: {
+                    "fill-color": "#D20C0C",
+                    "fill-outline-color": "#D20C0C",
+                    "fill-opacity": 0.1
+                  }
+                },
+                // polygon outline stroke
+                // This doesn't style the first edge of the polygon, which uses the line stroke styling instead
+                {
+                  id: "gl-draw-polygon-stroke-active",
+                  type: "line",
+                  filter: [
+                    "all",
+                    ["==", "$type", "Polygon"],
+                    ["!=", "mode", "static"]
+                  ],
+                  layout: {
+                    "line-cap": "round",
+                    "line-join": "round"
+                  },
+                  paint: {
+                    "line-color": "#D20C0C",
+                    "line-dasharray": [0.2, 2],
+                    "line-width": 2
+                  }
+                },
+                // vertex point halos
+                {
+                  id: "gl-draw-polygon-and-line-vertex-halo-active",
+                  type: "circle",
+                  filter: [
+                    "all",
+                    ["==", "meta", "vertex"],
+                    ["==", "$type", "Point"],
+                    ["!=", "mode", "static"]
+                  ],
+                  paint: {
+                    "circle-radius": 5,
+                    "circle-color": "#FFF"
+                  }
+                },
+                // vertex points
+                {
+                  id: "gl-draw-polygon-and-line-vertex-active",
+                  type: "circle",
+                  filter: [
+                    "all",
+                    ["==", "meta", "vertex"],
+                    ["==", "$type", "Point"],
+                    ["!=", "mode", "static"]
+                  ],
+                  paint: {
+                    "circle-radius": 3,
+                    "circle-color": "#D20C0C"
+                  }
+                },
+                // INACTIVE (static, already drawn)
+                // line stroke
+                {
+                  id: "gl-draw-line-static",
+                  type: "line",
+                  filter: [
+                    "all",
+                    ["==", "$type", "LineString"],
+                    ["==", "mode", "static"]
+                  ],
+                  layout: {
+                    "line-cap": "round",
+                    "line-join": "round"
+                  },
+                  paint: {
+                    "line-color": "#000",
+                    "line-width": 3
+                  }
+                },
+                // polygon fill
+                {
+                  id: "gl-draw-polygon-fill-static",
+                  type: "fill",
+                  filter: [
+                    "all",
+                    ["==", "$type", "Polygon"],
+                    ["==", "mode", "static"]
+                  ],
+                  paint: {
+                    "fill-color": "#000",
+                    "fill-outline-color": "#000",
+                    "fill-opacity": 0.1
+                  }
+                },
+                // polygon outline
+                {
+                  id: "gl-draw-polygon-stroke-static",
+                  type: "line",
+                  filter: [
+                    "all",
+                    ["==", "$type", "Polygon"],
+                    ["==", "mode", "static"]
+                  ],
+                  layout: {
+                    "line-cap": "round",
+                    "line-join": "round"
+                  },
+                  paint: {
+                    "line-color": "#000",
+                    "line-width": 3
+                  }
+                }
+              ]}
+            />
+            <DrawPopup
+              selectedMarker={selectedMarker}
+              handleMarkerForm={handleMarkerForm}
+              handleMarkerFormChange={handleMarkerFormChange}
+              markerInfo={markerInfo}
+              setMarkerType={setMarkerType}
+            />
+          </Map>
+        )}
       </div>
     );
   }
 
+  componentDidMount() {
+    this.getCurrentLocation();
+  }
+
   componentDidUpdate(prevProps, prevState) {
+    const { currentDrawMode } = this.state;
     if (
-      prevState.currentMode !== this.state.currentMode &&
-      this.state.currentMode === "draw_line_string"
+      prevState.currentDrawMode !== currentDrawMode &&
+      currentDrawMode === "draw_line_string"
     ) {
-      this.setState({ distance: 0 });
+      this.setState({
+        calculatedDistance: 0,
+        startEle: 0,
+        endEle: 0,
+        eleDiff: 0
+      });
     }
   }
 
-  onDrawModeChange = e => {
-    // console.log(e.mode, "<<");
-    // console.log("modeChange");
-    this.setState({ currentMode: e.mode });
-    if (e.mode === "simple_select" || e.mode === "draw_point")
-      this.setState({ mode: null });
-    else if (e.mode === "draw_line_string")
-      this.setState({ mode: "drawLineString" });
+  setMarkerType = markerType => {
+    this.setState({ markerType });
   };
+
+  handleRouteNameInput = e => {
+    this.setState({ routeName: e.target.value });
+  };
+
+  getCurrentLocation = () => {
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    const success = pos => {
+      let { latitude, longitude } = pos.coords;
+      let currentCoordinates = [longitude, latitude];
+      this.setState({ center: currentCoordinates, isLoading: false });
+    };
+
+    const error = err => {
+      console.log(err);
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  };
+
+  onDrawModeChange = e => {
+    this.setState({ currentDrawMode: e.mode });
+  };
+
   onClickMap = (map, event) => {
+    const { currentDrawMode } = this.state;
+    const { calculateDistance, calculateElevation } = this;
     event.preventDefault();
-    if (this.state.mode === "drawLineString") {
-      // console.log(event.lngLat, "***");
+    if (currentDrawMode === "draw_line_string") {
       const { lng, lat } = event.lngLat;
       const selectedCo = [lng, lat];
       this.setState(
         prevState => {
-          const prevCo = prevState.selected.coordinates;
-          const newCo = { selected: { coordinates: [...prevCo, selectedCo] } };
+          const prevCo = prevState.coordinates;
+          const newCo = { coordinates: [...prevCo, selectedCo] };
           return newCo;
         },
         () => {
-          this.distance();
+          calculateDistance();
+          calculateElevation();
         }
       );
     }
   };
-  handleButtonClick = event => {
-    this.setState({ distance: 0 });
-  };
-  distance = () => {
-    const { coordinates } = this.state.selected;
+
+  calculateDistance = () => {
+    const { calculatedDistance, coordinates } = this.state;
     if (coordinates.length > 1) {
       const length = coordinates.length;
       const from = point(coordinates[length - 2]);
       const to = point(coordinates[length - 1]);
-      const currentDist = this.state.distance;
+      const currentDist = calculatedDistance;
       const newDist = distance(from, to);
-      this.setState({ distance: currentDist + newDist }, () => {
-        // console.log(this.state.distance, "***");
+      this.setState({ calculatedDistance: currentDist + newDist });
+    }
+  };
+
+  calculateElevation = () => {
+    const { coordinates, startEle } = this.state;
+    const { length } = coordinates;
+    const start = coordinates[0];
+    const end = coordinates[length - 1];
+
+    let lng = start[0];
+    let lat = start[1];
+
+    if (length > 1) {
+      lng = end[0];
+      lat = end[1];
+    }
+
+    axios
+      .get(
+        `https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/${lng},${lat}.json?layers=contour&limit=50&access_token=${mapboxTerrainToken}`
+      )
+      .then(({ data: { features } }) => {
+        const elevations = [];
+
+        features.forEach(feature => {
+          const { ele } = feature.properties;
+          elevations.push(ele);
+        });
+
+        const maxEle = Math.max(...elevations);
+
+        if (length <= 1) {
+          this.setState({ startEle: maxEle });
+        } else {
+          this.setState({ endEle: maxEle, eleDiff: startEle - maxEle });
+        }
+      });
+  };
+
+  onDrawCreate = ({ features }) => {
+    const { currentDrawMode } = this.state;
+    if (currentDrawMode === "draw_line_string") {
+      this.setState(currentState => {
+        return { features: [...currentState.features, features[0]] };
+      });
+    }
+    if (currentDrawMode === "draw_point") {
+      this.setState(currentState => {
+        const pointFeatures = { ...features[0], markerComments: [] };
+        return { features: [...currentState.features, pointFeatures] };
       });
     }
   };
-  onDrawCreate = ({ features }) => {
-    const { coordinates, type } = features[0].geometry;
-    this.setState({ coordinates, type, mode: null }, () => {});
-    console.dir(this.state.coordinates, features);
-    console.log("create");
-  };
-  onDrawUpdate = ({ features }) => {
-    // console.log("Update");
-  };
 
-  // onDrawActionable = e => {
-  //   console.log("drawActionable");
-  //   // console.dir(e);
+  // onDrawUpdate = ({ features }) => {
+  //   console.log("Update");
   // };
-  // onDrawRender = ({ features }) => {
-  //   console.log("drawRender");
-  // };
+
   onDrawSelectionChange = ({ features }) => {
-    console.dir(features);
-    console.log("selectionChange");
-    if (!features.length && this.state.mode === "drawLineString") {
-      this.setState({ distance: 0 });
+    const { currentDrawMode } = this.state;
+    if (features.length) {
+      if (features[0].geometry.type === "Point") {
+        // if the selected feature is a point and exists in the features array in state, add the current comment input to the comments for that selected input. This is so that we display the comments once they are input.
+        const selectedFeature = this.state.features.filter(feature => {
+          if (feature.id === features[0].id) {
+            return feature;
+          }
+        });
+        const comments = selectedFeature[0].markerComments;
+        this.setState({
+          selectedMarker: { ...features[0], comments },
+          markerInfo: ""
+        });
+      }
     }
+    if (!features.length && currentDrawMode === "draw_line_string") {
+      this.setState({ calculatedDistance: 0 });
+    } else if (!features.length && currentDrawMode === "simple_select")
+      this.setState({ selectedMarker: null });
   };
 
   onDrawDelete = e => {
-    this.setState({ distance: 0 });
-    console.dir(e);
+    //executed when delete button is clicked. Taking the selected feature and removing it from the features array, resetting the count for distance and elevation and resetting the selected marker so it no longer displays a deleted marker.
+    const { features } = this.state;
+
+    const newFeatures = features.filter(feature => {
+      if (e.features[0].id !== feature.id) {
+        return feature;
+      }
+    });
+
+    this.setState({
+      calculatedDistance: 0,
+      startEle: 0,
+      endEle: 0,
+      eleDiff: 0,
+      selectedMarker: null,
+      features: newFeatures
+    });
   };
+
+  handleSaveRoute = e => {};
+
+  // handlePopup = e => {};
+
+  handleMarkerForm = e => {
+    const { features, selectedMarker, markerInfo, markerType } = this.state;
+    e.preventDefault();
+    const newFeatures = features.map(feature => {
+      if (feature.id === selectedMarker.id) {
+        return {
+          ...feature,
+          markerComments: [markerInfo],
+          markerType
+        };
+      } else return feature;
+    });
+    this.setState(currentState => {
+      // adding the comments to features array so that it is stored, and also to the selected marker so that it is displayed on screen
+      return {
+        selectedMarker: {
+          ...currentState.selectedMarker,
+          comments: [markerInfo]
+        },
+        features: newFeatures
+      };
+    });
+  };
+
+  handleMarkerFormChange = e => {
+    this.setState({ markerInfo: e.target.value });
+  };
+
+  //cheese
 }
 export default Mapbox;
