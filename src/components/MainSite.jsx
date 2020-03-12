@@ -1,6 +1,6 @@
 import React from "react";
 import { Router } from "@reach/router";
-import Nav from "./Nav";
+import Navigation from "./Navigation";
 import Header from "./Header";
 import HomePage from "./HomePage";
 import SavedRoutes from "./SavedRoutes";
@@ -11,8 +11,7 @@ import SingleRoute from "./SingleRoute";
 const MainSite = () => {
   return (
     <div>
-      <Header />
-      <Nav />
+      <Navigation />
       <Router>
         <HomePage path="/" />
         <SavedRoutes path="/routes" />

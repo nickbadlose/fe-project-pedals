@@ -1,6 +1,8 @@
 import React from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import MainSite from "./components/MainSite";
+
 
 function App() {
   return (

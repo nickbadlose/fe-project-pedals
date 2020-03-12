@@ -5,6 +5,11 @@ import { point, distance } from "@turf/turf";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import axios from "axios";
 import DrawPopup from "./DrawPopup";
+import styles from "./Mapbox.module.css";
+import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import bike_spinner from "./icons/bike_spinner.gif";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -56,38 +61,21 @@ class Mapbox extends Component {
       setMarkerType
     } = this;
     return (
-      <div className="map">
-        <div>
-          <ul>
-            <li>Distance · {calculatedDistance.toFixed(2)} miles </li>
-            <li>Starting Elevation · {startEle} meters</li>
-            <li>End Elevation · {endEle} meters</li>
-            <li>Elevation Diff · {eleDiff} meters</li>
-          </ul>
-        </div>
-        <div>
-          <form>
-            <label>
-              Route name
-              <input required onChange={this.handleRouteNameInput} />
-            </label>
-            <button onClick={handleSaveRoute}>Save route</button>
-          </form>
-        </div>
-        {/* )} */}
+      <div className={styles.map_block}>
         {isLoading ? (
-          <p>...Loading</p>
+          <section className={styles.loading_section}>
+            <img src={bike_spinner} alt="loading" />
+          </section>
         ) : (
           <Map
             style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
             containerStyle={{
-              height: "600px",
-              width: "90vw"
+              height: "50em",
+              width: "150em"
             }}
             center={center}
             zoom={zoom}
-            onClick={onClickMap}
-          >
+            onClick={onClickMap}>
             <DrawControl
               onDrawCreate={onDrawCreate}
               onDrawUpdate={onDrawUpdate}
@@ -175,7 +163,7 @@ class Mapbox extends Component {
                     ["!=", "mode", "static"]
                   ],
                   paint: {
-                    "circle-radius": 5,
+                    "circle-radius": 10,
                     "circle-color": "#FFF"
                   }
                 },
@@ -190,7 +178,7 @@ class Mapbox extends Component {
                     ["!=", "mode", "static"]
                   ],
                   paint: {
-                    "circle-radius": 3,
+                    "circle-radius": 8,
                     "circle-color": "#D20C0C"
                   }
                 },
@@ -257,6 +245,54 @@ class Mapbox extends Component {
             />
           </Map>
         )}
+        <Card>
+          <Card.Body>
+            <Card.Title>
+              <h2>Create a new route</h2>
+            </Card.Title>
+            <br></br>
+            <Card.Subtitle className="mb-2 text-muted">
+              Draw your route using the tools at the left of the map. You can
+              drop pins for any warnings or attractions along the route. Once
+              you're happy with your route click save!
+            </Card.Subtitle>
+            <br></br>
+            <Card.Text>
+              Distance · {calculatedDistance.toFixed(2)} miles <br></br>
+              Starting Elevation · {startEle} meters <br></br>
+              End Elevation · {endEle} meters <br></br>
+              Elevation Diff · {eleDiff} meters
+              <br></br>
+              <br></br>
+              </Card.Text>
+              <Form>
+                <Form.Group
+                  className={styles.input_label}
+                  controlId="drawRouteForm.ControlSelect1">
+                  <Form.Label>Route type</Form.Label>
+                  <Form.Control as="select">
+                    <option>Scenic</option>
+                    <option>Family Friendly</option>
+                    <option>Off-Road</option>
+                    <option>Training</option>
+                  </Form.Control>
+                </Form.Group>
+                <Form.Group
+                  className={styles.input_label}
+                  controlId="drawRouteForm.ControlTextArea1">
+                  <Form.Label>Route name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="eg. West Didsbury to Chorlton"></Form.Control>
+                </Form.Group>
+                <br></br>
+                <Button variant="primary" type="submit">
+                  Save your route!
+                </Button>
+              </Form>
+            
+          </Card.Body>
+        </Card>
       </div>
     );
   }
