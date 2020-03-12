@@ -7,7 +7,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 const Navigation = () => {
   return (
     <div>
-      <Navbar bg='dark' expand='lg' variant='dark'>
+      <Navbar bg='dark' expand='sm' variant='dark'>
         <Navbar.Brand href='/'>Pedals</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
