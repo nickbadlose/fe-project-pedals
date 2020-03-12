@@ -15,27 +15,15 @@ const DrawPopup = props => {
   return (
     <div>
       {selectedMarker && selectedMarker.comments.length === 0 && (
-        <Popup
-          className={styles.popup_box}
-          coordinates={selectedMarker.geometry.coordinates}
-        >
-          <Form className={styles.pin_selector} onSubmit={handleMarkerForm}>
+        <Popup coordinates={selectedMarker.geometry.coordinates}>
+          <Form className={styles.popup_box} onSubmit={handleMarkerForm}>
             <Form.Group controlId="PinType.ControlSelect1">
-              {/* <Form.Label>Pin type</Form.Label> */}
-              <Form.Control
-                size="sm"
-                className={styles.pin_selector_box}
-                as="select"
-                onChange={setMarkerType}
-              >
+              <Form.Control size="sm" as="select" onChange={setMarkerType}>
                 <option value="attraction">Attraction</option>
                 <option value="warning">Warning</option>
               </Form.Control>
             </Form.Group>
-            <Form.Group
-              className={styles.popup_input}
-              controlId="popupInput.ControlTextArea1"
-            >
+            <Form.Group controlId="popupInput.ControlTextArea1">
               <Form.Control
                 as="textarea"
                 size="sm"
