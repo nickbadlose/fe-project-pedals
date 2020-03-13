@@ -513,7 +513,5 @@ class Mapbox extends Component {
     console.log(e.target.value, "<<<<");
     this.setState({ markerInfo: e.target.value });
   };
-
-  //cheese
 }
 export default Mapbox;

@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 
-class Reviews extends Component {
-  state = {};
+class AddReview extends Component {
   render() {
     return (
       <div>
-        <p>Reviews here</p>
+        <p>Add New Review</p>
       </div>
     );
   }
 }
 
-export default Reviews;
+export default AddReview;

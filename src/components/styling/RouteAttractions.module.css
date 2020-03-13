@@ -1,0 +1,8 @@
+.heading {
+  font-size: 20px;
+}
+
+.attractions,
+.warnings {
+  list-style-type: none;
+}
