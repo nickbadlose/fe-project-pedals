@@ -2,29 +2,32 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import styles from "../styling/RouteCard.module.css";
+import routePlaceholder from "../icons/routePlaceholder.jpg";
 
 const RouteCard = props => {
   const { route } = props;
   return (
-    <Card className={styles.routeCard}>
-      <Card.Img variant="top" src="holder.js/100px160" />
-      <Card.Body>
-        <Card.Title>{route.routeName}</Card.Title>
-        <Card.Text>
-          Average rating: {route.averageRating}
-          <br></br>
-          City: {route.city}
-          <br></br>
-          Distance: {route.calculatedDistance} miles
-          <br></br>
-          Route type: {route.type}
-        </Card.Text>
-        <Button variant="primary">See route</Button>
-      </Card.Body>
-      <Card.Footer>
-        <small>Posted by: {route.user_id}</small>
-      </Card.Footer>
-    </Card>
+    <div className={styles.routeCard}>
+      <Card>
+        <Card.Img src={routePlaceholder} className={styles.routeImage} />
+        <Card.Body>
+          <Card.Title>{route.routeName}</Card.Title>
+          <Card.Text>
+            Average rating: {route.averageRating}
+            <br></br>
+            City: {route.city}
+            <br></br>
+            Distance: {route.calculatedDistance} miles
+            <br></br>
+            Route type: {route.type}
+          </Card.Text>
+          <Button variant="primary">See route</Button>
+        </Card.Body>
+        <Card.Footer>
+          <small>Posted by: {route.user_id}</small>
+        </Card.Footer>
+      </Card>
+    </div>
   );
 };
 

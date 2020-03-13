@@ -6,7 +6,12 @@
 }
 
 .routeCard {
-  margin: 30px;
+  margin: 20px;
+}
+
+.routeImage {
+  width: 300px;
+  height: 300px;
 }
 
 @media only screen and (max-width: 800px) {
