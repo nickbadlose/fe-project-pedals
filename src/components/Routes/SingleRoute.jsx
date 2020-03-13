@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
-import attractionFlag from "../components/icons/location-pin.png";
-import warningFlag from "../components/icons/warning-flag.png";
-import AllReviews from "./AllReviews";
+import attractionFlag from "../icons/location-pin.png";
+import warningFlag from "../icons/warning-flag.png";
+import AllReviews from "../Reviews/AllReviews";
 import RouteAttractions from "./RouteAttractions";
 import Card from "react-bootstrap/Card";
-import styles from "./styling/SingleRoute.module.css";
+import styles from "../styling/SingleRoute.module.css";
 
 const Map = ReactMapboxGl({
   accessToken:

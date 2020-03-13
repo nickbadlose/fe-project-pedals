@@ -1,8 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import styles from "./styling/RouteCard.module.css";
-// import map_card_example from "./icons/map_card_example.jpg";
+import styles from "../styling/RouteCard.module.css";
 
 const RouteCard = props => {
   const { route } = props;
@@ -17,6 +16,8 @@ const RouteCard = props => {
           City: {route.city}
           <br></br>
           Distance: {route.calculatedDistance} miles
+          <br></br>
+          Route type: {route.type}
         </Card.Text>
         <Button variant="primary">See route</Button>
       </Card.Body>

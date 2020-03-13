@@ -1,7 +1,7 @@
 import React from "react";
-import attractionFlag from "./icons/location-pin.png";
-import warningFlag from "./icons/warning-flag.png";
-import styles from "./styling/RouteAttractions.module.css";
+import attractionFlag from "../icons/location-pin.png";
+import warningFlag from "../icons/warning-flag.png";
+import styles from "../styling/RouteAttractions.module.css";
 
 const RouteAttractions = props => {
   const { features } = props;
