@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 
-class SavedRoutes extends Component {
+class AddReview extends Component {
   render() {
     return (
       <div>
-        <p>Saved routes</p>
+        <p>Add New Review</p>
       </div>
     );
   }
 }
 
-export default SavedRoutes;
+export default AddReview;

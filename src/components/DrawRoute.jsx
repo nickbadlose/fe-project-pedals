@@ -5,7 +5,6 @@ class DrawRoute extends Component {
   render() {
     return (
       <div>
-        <p>draw route</p>
         <Mapbox />
       </div>
     );

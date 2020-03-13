@@ -1,0 +1,17 @@
+.routeCard_block {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.routeCard {
+  margin: 30px;
+}
+
+@media only screen and (max-width: 800px) {
+  .routeCard_block {
+    display: flex;
+    flex-direction: column;
+  }
+}

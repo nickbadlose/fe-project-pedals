@@ -1,0 +1,22 @@
+.map_block {
+  display: flex;
+  margin: 30px;
+}
+
+@media only screen and (max-width: 800px) {
+  .map_block {
+    flex-direction: column;
+  }
+}
+
+.stats_list {
+  list-style-type: none;
+}
+
+.input_label {
+  text-align: left;
+}
+
+.loading_section {
+  padding: 50em 150em 50em 150em
+}

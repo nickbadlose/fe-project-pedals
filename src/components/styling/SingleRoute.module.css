@@ -1,0 +1,14 @@
+.map_block {
+  display: flex;
+  margin: 30px;
+}
+
+.stats_card {
+  width: 50em;
+}
+
+@media only screen and (max-width: 750px) {
+  .map_block {
+    flex-direction: column;
+  }
+}

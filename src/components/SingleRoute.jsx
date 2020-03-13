@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
 import attractionFlag from "../components/icons/location-pin.png";
 import warningFlag from "../components/icons/warning-flag.png";
-import Reviews from "./Reviews";
+import AllReviews from "./AllReviews";
 import RouteAttractions from "./RouteAttractions";
+import Card from "react-bootstrap/Card";
+import styles from "./styling/SingleRoute.module.css";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -53,67 +55,106 @@ class SingleRoute extends Component {
       }
     ],
     calculatedDistance: 4,
-    routeName: "annas cycle route",
+    routeName: "Jessjelly Cycle Route",
     center: [-2.2426, 53.4808],
     zoom: [14],
-    selectedMarker: null
+    selectedMarker: null,
+    city: "Liverpool",
+    user_id: "jessjelly",
+    type: "Scenic",
+    averageRating: 4
   };
   render() {
-    const { center, zoom, features, selectedMarker } = this.state;
+    const {
+      center,
+      zoom,
+      features,
+      selectedMarker,
+      routeName,
+      calculatedDistance,
+      city,
+      user_id,
+      type,
+      averageRating
+    } = this.state;
     return (
       <div>
-        <p>single route</p>
-        <Map
-          style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
-          containerStyle={{
-            height: "600px",
-            width: "90vw"
-          }}
-          center={center}
-          zoom={zoom}
-        >
-          {features.map(feature => {
-            if (feature.geometry.type === "LineString") {
-              return (
-                <Layer type="line" id="route" key={feature.id}>
-                  <Feature coordinates={feature.geometry.coordinates} />
-                </Layer>
-              );
-            } else if (feature.geometry.type === "Point") {
-              let markerImage;
-              if (feature.markerType === "attraction") {
-                markerImage = attractionFlag;
-              } else {
-                markerImage = warningFlag;
+        <section className={styles.map_block}>
+          <Map
+            style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
+            containerStyle={{
+              height: "600px",
+              width: "90vw"
+            }}
+            center={center}
+            zoom={zoom}
+          >
+            {features.map(feature => {
+              if (feature.geometry.type === "LineString") {
+                return (
+                  <Layer type="line" id="route" key={feature.id}>
+                    <Feature coordinates={feature.geometry.coordinates} />
+                  </Layer>
+                );
+              } else if (feature.geometry.type === "Point") {
+                let markerImage;
+                if (feature.markerType === "attraction") {
+                  markerImage = attractionFlag;
+                } else {
+                  markerImage = warningFlag;
+                }
+                return (
+                  <Marker
+                    coordinates={feature.geometry.coordinates}
+                    key={feature.id}
+                  >
+                    <img
+                      alt="pin marker"
+                      src={markerImage}
+                      height="30px"
+                      onClick={() => {
+                        this.setSelectedMarker(feature);
+                      }}
+                    />
+                  </Marker>
+                );
               }
-              return (
-                <Marker
-                  coordinates={feature.geometry.coordinates}
-                  key={feature.id}
-                >
-                  <img
-                    alt="pin marker"
-                    src={markerImage}
-                    height="30px"
-                    onClick={() => {
-                      this.setSelectedMarker(feature);
-                    }}
-                  />
-                </Marker>
-              );
-            }
-          })}
-          {selectedMarker && (
-            <Popup
-              coordinates={selectedMarker.geometry.coordinates}
-              onClick={this.closePopup}
-            >
-              <p>{selectedMarker.markerComments[0]}</p>
-            </Popup>
-          )}
-        </Map>
-        <RouteAttractions features={features} />
-        <Reviews />
+            })}
+            {selectedMarker && (
+              <Popup
+                coordinates={selectedMarker.geometry.coordinates}
+                onClick={this.closePopup}
+              >
+                <p>{selectedMarker.markerComments[0]}</p>
+              </Popup>
+            )}
+          </Map>
+          <Card className={styles.stats_card}>
+            <Card.Body>
+              <Card.Title>
+                <h2>{routeName}</h2>
+              </Card.Title>
+              <br></br>
+              <Card.Subtitle className="mb-2 text-muted">
+                City: {city}
+                <br></br>
+                Distance: {calculatedDistance} miles
+                <br></br> Route type: {type}
+                <br></br>
+                Average rating: {averageRating}
+                <br></br>
+                Posted by: {user_id}
+              </Card.Subtitle>
+              <br></br>
+              <Card.Text>
+                <br></br>
+                <RouteAttractions features={features} />
+                <br></br>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </section>
+        <AllReviews />
       </div>
     );
   }
