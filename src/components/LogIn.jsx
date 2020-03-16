@@ -4,7 +4,7 @@ class LogIn extends Component {
   state = { username: "", password: "" };
   render() {
     const { username, password } = this.state;
-    const { logUserIn } = this.props;
+    const { logUserIn, invalidUser } = this.props;
     return (
       <div>
         <form
@@ -33,6 +33,7 @@ class LogIn extends Component {
             />
           </label>
           <button>Sign in</button>
+          {invalidUser && <p>Log in failed! Please try again</p>}
         </form>
       </div>
     );

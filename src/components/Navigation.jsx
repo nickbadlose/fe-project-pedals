@@ -24,8 +24,27 @@ const Navigation = ({ logUserOut }) => {
               <NavDropdown.Item href="/routes">All</NavDropdown.Item>
             </NavDropdown>
             {localStorage.username ? (
-              <button onClick={logUserOut}>{localStorage.username}</button>
+              <NavDropdown
+                title={localStorage.username}
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item href={`/users/${localStorage.username}`}>
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/login" onClick={logUserOut}>
+                  Log out
+                </NavDropdown.Item>
+              </NavDropdown>
             ) : (
+              // <>
+              //   <Nav.Link href="/">{localStorage.username}</Nav.Link>
+              //   <Nav.Link href="/">
+              //     <button onClick={logUserOut} className="logOutButton">
+              //       Log out
+              //     </button>
+              //   </Nav.Link>
+              // </>
               <Nav.Link href="/login">Log In</Nav.Link>
             )}
           </Nav>

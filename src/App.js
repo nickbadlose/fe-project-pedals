@@ -9,9 +9,14 @@ class App extends Component {
   state = { invalidUser: false };
   render() {
     const { logUserIn, logUserOut } = this;
+    const { invalidUser } = this.state;
     return (
       <div className="App">
-        <MainSite logUserIn={logUserIn} logUserOut={logUserOut} />
+        <MainSite
+          logUserIn={logUserIn}
+          logUserOut={logUserOut}
+          invalidUser={invalidUser}
+        />
       </div>
     );
   }
@@ -23,6 +28,7 @@ class App extends Component {
       .then(() => {
         this.setState({ invalidUser: false });
         // navigate(`/user/${username}`);
+        navigate("/");
       })
       .catch(() => {
         this.setState({ invalidUser: true });
@@ -31,7 +37,6 @@ class App extends Component {
 
   logUserOut = () => {
     localStorage.clear();
-    this.setState({ loggedInUser: null });
   };
 }
 
