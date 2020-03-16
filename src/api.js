@@ -13,3 +13,10 @@ export const getRoutes = user_id => {
       return data.routes;
     });
 };
+
+export const postLogIn = (username, password) => {
+  return axios.post(`${baseURL}/login`, { username, password }).then(res => {
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("username", username);
+  });
+};

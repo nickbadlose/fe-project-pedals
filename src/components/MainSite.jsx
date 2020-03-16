@@ -6,17 +6,19 @@ import AllRoutes from "./Routes/AllRoutes";
 import UserPage from "./UserPage";
 import DrawRoute from "./DrawRoute";
 import SingleRoute from "./Routes/SingleRoute";
+import LogIn from "./LogIn";
 
-const MainSite = () => {
+const MainSite = ({ logUserIn, logUserOut, invalidUser }) => {
   return (
     <div>
-      <Navigation />
+      <Navigation logUserOut={logUserOut} />
       <Router>
         <HomePage path="/" />
         <AllRoutes path="/routes" />
         <UserPage path="/users/:user_id" />
         <DrawRoute path="/routes/draw" />
         <SingleRoute path="/routes/:route_id" />
+        <LogIn path="/login" logUserIn={logUserIn} invalidUser={invalidUser} />
       </Router>
     </div>
   );
