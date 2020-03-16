@@ -9,7 +9,6 @@ class SortRoutes extends Component {
     order: "desc"
   };
   render() {
-    console.log(this.state.sort_by);
     return (
       <DropdownButton
         id="dropdown-basic-button"

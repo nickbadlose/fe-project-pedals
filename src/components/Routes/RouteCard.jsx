@@ -3,6 +3,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import styles from "../styling/RouteCard.module.css";
 import routePlaceholder from "../icons/routePlaceholder.jpg";
+import Moment from "react-moment";
 
 const RouteCard = props => {
   const { route } = props;
@@ -21,12 +22,12 @@ const RouteCard = props => {
             <br></br>
             Route type: {route.type}
             <br></br>
-            Posted: {route.posted}
+            Posted on: <Moment format="D MMM YYYY">{route.posted}</Moment>
           </Card.Text>
           <Button variant="primary">See route</Button>
         </Card.Body>
         <Card.Footer>
-          <small>Posted by: {route.user_id}</small>
+          <small>By {route.user_id}</small>
         </Card.Footer>
       </Card>
     </div>
