@@ -14,11 +14,17 @@ export const getRoutes = user_id => {
     });
 };
 
-
-
 export const postRoute = (routeName, routeType, features, calculatedDistance, center, zoom, city, routeDescription) => {
 
   return axios.post(`${baseURL}/routes`, {routeName, type: routeType, features, user_id: localStorage.username, calculatedDistance, center, zoom, routeDescription, city}, {
     headers: { Authorization: 'BEARER ' + localStorage.token }
   })
 }
+
+export const postLogIn = (username, password) => {
+  return axios.post(`${baseURL}/login`, { username, password }).then(res => {
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("username", username);
+  });
+};
+
