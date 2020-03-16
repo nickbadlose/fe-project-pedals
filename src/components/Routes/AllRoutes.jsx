@@ -45,10 +45,11 @@ class AllRoutes extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { type } = this.props;
-    const { sort_by } = this.state;
+    const { sort_by, order } = this.state;
     const changeType = prevProps.type !== type;
     const changeSort = sort_by !== prevState.sort_by;
-    if (changeType || changeSort) {
+    const changeOrder = order !== prevState.order;
+    if (changeType || changeSort || changeOrder) {
       this.fetchRoutes();
     }
   }
