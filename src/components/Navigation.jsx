@@ -3,7 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
-const Navigation = () => {
+const Navigation = ({ logUserOut }) => {
   return (
     <div>
       <Navbar bg="dark" expand="sm" variant="dark">
@@ -23,6 +23,11 @@ const Navigation = () => {
               <NavDropdown.Divider />
               <NavDropdown.Item href="/routes">All</NavDropdown.Item>
             </NavDropdown>
+            {localStorage.username ? (
+              <button onClick={logUserOut}>{localStorage.username}</button>
+            ) : (
+              <Nav.Link href="/login">Log In</Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
