@@ -2,10 +2,10 @@ import React from "react";
 import { Router } from "@reach/router";
 import Navigation from "./Navigation";
 import HomePage from "./HomePage";
-import AllRoutes from "./AllRoutes";
+import AllRoutes from "./Routes/AllRoutes";
 import UserPage from "./UserPage";
 import DrawRoute from "./DrawRoute";
-import SingleRoute from "./SingleRoute";
+import SingleRoute from "./Routes/SingleRoute";
 
 const MainSite = () => {
   return (

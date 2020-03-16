@@ -13,7 +13,6 @@ const Navigation = () => {
           <Nav className="mr-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/routes/draw">Draw</Nav.Link>
-
             <NavDropdown title="Routes" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.2">Scenic</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">
@@ -22,7 +21,7 @@ const Navigation = () => {
               <NavDropdown.Item href="#action/3.4">Off-Road</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.5">Training</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.6">All</NavDropdown.Item>
+              <NavDropdown.Item href="/routes">All</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
