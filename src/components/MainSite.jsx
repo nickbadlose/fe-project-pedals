@@ -6,6 +6,7 @@ import AllRoutes from "./Routes/AllRoutes";
 import UserPage from "./UserPage";
 import DrawRoute from "./DrawRoute";
 import SingleRoute from "./Routes/SingleRoute";
+import ErrorPage from "./ErrorPage";
 
 const MainSite = () => {
   return (
@@ -14,9 +15,10 @@ const MainSite = () => {
       <Router>
         <HomePage path="/" />
         <AllRoutes path="/routes" />
-        <UserPage path="/users/:user_id" />
+        <UserPage path="/my_page" />
         <DrawRoute path="/routes/draw" />
         <SingleRoute path="/routes/:route_id" />
+        <ErrorPage default />
       </Router>
     </div>
   );

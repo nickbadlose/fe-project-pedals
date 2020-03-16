@@ -13,3 +13,9 @@ export const getRoutes = user_id => {
       return data.routes;
     });
 };
+
+export const getUser = username => {
+  return axios.get(`${baseURL}/users/${username}`).then(({ data }) => {
+    return data.user;
+  });
+};
