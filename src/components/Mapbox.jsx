@@ -76,7 +76,7 @@ class Mapbox extends Component {
             style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
             containerStyle={{
               height: "50em",
-              width: "150em"
+              width: "100%"
             }}
             center={center}
             zoom={zoom}
@@ -255,7 +255,6 @@ class Mapbox extends Component {
             <Card.Title>
               <h2>Create a new route</h2>
             </Card.Title>
-            <br></br>
             <Card.Subtitle className="mb-2 text-muted">
               Draw your route using the tools at the left of the map. You can
               drop pins for any warnings or attractions along the route. Once
@@ -267,7 +266,7 @@ class Mapbox extends Component {
               Starting Elevation · {startEle} meters <br></br>
               End Elevation · {endEle} meters <br></br>
               Elevation Diff · {eleDiff} meters
-              <br></br>
+              
               <br></br>
             </Card.Text>
             <Form>
@@ -299,7 +298,7 @@ class Mapbox extends Component {
                   rows="2"
                   placeholder="Tell us a little about your route" onChange={this.handleRouteDescriptionChange}></Form.Control>
               </Form.Group>
-              <br></br>
+              
               <Button
                 variant="primary"
                 type="submit"
