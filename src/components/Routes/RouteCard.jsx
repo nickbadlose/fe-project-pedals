@@ -20,6 +20,8 @@ const RouteCard = props => {
             Distance: {route.calculatedDistance} miles
             <br></br>
             Route type: {route.type}
+            <br></br>
+            Posted: {route.posted}
           </Card.Text>
           <Button variant="primary">See route</Button>
         </Card.Body>
