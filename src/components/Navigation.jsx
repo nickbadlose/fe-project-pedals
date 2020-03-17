@@ -2,12 +2,16 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import pedals from "./icons/pedals.png";
+import styles from "./styling/Navigation.module.css";
 
 const Navigation = ({ logUserOut }) => {
   return (
     <div>
-      <Navbar bg="dark" expand="sm" variant="dark">
-        <Navbar.Brand href="/">Pedals</Navbar.Brand>
+      <Navbar className={styles.colorNav} expand="sm" variant="dark">
+        <Navbar.Brand href="/">
+          <img src={pedals} className={styles.logo} />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
@@ -30,8 +34,7 @@ const Navigation = ({ logUserOut }) => {
             {localStorage.username ? (
               <NavDropdown
                 title={localStorage.username}
-                id="basic-nav-dropdown"
-              >
+                id="basic-nav-dropdown">
                 <NavDropdown.Item href={`/users/${localStorage.username}`}>
                   Profile
                 </NavDropdown.Item>

@@ -7,7 +7,6 @@ import Moment from "react-moment";
 import { Link } from "@reach/router";
 import PreviewImg from "../icons/routePreview";
 
-
 const RouteCard = props => {
   const { route } = props;
   const { coordinates } = route.features[0].geometry;
@@ -16,8 +15,13 @@ const RouteCard = props => {
   return (
     <div className={styles.routeCard}>
       <Card>
-        <Card.Img src={routeImg} className={styles.routeImage} />
         <Card.Body>
+          <Card.Img
+            style={{ paddingBottom: "5px" }}
+            variant="center"
+            src={routeImg}
+            className={styles.routeImage}
+          />
           <Card.Title>{route.routeName}</Card.Title>
           <Card.Text>
             Average rating: {route.averageRating}
@@ -34,8 +38,7 @@ const RouteCard = props => {
             {" "}
             <Link
               style={{ color: "white", textDecoration: "none" }}
-              to={`/routes/id/${route._id}`}
-            >
+              to={`/routes/id/${route._id}`}>
               See route
             </Link>
           </Button>

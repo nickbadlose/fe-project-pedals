@@ -50,7 +50,8 @@ class Mapbox extends Component {
       eleDiff,
       isLoading,
       selectedMarker,
-      markerInfo
+      markerInfo,
+      features
     } = this.state;
     const {
       onDrawCreate,
@@ -85,6 +86,8 @@ class Mapbox extends Component {
               onDrawModeChange={onDrawModeChange}
               onDrawSelectionChange={onDrawSelectionChange}
               onDrawDelete={onDrawDelete}
+              displayControlsDefault={false}
+              controls={{ line_string: true, trash: true, point: true}}
               styles={[
                 // ACTIVE (being drawn)
                 // line stroke
@@ -504,7 +507,6 @@ class Mapbox extends Component {
       zoom,
       routeDescription
     } = this.state;
-
 
     api
       .getRouteCity(features[0].geometry.coordinates[0])
