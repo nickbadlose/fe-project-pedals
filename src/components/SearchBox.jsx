@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
+import InputGroup from "react-bootstrap/InputGroup";
 import styles from "./styling/SearchBox.module.css";
 
 class SearchBox extends Component {
@@ -9,26 +9,38 @@ class SearchBox extends Component {
     searchInput: ""
   };
   render() {
+    const { searchInput } = this.state;
     return (
-      <div className={styles.searchBox}>
-        <InputGroup>
+      <div className={styles.searchBoxBlock}>
+        <InputGroup className="mb-3">
           <FormControl
-            required
+            onChange={this.handleChange}
             placeholder="Search..."
             aria-label="Search box"
-            onChange={this.handleSearch}
+            aria-describedby="basic-addon2"
           />
           <InputGroup.Append>
-            <Button variant="outline-secondary">Search by user</Button>
-            <Button variant="outline-secondary">Search by city</Button>
+            <Button
+              onClick={() => {
+                this.onClick(searchInput);
+              }}
+              variant="outline-secondary"
+            >
+              Go!
+            </Button>
           </InputGroup.Append>
         </InputGroup>
       </div>
     );
   }
 
-  handleSearch = e => {
+  handleChange = e => {
     this.setState({ searchInput: e.target.value });
+  };
+
+  onClick = searchTerm => {
+    this.props.searchRoutes(searchTerm);
+    this.setState({ searchInput: "" });
   };
 }
 
