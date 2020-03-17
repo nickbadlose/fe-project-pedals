@@ -18,7 +18,7 @@ const RouteCard = props => {
             <br></br>
             City: {route.city}
             <br></br>
-            Distance: {route.calculatedDistance} miles
+            Distance: {route.calculatedDistance.toFixed(1)} miles
             <br></br>
             Route type: {route.type}
             <br></br>
