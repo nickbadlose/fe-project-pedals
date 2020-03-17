@@ -57,15 +57,26 @@ export const postLogIn = (username, password) => {
   });
 };
 
-export const getRouteCity = coordinates => {
-  return axios
-    .get(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates[0]},${coordinates[1]}.json?access_token=pk.eyJ1IjoiY2FpdGxpbi1iIiwiYSI6ImNrN2cwNGxqMzA3cTYzZW1wdGNmN3lrNHMifQ.cAnpnGVhEh0RQTtHeYDxUg
-  `
-    )
-    .then(res => res.data.features[3].text);
-};
-
 export const getReviews = route_id => {
   return axios.get(baseURL + "/reviews/" + route_id).then(res => res.data.reviews);
 };
+
+export const postUser = (_id, password) => {
+  return axios
+    .post(`${baseURL}/users`, { _id, password })
+    .then(({ data: { user } }) => {
+      return user;
+    });
+};
+
+export const getUsers = () => {
+  return axios.get(`${baseURL}/users/`).then(({ data: { users } }) => {
+    return users;
+  });
+};
+
+export const getRouteCity = (coordinates) => {
+  return axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates[0]},${coordinates[1]}.json?access_token=pk.eyJ1IjoiY2FpdGxpbi1iIiwiYSI6ImNrN2cwNGxqMzA3cTYzZW1wdGNmN3lrNHMifQ.cAnpnGVhEh0RQTtHeYDxUg
+  `).then(res =>  res.data.features[3].text)
+}
+
