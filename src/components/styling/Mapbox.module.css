@@ -3,9 +3,18 @@
   margin: 30px;
 }
 
+.mapContainer {
+  height: "50em";
+  width: "150em";
+}
+
 @media only screen and (max-width: 800px) {
   .map_block {
     flex-direction: column;
+  }
+
+  #map {
+    width: 100%;
   }
 }
 
@@ -18,5 +27,9 @@
 }
 
 .loading_section {
-  padding: 50em 150em 50em 150em
+  padding: 50em 150em 50em 150em;
+}
+
+.card-body {
+  width: 50%
 }

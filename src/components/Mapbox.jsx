@@ -10,6 +10,8 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import bike_spinner from "./icons/bike_spinner.gif";
+import * as api from "../api.js";
+import { navigate } from "@reach/router";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -34,7 +36,9 @@ class Mapbox extends Component {
     selectedMarker: null,
     markerInfo: "",
     routeName: "",
-    markerType: "attraction"
+    markerType: "attraction",
+    routeType: "scenic",
+    routeDescription: ""
   };
   render() {
     const {
@@ -46,7 +50,8 @@ class Mapbox extends Component {
       eleDiff,
       isLoading,
       selectedMarker,
-      markerInfo
+      markerInfo,
+      features
     } = this.state;
     const {
       onDrawCreate,
@@ -70,18 +75,19 @@ class Mapbox extends Component {
             style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
             containerStyle={{
               height: "50em",
-              width: "150em"
+              width: "100%"
             }}
             center={center}
             zoom={zoom}
-            onClick={onClickMap}
-          >
+            onClick={onClickMap}>
             <DrawControl
               onDrawCreate={onDrawCreate}
               onDrawUpdate={onDrawUpdate}
               onDrawModeChange={onDrawModeChange}
               onDrawSelectionChange={onDrawSelectionChange}
               onDrawDelete={onDrawDelete}
+              displayControlsDefault={false}
+              controls={{ line_string: true, trash: true, point: true}}
               styles={[
                 // ACTIVE (being drawn)
                 // line stroke
@@ -250,7 +256,6 @@ class Mapbox extends Component {
             <Card.Title>
               <h2>Create a new route</h2>
             </Card.Title>
-            <br></br>
             <Card.Subtitle className="mb-2 text-muted">
               Draw your route using the tools at the left of the map. You can
               drop pins for any warnings or attractions along the route. Once
@@ -263,33 +268,43 @@ class Mapbox extends Component {
               End Elevation · {endEle} meters <br></br>
               Elevation Diff · {eleDiff} meters
               <br></br>
-              <br></br>
             </Card.Text>
             <Form>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlSelect1"
-              >
+                controlId="drawRouteForm.ControlSelect1">
                 <Form.Label>Route type</Form.Label>
-                <Form.Control as="select">
-                  <option>Scenic</option>
-                  <option>Family Friendly</option>
-                  <option>Off-Road</option>
-                  <option>Training</option>
+                <Form.Control as="select" onChange={this.handleRouteTypeChange}>
+                  <option value="scenic">Scenic</option>
+                  <option value="family friendly">Family Friendly</option>
+                  <option value="off-road">Off-Road</option>
+                  <option value="training">Training</option>
                 </Form.Control>
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea1"
-              >
+                controlId="drawRouteForm.ControlTextArea1">
                 <Form.Label>Route name</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="eg. West Didsbury to Chorlton"
-                ></Form.Control>
+                  onChange={this.handleRouteNameChange}></Form.Control>
               </Form.Group>
-              <br></br>
-              <Button variant="primary" type="submit">
+              <Form.Group
+                className={styles.input_label}
+                controlId="drawRouteForm.ControlTextArea2">
+                <Form.Label>Route description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows="2"
+                  placeholder="Tell us a little about your route"
+                  onChange={this.handleRouteDescriptionChange}></Form.Control>
+              </Form.Group>
+
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={this.handleSaveRoute}>
                 Save your route!
               </Button>
             </Form>
@@ -481,9 +496,46 @@ class Mapbox extends Component {
     });
   };
 
-  handleSaveRoute = e => {};
+  handleSaveRoute = e => {
+    e.preventDefault();
+    const {
+      routeName,
+      routeType,
+      features,
+      calculatedDistance,
+      center,
+      zoom,
+      routeDescription
+    } = this.state;
 
-  // handlePopup = e => {};
+    api
+      .getRouteCity(features[0].geometry.coordinates[0])
+      .then(city => {
+        return api.postRoute(
+          routeName,
+          routeType,
+          features,
+          calculatedDistance,
+          center,
+          zoom,
+          city,
+          routeDescription
+        );
+      })
+      .then(route => navigate(`/routes/id/${route.data.route._id}`));
+  };
+
+  handleRouteTypeChange = e => {
+    this.setState({ routeType: e.target.value });
+  };
+
+  handleRouteNameChange = e => {
+    this.setState({ routeName: e.target.value });
+  };
+
+  handleRouteDescriptionChange = e => {
+    this.setState({ routeDescription: e.target.value });
+  };
 
   handleMarkerForm = e => {
     const { features, selectedMarker, markerInfo, markerType } = this.state;
@@ -510,7 +562,6 @@ class Mapbox extends Component {
   };
 
   handleMarkerFormChange = e => {
-    console.log(e.target.value, "<<<<");
     this.setState({ markerInfo: e.target.value });
   };
 }
