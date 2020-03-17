@@ -6,9 +6,9 @@ import * as api from "./api";
 import { navigate } from "@reach/router";
 
 class App extends Component {
-  state = { invalidUser: false };
+  state = { invalidUser: false, loggedIn: false };
   render() {
-    const { logUserIn, logUserOut } = this;
+    const { logUserIn, logUserOut, signUp } = this;
     const { invalidUser } = this.state;
     return (
       <div className="App">
@@ -16,6 +16,7 @@ class App extends Component {
           logUserIn={logUserIn}
           logUserOut={logUserOut}
           invalidUser={invalidUser}
+          signUp={signUp}
         />
       </div>
     );
@@ -26,7 +27,7 @@ class App extends Component {
     api
       .postLogIn(username, password)
       .then(() => {
-        this.setState({ invalidUser: false });
+        this.setState({ invalidUser: false, loggedIn: true });
         // navigate(`/user/${username}`);
         navigate("/");
       })
@@ -35,8 +36,27 @@ class App extends Component {
       });
   };
 
+  signUp = (e, username, password) => {
+    e.preventDefault();
+    api
+      .postUser(username, password)
+      .then(() => {
+        return api.postLogIn(username, password);
+      })
+      .then(() => {
+        this.setState({ loggedIn: true });
+        // navigate(`/user/${username}`);
+        navigate("/");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   logUserOut = () => {
     localStorage.clear();
+    this.setState({ loggedIn: false });
+    navigate("/");
   };
 }
 

@@ -9,6 +9,7 @@ import warningFlag from "../icons/warning-flag.png";
 import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import axios from "axios";
+import * as api from "../../api";
 
 const token =
   "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
@@ -19,7 +20,7 @@ const Map = ReactMapboxGl({
 });
 
 class SingleRoute extends Component {
-  state = { route: {}, isLoading: true };
+  state = { route: {}, isLoading: true, reviews: [] };
 
   render() {
     const {
@@ -43,13 +44,13 @@ class SingleRoute extends Component {
 
     return this.state.isLoading ? (
       <div className={styles.map_block}>
-        <section className={styles.loading_section}>
+        <div className={styles.loading_section}>
           <img src={bike_spinner} alt="loading" />
-        </section>
+        </div>
       </div>
     ) : (
       <div>
-        <section className={styles.map_block}>
+        <div className={styles.map_block}>
           <Map
             style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
             containerStyle={{
@@ -57,8 +58,7 @@ class SingleRoute extends Component {
               width: "90vw"
             }}
             center={center}
-            zoom={zoom}
-          >
+            zoom={zoom}>
             {features.map(feature => {
               if (feature.geometry.type === "LineString") {
                 return (
@@ -66,8 +66,7 @@ class SingleRoute extends Component {
                     type="line"
                     id="route"
                     key={feature.id}
-                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
-                  >
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}>
                     <Feature coordinates={feature.geometry.coordinates} />
                   </Layer>
                 );
@@ -81,8 +80,7 @@ class SingleRoute extends Component {
                 return (
                   <Marker
                     coordinates={feature.geometry.coordinates}
-                    key={feature.id}
-                  >
+                    key={feature.id}>
                     <img
                       alt="pin marker"
                       src={markerImage}
@@ -98,8 +96,7 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={this.closePopup}
-              >
+                onClick={this.closePopup}>
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}
@@ -121,14 +118,14 @@ class SingleRoute extends Component {
                 Posted by · {user_id}
               </Card.Subtitle>
               <br></br>
-              <Card.Text>
+              <Card.Body>
                 <br></br>
                 <RouteAttractions features={features} />
                 <br></br>
-              </Card.Text>
+              </Card.Body>
             </Card.Body>
           </Card>
-        </section>
+        </div>
         <AllReviews />
         <Directions coordinates={this.state.coordinates} />
       </div>
@@ -136,7 +133,7 @@ class SingleRoute extends Component {
   }
 
   componentDidMount() {
-    const route_id = this.props.id || "5e6f73193fa2f100175478ac";
+    const route_id = this.props.route_id;
 
     axios
       .get(`http://project-pedals.herokuapp.com/api/routes/${route_id}`)
@@ -145,6 +142,10 @@ class SingleRoute extends Component {
         const coordinates = res.data.route.features[0].geometry.coordinates;
         this.setState({ route, coordinates, isLoading: false });
       });
+
+    api.getReviews(route_id).then(reviews => {
+      this.setState({ reviews });
+    });
   }
 
   setSelectedMarker = feature => {

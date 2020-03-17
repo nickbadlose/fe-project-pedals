@@ -39,34 +39,46 @@ const Navigation = ({ logUserOut }) => {
               <NavDropdown.Divider />
               <NavDropdown.Item href="/routes">All</NavDropdown.Item>
             </NavDropdown>
+          </Nav>
+          <Nav className="ml-auto">
             {localStorage.username ? (
               <NavDropdown
                 title={localStorage.username}
+
                 id="basic-nav-dropdown"
                 className={styles.navLabel}
+
+
+        
+                // className="dropdown-menu dropdown-menu-left"
+
               >
                 <NavDropdown.Item href={`/users/${localStorage.username}`}>
                   Profile
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
+
                 <NavDropdown.Item
-                  href="/login"
+         
                   onClick={logUserOut}
                   className={styles.navUserName}
                 >
+
+              
+
                   Log out
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (
-              // <>
-              //   <Nav.Link href="/">{localStorage.username}</Nav.Link>
-              //   <Nav.Link href="/">
-              //     <button onClick={logUserOut} className="logOutButton">
-              //       Log out
-              //     </button>
-              //   </Nav.Link>
-              // </>
-              <Nav.Link href="/login">Log In</Nav.Link>
+              <NavDropdown
+                title="Log in"
+                id="basic-nav-dropdown"
+                // className="dropdown-menu dropdown-menu-left"
+              >
+                <NavDropdown.Item href="/login">Log in</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/signup">Sign up</NavDropdown.Item>
+              </NavDropdown>
             )}
           </Nav>
         </Navbar.Collapse>
