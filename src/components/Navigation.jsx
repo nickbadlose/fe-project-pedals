@@ -15,9 +15,17 @@ const Navigation = ({ logUserOut }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/routes/draw">Draw</Nav.Link>
-            <NavDropdown title="Routes" id="basic-nav-dropdown">
+            <Nav.Link href="/" className={styles.navLabel}>
+              Home
+            </Nav.Link>
+            <Nav.Link href="/routes/draw" className={styles.navLabel}>
+              Draw
+            </Nav.Link>
+            <NavDropdown
+              title="Routes"
+              id="basic-nav-dropdown"
+              className={styles.navLabel}
+            >
               <NavDropdown.Item href="/routes/scenic">Scenic</NavDropdown.Item>
               <NavDropdown.Item href="/routes/family%20friendly">
                 Family Friendly
@@ -34,12 +42,18 @@ const Navigation = ({ logUserOut }) => {
             {localStorage.username ? (
               <NavDropdown
                 title={localStorage.username}
-                id="basic-nav-dropdown">
+                id="basic-nav-dropdown"
+                className={styles.navLabel}
+              >
                 <NavDropdown.Item href={`/users/${localStorage.username}`}>
                   Profile
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/login" onClick={logUserOut}>
+                <NavDropdown.Item
+                  href="/login"
+                  onClick={logUserOut}
+                  className={styles.navUserName}
+                >
                   Log out
                 </NavDropdown.Item>
               </NavDropdown>

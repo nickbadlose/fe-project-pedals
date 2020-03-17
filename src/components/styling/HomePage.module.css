@@ -4,7 +4,24 @@
 
 .carousel_title {
   text-align: left;
+  font-family: 'Fredoka One';
+  letter-spacing: 0.2vw;
+  font-size: 4.3vh;
 }
 .carousel_text {
   text-align: left;
+}
+
+.pedals {
+  color: #fc814a;
+}
+
+.carousel_item {
+  object-fit: cover;
+  height: auto;
+  width: auto;
+}
+
+.carousel_container {
+  background-color: #fc814a;
 }
