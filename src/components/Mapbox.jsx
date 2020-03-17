@@ -11,9 +11,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import bike_spinner from "./icons/bike_spinner.gif";
 import * as api from "../api.js";
-import { navigate } from '@reach/router';
-
- 
+import { navigate } from "@reach/router";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -266,7 +264,6 @@ class Mapbox extends Component {
               Starting Elevation · {startEle} meters <br></br>
               End Elevation · {endEle} meters <br></br>
               Elevation Diff · {eleDiff} meters
-              
               <br></br>
             </Card.Text>
             <Form>
@@ -287,7 +284,8 @@ class Mapbox extends Component {
                 <Form.Label>Route name</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="eg. West Didsbury to Chorlton" onChange={this.handleRouteNameChange}></Form.Control>
+                  placeholder="eg. West Didsbury to Chorlton"
+                  onChange={this.handleRouteNameChange}></Form.Control>
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
@@ -296,9 +294,10 @@ class Mapbox extends Component {
                 <Form.Control
                   as="textarea"
                   rows="2"
-                  placeholder="Tell us a little about your route" onChange={this.handleRouteDescriptionChange}></Form.Control>
+                  placeholder="Tell us a little about your route"
+                  onChange={this.handleRouteDescriptionChange}></Form.Control>
               </Form.Group>
-              
+
               <Button
                 variant="primary"
                 type="submit"
@@ -506,25 +505,35 @@ class Mapbox extends Component {
       routeDescription
     } = this.state;
 
-    const city = "Manchester";
 
-    api.postRoute(routeName, routeType, features, calculatedDistance, center, zoom, city, routeDescription).then(route => 
-      navigate(`/routes/${route.data.route._id}`))
-    
+    api
+      .getRouteCity(features[0].geometry.coordinates[0])
+      .then(city => {
+        return api.postRoute(
+          routeName,
+          routeType,
+          features,
+          calculatedDistance,
+          center,
+          zoom,
+          city,
+          routeDescription
+        );
+      })
+      .then(route => navigate(`/routes/id/${route.data.route._id}`));
   };
 
   handleRouteTypeChange = e => {
     this.setState({ routeType: e.target.value });
   };
 
-  handleRouteNameChange = (e) => {
-    this.setState({routeName: e.target.value})
-  }
+  handleRouteNameChange = e => {
+    this.setState({ routeName: e.target.value });
+  };
 
-  handleRouteDescriptionChange = (e) => {
-    this.setState({routeDescription: e.target.value})
-
-  }
+  handleRouteDescriptionChange = e => {
+    this.setState({ routeDescription: e.target.value });
+  };
 
   handleMarkerForm = e => {
     const { features, selectedMarker, markerInfo, markerType } = this.state;
