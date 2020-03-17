@@ -7,6 +7,7 @@ import Moment from "react-moment";
 import { Link } from "@reach/router";
 import PreviewImg from "../icons/routePreview";
 
+
 const RouteCard = props => {
   const { route } = props;
   const { coordinates } = route.features[0].geometry;
@@ -23,7 +24,7 @@ const RouteCard = props => {
             <br></br>
             City: {route.city}
             <br></br>
-            Distance: {route.calculatedDistance} miles
+            Distance: {route.calculatedDistance.toFixed(1)} miles
             <br></br>
             Route type: {route.type}
             <br></br>

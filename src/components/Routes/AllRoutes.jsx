@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import RouteCard from "./RouteCard";
 import CardDeck from "react-bootstrap/CardDeck";
-import styles from "../styling/RouteCard.module.css";
+import styles from "../styling/AllRoutes.module.css";
 import * as api from "../../api.js";
-import FilterType from "../FilterType";
+// import FilterType from "../FilterType";
 import SortRoutes from "../SortRoutes";
+import SearchBox from "../SearchBox";
+
 
 class AllRoutes extends Component {
   state = {
@@ -23,8 +25,9 @@ class AllRoutes extends Component {
         <div>
           <h2>All routes</h2>
           <section className={styles.filterSection}>
-            <FilterType />
+            {/* <FilterType /> */}
             <SortRoutes sortRoutes={this.sortRoutes} />
+            <SearchBox searchBoxButton={this.searchBoxButton} />
           </section>
           <CardDeck className={styles.routeCard_block}>
             {routes.map(route => {
@@ -45,19 +48,21 @@ class AllRoutes extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { type } = this.props;
-    const { sort_by } = this.state;
+    const { sort_by, order } = this.state;
     const changeType = prevProps.type !== type;
     const changeSort = sort_by !== prevState.sort_by;
-    if (changeType || changeSort) {
+    const changeOrder = order !== prevState.order;
+
+    if (changeType || changeSort || changeOrder) {
       this.fetchRoutes();
     }
   }
 
   fetchRoutes = () => {
-    const { type, user_id } = this.props;
+    const { type } = this.props;
     const { sort_by, order } = this.state;
     api
-      .getRoutes(type, user_id, sort_by, order)
+      .getRoutes(type, sort_by, order)
       .then(routes => {
         this.setState({ routes, isLoading: false, err: false });
       })

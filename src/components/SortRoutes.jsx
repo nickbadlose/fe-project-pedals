@@ -16,23 +16,39 @@ class SortRoutes extends Component {
         className={styles.sortButton}
         onSelect={this.onSelect}
       >
-        <Dropdown.Item eventKey="calculatedDistance">Distance</Dropdown.Item>
-        <Dropdown.Item eventKey="averageRating">Average Rating</Dropdown.Item>
-        <Dropdown.Item eventKey="posted">Posted</Dropdown.Item>
+        <Dropdown.Item eventKey="posted/desc">Newest</Dropdown.Item>
+        <Dropdown.Item eventKey="posted/asc">Oldest</Dropdown.Item>
+        <Dropdown.Item eventKey="calculatedDistance/desc">
+          Distance: Longest to Shortest
+        </Dropdown.Item>
+        <Dropdown.Item eventKey="calculatedDistance/asc">
+          Distance: Shortest to Longest
+        </Dropdown.Item>
+        <Dropdown.Item eventKey="averageRating/desc">
+          Rating: Highest to Lowest
+        </Dropdown.Item>
+        <Dropdown.Item eventKey="averageRating/asc">
+          Rating: Lowest to Highest
+        </Dropdown.Item>
       </DropdownButton>
     );
   }
 
-  onSelect = e => {
-    this.setState({ sort_by: e });
+
+  onSelect = eventKey => {
+    const separatedEventKey = eventKey.split("/");
+    const sort_by = separatedEventKey[0];
+    const order = separatedEventKey[1];
+    this.setState({ sort_by, order });
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { sort_by } = this.state;
+    const { sort_by, order } = this.state;
     const { sortRoutes } = this.props;
     const sortByChanged = sort_by !== prevState.sort_by;
-    if (sortByChanged) {
-      sortRoutes(sort_by);
+    const orderChanged = order !== prevState.order;
+    if (sortByChanged || orderChanged) {
+      sortRoutes(sort_by, order);
     }
   }
 }
