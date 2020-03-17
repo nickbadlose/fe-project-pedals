@@ -7,8 +7,9 @@ import UserPage from "./UserPage";
 import DrawRoute from "./DrawRoute";
 import SingleRoute from "./Routes/SingleRoute";
 import LogIn from "./LogIn";
+import SignUp from "../components/SignUp";
 
-const MainSite = ({ logUserIn, logUserOut, invalidUser }) => {
+const MainSite = ({ logUserIn, logUserOut, invalidUser, signUp }) => {
   return (
     <div>
       <Navigation logUserOut={logUserOut} />
@@ -19,6 +20,7 @@ const MainSite = ({ logUserIn, logUserOut, invalidUser }) => {
         <DrawRoute path="/routes/draw" />
         <SingleRoute path="/routes/:route_id" />
         <LogIn path="/login" logUserIn={logUserIn} invalidUser={invalidUser} />
+        <SignUp path="/signup" signUp={signUp} />
       </Router>
     </div>
   );

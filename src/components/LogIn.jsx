@@ -33,7 +33,7 @@ class LogIn extends Component {
             />
           </label>
           <button>Sign in</button>
-          {invalidUser && <p>Log in failed! Please try again</p>}
+          {invalidUser && <p>Invalid username or password!</p>}
         </form>
       </div>
     );

@@ -20,3 +20,17 @@ export const postLogIn = (username, password) => {
     localStorage.setItem("username", username);
   });
 };
+
+export const postUser = (_id, password) => {
+  return axios
+    .post(`${baseURL}/users`, { _id, password })
+    .then(({ data: { user } }) => {
+      return user;
+    });
+};
+
+export const getUsers = () => {
+  return axios.get(`${baseURL}/users/`).then(({ data: { users } }) => {
+    return users;
+  });
+};
