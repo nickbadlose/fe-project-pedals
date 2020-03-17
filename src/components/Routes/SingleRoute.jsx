@@ -136,7 +136,7 @@ class SingleRoute extends Component {
   }
 
   componentDidMount() {
-    const route_id = this.props.id || "5e6f72d53fa2f100175478ab";
+    const route_id = this.props.id || "5e6f73193fa2f100175478ac";
 
     axios
       .get(`http://project-pedals.herokuapp.com/api/routes/${route_id}`)
