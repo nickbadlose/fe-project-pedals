@@ -39,7 +39,7 @@ class LogIn extends Component {
               />
             </label>
             <button className={styles.signInButton}>Go!</button>
-            {invalidUser && <p>Log in failed! Please try again</p>}
+            {invalidUser && <p>Invalid username or password!</p>}
           </form>
         </div>
       </div>
