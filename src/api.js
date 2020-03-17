@@ -2,7 +2,6 @@ import axios from "axios";
 const baseURL = "http://project-pedals.herokuapp.com/api/";
 
 export const getRoutes = (type, sort_by, order) => {
-  
   return axios
     .get(`${baseURL}/routes/`, {
       params: {
@@ -15,7 +14,6 @@ export const getRoutes = (type, sort_by, order) => {
       return data.routes;
     });
 };
-
 
 export const postRoute = (
   routeName,
@@ -46,19 +44,21 @@ export const postRoute = (
   );
 };
 
-
 export const getUser = username => {
   return axios.get(`${baseURL}/users/${username}`).then(({ data }) => {
     return data.user;
   });
 };
 
-
 export const postLogIn = (username, password) => {
   return axios.post(`${baseURL}/login`, { username, password }).then(res => {
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("username", username);
   });
+};
+
+export const getReviews = route_id => {
+  return axios.get(baseURL + "/reviews/" + route_id).then(res => res.data.reviews);
 };
 
 export const postUser = (_id, password) => {
