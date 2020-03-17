@@ -2,6 +2,7 @@ import axios from "axios";
 const baseURL = "http://project-pedals.herokuapp.com/api/";
 
 export const getRoutes = (type, sort_by, order) => {
+  
   return axios
     .get(`${baseURL}/routes/`, {
       params: {

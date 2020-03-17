@@ -13,3 +13,7 @@
     flex-direction: column;
   }
 }
+
+.filterSection {
+  display: flex;
+}

@@ -34,6 +34,7 @@ class SortRoutes extends Component {
     );
   }
 
+
   onSelect = eventKey => {
     const separatedEventKey = eventKey.split("/");
     const sort_by = separatedEventKey[0];
