@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import styles from "./styling/LogIn.module.css";
+
 
 class LogIn extends Component {
   state = { username: "", password: "" };
@@ -6,35 +8,40 @@ class LogIn extends Component {
     const { username, password } = this.state;
     const { logUserIn, invalidUser } = this.props;
     return (
-      <div>
-        <form
-          onSubmit={e => {
-            logUserIn(e, username, password);
-          }}
-        >
-          <label>
-            Username:{" "}
-            <input
-              type="text"
-              onChange={e => {
-                this.handleChange(e, "username");
-              }}
-              required
-            />
-          </label>
-          <label>
-            Password:{" "}
-            <input
-              type="password"
-              onChange={e => {
-                this.handleChange(e, "password");
-              }}
-              required
-            />
-          </label>
-          <button>Sign in</button>
-          {invalidUser && <p>Log in failed! Please try again</p>}
-        </form>
+      <div className={styles.pageContainer}>
+        <div className={styles.signInForm}>
+          <h2 className={styles.h2}>Sign In</h2>
+          <form
+            onSubmit={e => {
+              logUserIn(e, username, password);
+            }}
+          >
+            <label className={styles.inputLabel}>
+              Username:{" "}
+              <input
+                type="text"
+                onChange={e => {
+                  this.handleChange(e, "username");
+                }}
+                required
+                className={styles.inputBox}
+              />
+            </label>
+            <label className={styles.inputLabel}>
+              Password:{" "}
+              <input
+                type="password"
+                onChange={e => {
+                  this.handleChange(e, "password");
+                }}
+                required
+                className={styles.inputBox}
+              />
+            </label>
+            <button className={styles.signInButton}>Go!</button>
+            {invalidUser && <p>Log in failed! Please try again</p>}
+          </form>
+        </div>
       </div>
     );
   }

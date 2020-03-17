@@ -53,12 +53,12 @@ export const getUser = username => {
   });
 };
 
-export const postRoute = (routeName, routeType, features, calculatedDistance, center, zoom, city, routeDescription) => {
+// export const postRoute = (routeName, routeType, features, calculatedDistance, center, zoom, city, routeDescription) => {
 
-  return axios.post(`${baseURL}/routes`, {routeName, type: routeType, features, user_id: localStorage.username, calculatedDistance, center, zoom, routeDescription, city}, {
-    headers: { Authorization: 'BEARER ' + localStorage.token }
-  })
-}
+//   return axios.post(`${baseURL}/routes`, {routeName, type: routeType, features, user_id: localStorage.username, calculatedDistance, center, zoom, routeDescription, city}, {
+//     headers: { Authorization: 'BEARER ' + localStorage.token }
+//   })
+// }
 
 
 export const postLogIn = (username, password) => {
