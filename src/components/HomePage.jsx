@@ -10,18 +10,21 @@ import styles from "./styling/HomePage.module.css";
 const HomePage = () => {
   return (
     <div>
-      <Carousel>
-        <Carousel.Item>
+      <Carousel className={styles.carousel_container}>
+        <Carousel.Item className={styles.carousel_item}>
           <img
             className="d-block w-100"
             src={welcome_image}
-            height="500px"
+            //add height and width
+            // height="500px"
             alt="welcome slide"
           />
           <Carousel.Caption className={styles.carousel_caption}>
-            <h3 className={styles.carousel_title}>Welcome to Pedals</h3>
+            <h3 className={styles.carousel_title}>
+              Welcome to <b className={styles.pedals}>pedals!</b>
+            </h3>
             <p className={styles.carousel_text}>
-              Nulla vitae elit libero, a pharetra augue mollis interdum.
+              Where you can map your route - your way.
             </p>
           </Carousel.Caption>
         </Carousel.Item>
@@ -43,7 +46,6 @@ const HomePage = () => {
           <img
             className="d-block w-100"
             src={off_road_img}
-            height="500px"
             alt="scenic slide"
           />
           <Carousel.Caption className={styles.carousel_caption}>
@@ -56,7 +58,7 @@ const HomePage = () => {
         <Carousel.Item>
           <img
             className="d-block w-100"
-            src={training_img}
+            src={"https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1353&q=80"}
             height="500px"
             alt="scenic slide"
           />

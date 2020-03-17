@@ -5,3 +5,15 @@
 .logo {
   height: 50px;
 }
+
+.navLabel {
+  font-family: "Didact Gothic";
+  font-size: 2vh;
+  letter-spacing: 0.1vw;
+}
+
+.navUserName {
+  font-family: "Didact Gothic";
+  font-size: 2vh;
+  letter-spacing: 0.1vw;
+}
