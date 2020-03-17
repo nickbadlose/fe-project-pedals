@@ -35,8 +35,13 @@ class SignUp extends Component {
               required
             />
           </label>
-          <button>Sign up</button>
-          {userExists && <p>Username is taken</p>}
+          {userExists ? (
+            <>
+              <button disabled>Sign up</button> <p>Username is taken</p>{" "}
+            </>
+          ) : (
+            <button>Sign up</button>
+          )}
         </form>
       </div>
     );
