@@ -38,7 +38,8 @@ class Mapbox extends Component {
     routeName: "",
     markerType: "attraction",
     routeType: "scenic",
-    routeDescription: ""
+    routeDescription: "",
+    err: false
   };
   render() {
     const {
@@ -51,7 +52,7 @@ class Mapbox extends Component {
       isLoading,
       selectedMarker,
       markerInfo,
-      features
+      err
     } = this.state;
     const {
       onDrawCreate,
@@ -87,7 +88,7 @@ class Mapbox extends Component {
               onDrawSelectionChange={onDrawSelectionChange}
               onDrawDelete={onDrawDelete}
               displayControlsDefault={false}
-              controls={{ line_string: true, trash: true, point: true}}
+              controls={{ line_string: true, trash: true, point: true }}
               styles={[
                 // ACTIVE (being drawn)
                 // line stroke
@@ -307,6 +308,7 @@ class Mapbox extends Component {
                 onClick={this.handleSaveRoute}>
                 Save your route!
               </Button>
+              {err && <p>You must be logged in to post!</p>}
             </Form>
           </Card.Body>
         </Card>
@@ -522,7 +524,12 @@ class Mapbox extends Component {
           routeDescription
         );
       })
-      .then(route => navigate(`/routes/id/${route.data.route._id}`));
+      .then(route => {
+        navigate(`/routes/id/${route.data.route._id}`);
+      })
+      .catch(err => {
+        this.setState({ err: true });
+      });
   };
 
   handleRouteTypeChange = e => {
