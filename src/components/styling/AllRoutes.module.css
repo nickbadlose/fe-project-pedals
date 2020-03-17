@@ -1,0 +1,10 @@
+.routeCard_block {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.filterSection {
+  display: flex;
+}
