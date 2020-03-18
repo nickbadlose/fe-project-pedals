@@ -10,6 +10,7 @@ import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import axios from "axios";
 import * as api from "../../api";
+import { navigate } from "@reach/router";
 import * as utils from "../../utils/utils";
 
 const token =
@@ -21,16 +22,16 @@ const Map = ReactMapboxGl({
 });
 
 class SingleRoute extends Component {
-
   state = {
     route: {},
     isLoading: true,
     reviews: [],
     coordinates: [],
     user: {},
-    disableButton: false, rating: 0
+    disableButton: false,
+    rating: 0,
+    deleteErr: false
   };
-
 
   render() {
     const {
@@ -42,8 +43,8 @@ class SingleRoute extends Component {
       user_id,
       type
     } = this.state.route;
-    const { disableButton } = this.state;
-    const { saveRoute, closePopup, setSelectedMarker } = this;
+    const { disableButton, deleteErr } = this.state;
+    const { saveRoute, closePopup, setSelectedMarker, deleteRoute } = this;
 
     const { reviews, rating } = this.state;
 
@@ -152,14 +153,19 @@ class SingleRoute extends Component {
             </Card.Body>
           </Card>
         </div>
+
+        {localStorage.username === user_id && (
+          <button onClick={deleteRoute}>Delete Route</button>
+        )}
+        {deleteErr && <p>Route could not be deleted!</p>}
+
         <div className={styles.reviewsAndDirections}>
-          <AllReviews
-            reviews={reviews}
-            handleSaveReview={this.handleSaveReview}
-          />
+        <AllReviews
+          reviews={reviews}
+          handleSaveReview={this.handleSaveReview}
+        />
           <Directions coordinates={this.state.coordinates} />
         </div>
-
       </div>
     );
   }
@@ -203,8 +209,7 @@ class SingleRoute extends Component {
     if (prevState.user !== user) {
       this.setState({ disableButton: disableSaveRoute(user, route_id) });
     }
-    if(prevState.reviews !== reviews) {
-
+    if (prevState.reviews !== reviews) {
       const ratings = reviews.map(review => {
         return review.rating;
       });
@@ -240,10 +245,24 @@ class SingleRoute extends Component {
 
     api.postReview(route_id, username, body, rating).then(review => {
       this.setState(currentState => {
-
         return { reviews: [review, ...currentState.reviews] };
       });
     });
+  };
+
+
+  deleteRoute = () => {
+    const { route_id } = this.props;
+    this.setState({ deleteErr: false });
+    api
+      .removeRoute(route_id)
+      .then(() => {
+        navigate("/");
+      })
+      .catch(err => {
+        console.dir(err);
+        this.setState({ deleteErr: true });
+      });
   };
 
 }
