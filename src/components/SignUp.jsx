@@ -11,7 +11,7 @@ class SignUp extends Component {
     return (
       <div className={styles.pageContainer}>
         <div className={styles.signUpForm}>
-          <h2 className={styles.h2}>Sign Up</h2>
+          <h2 className={styles.h2}>Create an account</h2>
           <form
             onSubmit={e => {
               e.preventDefault();

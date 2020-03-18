@@ -10,6 +10,7 @@ import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import axios from "axios";
 import * as api from "../../api";
+import * as utils from "../../utils/utils";
 
 const token =
   "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
@@ -20,7 +21,16 @@ const Map = ReactMapboxGl({
 });
 
 class SingleRoute extends Component {
-  state = { route: {}, isLoading: true, reviews: [], rating: 0 };
+
+  state = {
+    route: {},
+    isLoading: true,
+    reviews: [],
+    coordinates: [],
+    user: {},
+    disableButton: false, rating: 0
+  };
+
 
   render() {
     const {
@@ -32,6 +42,8 @@ class SingleRoute extends Component {
       user_id,
       type
     } = this.state.route;
+    const { disableButton } = this.state;
+    const { saveRoute, closePopup, setSelectedMarker } = this;
 
     const { reviews, rating } = this.state;
 
@@ -90,7 +102,7 @@ class SingleRoute extends Component {
                       src={markerImage}
                       height="30px"
                       onClick={() => {
-                        this.setSelectedMarker(feature);
+                        setSelectedMarker(feature);
                       }}
                     />
                   </Marker>
@@ -100,7 +112,9 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={this.closePopup}
+
+                onClick={closePopup}
+
               >
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
@@ -130,6 +144,14 @@ class SingleRoute extends Component {
             </Card.Body>
           </Card>
         </div>
+
+         {disableButton ? (
+          <button onClick={saveRoute} disabled>
+            Save Route
+          </button>
+        ) : (
+          <button onClick={saveRoute}>Save Route</button>
+        )}
         <div className={styles.reviewsAndDirections}>
           <AllReviews
             reviews={reviews}
@@ -137,6 +159,7 @@ class SingleRoute extends Component {
           />
           <Directions coordinates={this.state.coordinates} />
         </div>
+
       </div>
     );
   }
@@ -149,7 +172,11 @@ class SingleRoute extends Component {
       .then(res => {
         const { route } = res.data;
         const coordinates = res.data.route.features[0].geometry.coordinates;
-        this.setState({ route, coordinates, isLoading: false });
+        this.setState({
+          route,
+          coordinates,
+          isLoading: false
+        });
       });
 
     api.getReviews(route_id).then(reviews => {
@@ -162,11 +189,22 @@ class SingleRoute extends Component {
 
       this.setState({ reviews, rating: currentRating });
     });
+
+    api.getUser(localStorage.username).then(user => {
+      this.setState({ user });
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { reviews } = this.state;
-    if (prevState.reviews !== reviews) {
+
+    const { user, reviews } = this.state;
+    const { route_id } = this.props;
+    const { disableSaveRoute } = this;
+    if (prevState.user !== user) {
+      this.setState({ disableButton: disableSaveRoute(user, route_id) });
+    }
+    if(prevState.reviews !== reviews) {
+
       const ratings = reviews.map(review => {
         return review.rating;
       });
@@ -185,16 +223,29 @@ class SingleRoute extends Component {
     this.setState({ selectedMarker: null });
   };
 
+  saveRoute = e => {
+    const { route } = this.state;
+    api.saveRoute(localStorage.username, route).then(user => {
+      this.setState({ user });
+    });
+  };
+
+  disableSaveRoute = (user, route_id) => {
+    return !utils.checkRouteIsSaved(user, route_id);
+  };
+
   handleSaveReview = (body, rating) => {
     const { route_id } = this.props;
     const { username } = localStorage;
 
     api.postReview(route_id, username, body, rating).then(review => {
       this.setState(currentState => {
+
         return { reviews: [review, ...currentState.reviews] };
       });
     });
   };
+
 }
 
 export default SingleRoute;
