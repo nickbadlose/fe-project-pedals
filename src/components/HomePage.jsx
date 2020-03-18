@@ -24,10 +24,10 @@ const HomePage = () => {
           />
           <Carousel.Caption className={styles.carousel_caption}>
             <h3 className={styles.carousel_title}>
-              Welcome to <b className={styles.pedals}>pedals!</b>
+              Welcome to <span className={styles.pedals}>pedals!</span>
             </h3>
             <p className={styles.carousel_text}>
-              Where you can map your route - your way.
+              Where you can map your route, <b>your way</b>.
             </p>
           </Carousel.Caption>
         </Carousel.Item>
@@ -41,12 +41,14 @@ const HomePage = () => {
             // height="500px"
             alt="family friendly slide"
           />
-          <Carousel.Caption className={styles.carousel_caption}>
-            <h3 className={styles.carousel_title}>Family Friendly Rides</h3>
-            <p className={styles.carousel_text}>
-              Nulla vitae elit libero, a pharetra augue mollis interdum.
-            </p>
-          </Carousel.Caption>
+          <Link to="/routes/family%20friendly">
+            <Carousel.Caption className={styles.carousel_caption}>
+              <h3 className={styles.carousel_title}>Family Friendly Rides</h3>
+              <p className={styles.carousel_text}>
+                Perfect for a family day out - rain or shine!
+              </p>
+            </Carousel.Caption>
+          </Link>
         </Carousel.Item>
 
         <Carousel.Item>
@@ -58,12 +60,14 @@ const HomePage = () => {
             }
             alt="off road slide"
           />
-          <Carousel.Caption className={styles.carousel_caption}>
-            <h3 className={styles.carousel_title}>Off-Road Rides</h3>
-            <p className={styles.carousel_text}>
-              Nulla vitae elit libero, a pharetra augue mollis interdum.
-            </p>
-          </Carousel.Caption>
+          <Link to="/routes/off-road">
+            <Carousel.Caption className={styles.carousel_caption}>
+              <h3 className={styles.carousel_title}>Off-Road Rides</h3>
+              <p className={styles.carousel_text}>
+                For the adventurous or experienced rider, looking for a new challenge.
+              </p>
+            </Carousel.Caption>
+          </Link>
         </Carousel.Item>
         <Carousel.Item>
           <img
@@ -75,12 +79,14 @@ const HomePage = () => {
             // height="500px"
             alt="training slide"
           />
-          <Carousel.Caption className={styles.carousel_caption}>
-            <h3 className={styles.carousel_title}>Training Rides</h3>
-            <p className={styles.carousel_text}>
-              Nulla vitae elit libero, a pharetra augue mollis interdum.
-            </p>
-          </Carousel.Caption>
+          <Link to="/routes/training">
+            <Carousel.Caption className={styles.carousel_caption}>
+              <h3 className={styles.carousel_title}>Training Rides</h3>
+              <p className={styles.carousel_text}>
+                Find routes to test your fitness and endurance.
+              </p>
+            </Carousel.Caption>
+          </Link>
         </Carousel.Item>
         <Carousel.Item>
           <img
@@ -92,12 +98,14 @@ const HomePage = () => {
             // height="500px"
             alt="scenic slide"
           />
-          <Carousel.Caption className={styles.carousel_caption}>
-            <h3 className={styles.carousel_title}>Scenic Rides</h3>
-            <p className={styles.carousel_text}>
-              Nulla vitae elit libero, a pharetra augue mollis interdum.
-            </p>
-          </Carousel.Caption>
+          <Link to="/routes/scenic">
+            <Carousel.Caption className={styles.carousel_caption}>
+              <h3 className={styles.carousel_title}>Scenic Rides</h3>
+              <p className={styles.carousel_text}>
+                For those riders looking for a leisurely cycle, with the perfect scenery.
+              </p>
+            </Carousel.Caption>
+          </Link>
         </Carousel.Item>
       </Carousel>
       <div className={styles.homePageInfo}>
@@ -105,12 +113,12 @@ const HomePage = () => {
           <div className={styles.info}>
             <img src={pencil} alt={"pencil icon"} className={styles.icon}></img>
             <h3 className={styles.infoTitle}>Draw your path</h3>
-            <p className={styles.p}>Map out your route on our 'Draw Page'</p>
+          <p className={styles.p}>Map out your route on our 'Draw Page'...</p>
           </div>
           <div className={styles.info}>
             <img src={pin} alt={"pin icon"} className={styles.icon2}></img>
             <h3 className={styles.infoTitle}>Pin your points</h3>
-            <p className={styles.p}>Add your recommendations or warnings</p>
+            <p className={styles.p}>Add your recommendations or warnings - from the perfect café en route, to some pesky potholes you want to warn others of!</p>
           </div>
           <div className={styles.info}>
             <img
@@ -120,10 +128,15 @@ const HomePage = () => {
             ></img>
             <h3 className={styles.infoTitle}>Share your way</h3>
             <p className={styles.p}>
-              Share your expertise, and learn from others! Find the route that's
+              Share your expertise, and learn from others. Find the route that's
               perfect for you.
             </p>
           </div>
+        </div>
+        <div className={styles.buttonContainer}>
+          <Link to="/signup">
+            <button className={styles.button}>Get started!</button>
+          </Link>
         </div>
       </div>
     </div>

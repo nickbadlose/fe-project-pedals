@@ -9,22 +9,21 @@
   width: 100%;
 }
 
-.signInForm {
-  /* display: flex; */
-  /* flex-direction: column;
-  align-content: center; */
-  /* text-align: center; */
+.signUpForm {
   margin: 10vh auto auto auto;
   width: 50vh;
   padding: 10vh;
   border: solid #272c31 5pt;
   background-color: #272c31;
-  /* position: absolute;
-  left: 0;
-  right: 0; */
   z-index: 2;
   opacity: 0.8;
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.h2 {
+  font-family: "Fredoka One";
+  color: white;
+  font-size: 4.3vh;
 }
 
 .inputLabel {
@@ -40,7 +39,7 @@
   padding: 1vh;
 }
 
-.signInButton {
+.signUpButton {
   color: #fff !important;
   text-transform: uppercase;
   text-decoration: none;
@@ -53,7 +52,7 @@
   font-family: "Fredoka One";
 }
 
-.signInButton:hover {
+.signUpButton:hover {
   background: #434343;
   letter-spacing: 1px;
   -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
@@ -61,24 +60,3 @@
   box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
   transition: all 0.4s ease 0s;
 }
-
-.h2 {
-  font-family: "Fredoka One";
-  color: white;
-  font-size: 4.3vh;
-}
-
-.image {
-  position: relative;
-  z-index: 1;
-}
-
-.signUpInfo {
-  margin-top: 2vh;
-}
-
-.info {
-  font-family: 'Didact Gothic';
-  color: white;
-}
-

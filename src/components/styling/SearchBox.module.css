@@ -1,4 +1,9 @@
-.searchBox {
+.searchBoxBlock {
+  display: flex;
   margin-left: auto;
   padding-right: 20px;
 }
+
+/* .submitButton {
+    display: flex;
+  } */

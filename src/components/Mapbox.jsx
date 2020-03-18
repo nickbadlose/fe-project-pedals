@@ -252,30 +252,30 @@ class Mapbox extends Component {
             />
           </Map>
         )}
-        <Card>
+        <Card className={styles.card}>
           <Card.Body>
             <Card.Title>
-              <h2>Create a new route</h2>
+              <h2 className={styles.h2}>Create a new route</h2>
             </Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
+            <Card.Subtitle className={styles.subtitle}>
               Draw your route using the tools at the left of the map. You can
               drop pins for any warnings or attractions along the route. Once
               you're happy with your route click save!
             </Card.Subtitle>
             <br></br>
-            <Card.Text>
-              Distance · {calculatedDistance.toFixed(2)} miles <br></br>
-              Starting Elevation · {startEle} meters <br></br>
-              End Elevation · {endEle} meters <br></br>
-              Elevation Diff · {eleDiff} meters
+            <Card.Text className={styles.route_stats}>
+              <b>Distance</b> · {calculatedDistance.toFixed(2)} miles <br></br>
+              <b>Starting Elevation</b> · {startEle} meters <br></br>
+              <b>End Elevation</b> · {endEle} meters <br></br>
+              <b>Elevation Difference</b> · {eleDiff} meters
               <br></br>
             </Card.Text>
             <Form>
               <Form.Group
                 className={styles.input_label}
                 controlId="drawRouteForm.ControlSelect1">
-                <Form.Label>Route type</Form.Label>
-                <Form.Control as="select" onChange={this.handleRouteTypeChange}>
+                <Form.Label className={styles.form_label}>Route type</Form.Label>
+                <Form.Control as="select" onChange={this.handleRouteTypeChange} className={styles.placeholder}>
                   <option value="scenic">Scenic</option>
                   <option value="family friendly">Family Friendly</option>
                   <option value="off-road">Off-Road</option>
@@ -285,28 +285,28 @@ class Mapbox extends Component {
               <Form.Group
                 className={styles.input_label}
                 controlId="drawRouteForm.ControlTextArea1">
-                <Form.Label>Route name</Form.Label>
+                <Form.Label className={styles.form_label}>Route name</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="eg. West Didsbury to Chorlton"
-                  onChange={this.handleRouteNameChange}></Form.Control>
+                  onChange={this.handleRouteNameChange} className={styles.placeholder}></Form.Control>
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
                 controlId="drawRouteForm.ControlTextArea2">
-                <Form.Label>Route description</Form.Label>
+                <Form.Label className={styles.form_label}>Route description</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows="2"
                   placeholder="Tell us a little about your route"
-                  onChange={this.handleRouteDescriptionChange}></Form.Control>
+                  onChange={this.handleRouteDescriptionChange} className={styles.placeholder}></Form.Control>
               </Form.Group>
 
               <Button
                 variant="primary"
                 type="submit"
-                onClick={this.handleSaveRoute}>
-                Save your route!
+                onClick={this.handleSaveRoute} className={styles.saveButton}>
+                Save your route
               </Button>
               {err && <p>You must be logged in to post!</p>}
             </Form>
@@ -357,6 +357,7 @@ class Mapbox extends Component {
     };
 
     const error = err => {
+      this.setState({ center: [-2.2243669, 53.4672013], isLoading: false})
       console.log(err);
     };
 
@@ -573,3 +574,6 @@ class Mapbox extends Component {
   };
 }
 export default Mapbox;
+
+
+//sub title className className="mb-2 text-muted"
