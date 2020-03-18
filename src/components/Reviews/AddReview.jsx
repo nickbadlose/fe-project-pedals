@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import styles from "../styling/AddReview.module.css";
+import StarRatingComponent from 'react-star-rating-component';
+
 
 class AddReview extends Component {
-  state = { body: "", rating: 1 };
+  state = { body: "", rating: 0 };
 
   render() {
     const { body, rating } = this.state;
@@ -22,7 +24,7 @@ class AddReview extends Component {
         </Form.Group>
         <Form.Group controlId="addReview.reviewRating">
           <Form.Label className={styles.label}>Rate the route</Form.Label>
-          <Form.Control
+          {/* <Form.Control
             as="select"
             onChange={this.handleReviewRatingChange}
             className={styles.placeholder}
@@ -32,14 +34,15 @@ class AddReview extends Component {
             <option>3</option>
             <option>4</option>
             <option>5</option>
-          </Form.Control>
-          <div className={styles.rating}>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-            <span>☆</span>
-          </div>
+          </Form.Control> */}
+          <div>
+        <StarRatingComponent 
+          name="rate1" 
+          starCount={5}
+          value={rating}
+          onStarClick={this.onStarClick.bind(this)}
+        />
+      </div>
         </Form.Group>
         <Button
           variant="primary"
@@ -62,6 +65,10 @@ class AddReview extends Component {
   handleReviewRatingChange = e => {
     this.setState({ rating: e.target.value });
   };
+
+  onStarClick(nextValue, prevValue, name) {
+    this.setState({rating: nextValue});
+  }
 }
 
 export default AddReview;

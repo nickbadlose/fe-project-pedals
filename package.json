@@ -23,7 +23,8 @@
     "react-mapbox-gl": "^4.8.2",
     "react-mapbox-gl-draw": "^2.0.4",
     "react-moment": "^0.9.7",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "react-star-rating-component": "^1.4.1"
   },
   "scripts": {
     "start": "react-scripts start",
