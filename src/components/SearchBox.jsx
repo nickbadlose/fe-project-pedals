@@ -24,7 +24,7 @@ class SearchBox extends Component {
               onClick={() => {
                 this.onClick(searchInput);
               }}
-              variant="outline-secondary"
+              variant="primary"
             >
               Go!
             </Button>
