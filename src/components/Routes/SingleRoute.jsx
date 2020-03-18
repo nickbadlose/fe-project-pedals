@@ -20,7 +20,7 @@ const Map = ReactMapboxGl({
 });
 
 class SingleRoute extends Component {
-  state = { route: {}, isLoading: true, reviews: [] };
+  state = { route: {}, isLoading: true, reviews: [], rating: 0 };
 
   render() {
     const {
@@ -30,9 +30,10 @@ class SingleRoute extends Component {
       calculatedDistance,
       city,
       user_id,
-      type,
-      averageRating
+      type
     } = this.state.route;
+
+    const { reviews, rating } = this.state;
 
     let center;
     let zoom = [15];
@@ -113,7 +114,7 @@ class SingleRoute extends Component {
                 Distance · {calculatedDistance.toFixed(2)} miles
                 <br></br> Route type · {type}
                 <br></br>
-                Average rating · {averageRating}
+                Rating · {rating}
                 <br></br>
                 Posted by · {user_id}
               </Card.Subtitle>
@@ -126,7 +127,7 @@ class SingleRoute extends Component {
             </Card.Body>
           </Card>
         </div>
-        <AllReviews />
+        <AllReviews reviews={reviews} />
         <Directions coordinates={this.state.coordinates} />
       </div>
     );
@@ -144,7 +145,12 @@ class SingleRoute extends Component {
       });
 
     api.getReviews(route_id).then(reviews => {
-      this.setState({ reviews });
+      const ratings = reviews.map(review => {
+        return review.rating;
+      });
+      const currentRating = ratings.reduce((a, b) => a + b) / ratings.length;
+
+      this.setState({ reviews, rating: currentRating });
     });
   }
 
