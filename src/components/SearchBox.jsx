@@ -14,6 +14,7 @@ class SearchBox extends Component {
       <div className={styles.searchBoxBlock}>
         <InputGroup className="mb-3">
           <FormControl
+            className={styles.placeholderText}
             onChange={this.handleChange}
             placeholder="Search..."
             aria-label="Search box"
@@ -21,6 +22,7 @@ class SearchBox extends Component {
           />
           <InputGroup.Append>
             <Button
+              className={styles.searchBoxButton}
               onClick={() => {
                 this.onClick(searchInput);
               }}
