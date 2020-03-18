@@ -1,31 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import AddReview from "./AddReview";
+import SingleReview from "./SingleReview";
+import Toggle from '../Toggle'
 
-class AllReviews extends Component {
-  state = {
-    reviews: [
-      {
-        user_id: "jessjelly",
-        body: "I like this route",
-        rating: 4,
-        route_id: "5e68ffe0901eab60c9eeca40"
-      },
-      {
-        user_id: "tickle122",
-        body: "I hate this route",
-        rating: 0,
-        route_id: "5e68ffe0901eab60c9eeca40"
-      }
-    ]
-  };
-  render() {
+const AllReviews = ({reviews, handleSaveReview}) => {
     return (
       <div>
-        <AddReview />
-        <p>Reviews here</p>
+        {localStorage.token && <Toggle buttonMessage='Leave a review!'><AddReview handleSaveReview={handleSaveReview}/></Toggle>}
+        <br></br>
+        {reviews.map(review => {
+          return <SingleReview review={review} key={review._id}/>
+        })}
       </div>
     );
-  }
 }
 
 export default AllReviews;
