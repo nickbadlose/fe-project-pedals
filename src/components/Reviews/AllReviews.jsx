@@ -15,7 +15,7 @@ const AllReviews = ({ reviews, handleSaveReview }) => {
       <h3 className={styles.h3}>Reviews</h3>
       {reviews.length !== 0 && (
         <div className={styles.reviewsContainer}>
-          <br></br>
+          
           <div className={styles.allReviews}>
             
             {reviews.map(review => {

@@ -68,7 +68,7 @@ class SingleRoute extends Component {
           <Map
             style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
             containerStyle={{
-              height: "600px",
+              height: "100%",
               width: "90vw"
             }}
             center={center}
@@ -136,8 +136,16 @@ class SingleRoute extends Component {
                 <b>Rating</b> · {rating} / 5<br></br>
                 <b>Posted by</b> · {user_id}
               </Card.Subtitle>
-              <br></br>
+              
               <Card.Body>
+              {disableButton ? (
+          <button className={styles.save_button} onClick={saveRoute} disabled>
+            Route saved
+          </button>
+        ) : (
+          <button className={styles.save_button} onClick={saveRoute}>Save Route</button>
+        )}
+        <br></br>
                 <br></br>
                 <RouteAttractions features={features} />
                 <br></br>
@@ -146,17 +154,11 @@ class SingleRoute extends Component {
           </Card>
         </div>
 
-         {disableButton ? (
-          <button onClick={saveRoute} disabled>
-            Save Route
-          </button>
-        ) : (
-          <button onClick={saveRoute}>Save Route</button>
-        )}
         {localStorage.username === user_id && (
           <button onClick={deleteRoute}>Delete Route</button>
         )}
         {deleteErr && <p>Route could not be deleted!</p>}
+
         <div className={styles.reviewsAndDirections}>
         <AllReviews
           reviews={reviews}
