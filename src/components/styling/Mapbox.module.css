@@ -1,20 +1,37 @@
 .map_block {
   display: flex;
   margin: 30px;
+  height: 700px;
 }
 
 .mapContainer {
-  height: "50em";
+  height: "100%";
   width: "150em";
 }
 
-@media only screen and (max-width: 800px) {
+.card {
+  background-color: #96939b;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+@media only screen and (max-width: 1024px) {
   .map_block {
     flex-direction: column;
+    height: 70em;
   }
 
   #map {
     width: 100%;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  #map {
+    height: 50%;
   }
 }
 
@@ -31,7 +48,7 @@
 }
 
 .card-body {
-  width: 50%;
+  width: 30em;
 }
 
 .h2 {
@@ -89,7 +106,3 @@
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.card {
-  background-color: #96939b;
-  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}

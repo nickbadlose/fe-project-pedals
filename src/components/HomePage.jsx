@@ -64,7 +64,8 @@ const HomePage = () => {
             <Carousel.Caption className={styles.carousel_caption}>
               <h3 className={styles.carousel_title}>Off-Road Rides</h3>
               <p className={styles.carousel_text}>
-                For the adventurous or experienced rider, looking for a new challenge.
+                For the adventurous or experienced rider, looking for a new
+                challenge.
               </p>
             </Carousel.Caption>
           </Link>
@@ -102,7 +103,8 @@ const HomePage = () => {
             <Carousel.Caption className={styles.carousel_caption}>
               <h3 className={styles.carousel_title}>Scenic Rides</h3>
               <p className={styles.carousel_text}>
-                For those riders looking for a leisurely cycle, with the perfect scenery.
+                For those riders looking for a leisurely cycle, with the perfect
+                scenery.
               </p>
             </Carousel.Caption>
           </Link>
@@ -113,19 +115,21 @@ const HomePage = () => {
           <div className={styles.info}>
             <img src={pencil} alt={"pencil icon"} className={styles.icon}></img>
             <h3 className={styles.infoTitle}>Draw your path</h3>
-          <p className={styles.p}>Map out your route on our 'Draw Page'...</p>
+            <p className={styles.p}>Map out your route on our 'Draw Page'...</p>
           </div>
           <div className={styles.info}>
             <img src={pin} alt={"pin icon"} className={styles.icon2}></img>
             <h3 className={styles.infoTitle}>Pin your points</h3>
-            <p className={styles.p}>Add your recommendations or warnings - from the perfect café en route, to some pesky potholes you want to warn others of!</p>
+            <p className={styles.p}>
+              Add your recommendations or warnings - from the perfect café en
+              route, to some pesky potholes you want to warn others of!
+            </p>
           </div>
           <div className={styles.info}>
             <img
               src={paper_plane}
               alt={"paper plane icon"}
-              className={styles.icon}
-            ></img>
+              className={styles.icon}></img>
             <h3 className={styles.infoTitle}>Share your way</h3>
             <p className={styles.p}>
               Share your expertise, and learn from others. Find the route that's

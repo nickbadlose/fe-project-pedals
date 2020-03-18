@@ -52,12 +52,18 @@
   justify-content: space-evenly;
 }
 
+@media only screen and (max-width: 855px) {
+  .introContainer {
+  flex-direction: column;
+  }
+}
+/*less than 855 width make flex column*/
 .info {
   background-color: rgba(72, 81, 90, 0.8);
   align-self: center;
-  width: 20vw;
+  width: 250px;
   height: 30vh;
-  margin: 4vh;
+  margin: 4vh 0 4vh 0 ;
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -67,6 +73,7 @@
 
 .icon2 {
   padding: 2.7vh 2.7vh 3vh 2.7vh;
+  
 }
 
 .infoTitle {
