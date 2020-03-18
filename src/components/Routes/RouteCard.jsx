@@ -2,10 +2,13 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import styles from "../styling/RouteCard.module.css";
-import routePlaceholder from "../icons/routePlaceholder.jpg";
 import Moment from "react-moment";
 import { Link } from "@reach/router";
 import PreviewImg from "../icons/routePreview";
+import mapLocation from "../icons/map_location.png";
+import distanceIcon from "../icons/distance-icon.png";
+import bikeIcon from "../icons/bike-icon.png";
+import starIcon from "../icons/star.png";
 
 const RouteCard = props => {
   const { route } = props;
@@ -13,38 +16,62 @@ const RouteCard = props => {
   const routeImg = PreviewImg(coordinates);
 
   return (
-    <div className={styles.routeCard}>
-      <Card>
-        <Card.Body>
+    <div className={styles.cardBlock}>
+      <Card className={styles.card}>
+        <Card.Body className={styles.cardBody}>
           <Card.Img
             style={{ paddingBottom: "5px" }}
             variant="center"
             src={routeImg}
             className={styles.routeImage}
           />
-          <Card.Title>{route.routeName}</Card.Title>
-          <Card.Text>
-            Average rating: {route.averageRating}
+          <Card.Title className={styles.cardTitle}>
+            {route.routeName}
+          </Card.Title>
+          <Card.Text className={styles.cardText}>
+            <img
+              className={styles.mapIcon}
+              src={mapLocation}
+              alt="map location"
+            />{" "}
+            {route.city.charAt(0).toUpperCase() + route.city.slice(1)}
             <br></br>
-            City: {route.city}
+            <img
+              className={styles.distanceIcon}
+              src={distanceIcon}
+              alt="distance icon"
+            />{" "}
+            {route.calculatedDistance.toFixed(1)} miles
             <br></br>
-            Distance: {route.calculatedDistance.toFixed(1)} miles
+            <img
+              className={styles.bikeIcon}
+              src={bikeIcon}
+              alt="bike icon"
+            />{" "}
+            {route.type.charAt(0).toUpperCase() + route.type.slice(1)} route
             <br></br>
-            Route type: {route.type}
-            <br></br>
-            Posted on: <Moment format="D MMM YYYY">{route.posted}</Moment>
+            <img
+              className={styles.starIcon}
+              src={starIcon}
+              alt="bike icon"
+            />{" "}
+            Rating: {route.averageRating}
           </Card.Text>
-          <Button variant="primary">
+          <Button variant="primary" className={styles.cardButton}>
             {" "}
             <Link
               style={{ color: "white", textDecoration: "none" }}
-              to={`/routes/id/${route._id}`}>
+              to={`/routes/id/${route._id}`}
+            >
               See route
             </Link>
           </Button>
         </Card.Body>
-        <Card.Footer>
-          <small>By {route.user_id}</small>
+        <Card.Footer className={styles.cardFooter}>
+          <small>
+            By {route.user_id}{" "}
+            <Moment format="D MMM YYYY">{route.posted}</Moment>
+          </small>
         </Card.Footer>
       </Card>
     </div>
