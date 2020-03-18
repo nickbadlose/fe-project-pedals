@@ -67,11 +67,16 @@ const RouteCard = props => {
             </Link>
           </Button>
         </Card.Body>
-        <Card.Footer className={styles.cardFooter}>
-          <small>
-            By {route.user_id}{" "}
+        <Card.Footer>
+          {route.user_id === localStorage.username ? (
+            <small>By You
             <Moment format="D MMM YYYY">{route.posted}</Moment>
-          </small>
+            </small>
+          ) : (
+            <small>By {route.user_id}
+            <Moment format="D MMM YYYY">{route.posted}</Moment>
+            </small>
+          )}
         </Card.Footer>
       </Card>
     </div>

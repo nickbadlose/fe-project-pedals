@@ -22,7 +22,6 @@ class AllRoutes extends Component {
     else
       return (
         <div>
-          <h2>All routes</h2>
           <section className={styles.filterSection}>
             <SortRoutes sortRoutes={this.sortRoutes} />
             <SearchBox searchRoutes={this.searchRoutes} />

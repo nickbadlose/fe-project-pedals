@@ -39,7 +39,9 @@ class Mapbox extends Component {
     markerType: "attraction",
     routeType: "scenic",
     routeDescription: "",
-    err: false
+    err: false,
+    formError: false,
+    drawError: false
   };
   render() {
     const {
@@ -52,7 +54,9 @@ class Mapbox extends Component {
       isLoading,
       selectedMarker,
       markerInfo,
-      err
+      err,
+      formError,
+      drawError
     } = this.state;
     const {
       onDrawCreate,
@@ -75,7 +79,7 @@ class Mapbox extends Component {
           <Map
             style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
             containerStyle={{
-              height: "50em",
+              height: "100%",
               width: "100%"
             }}
             center={center}
@@ -271,19 +275,20 @@ class Mapbox extends Component {
               <b>Elevation Difference</b> · {eleDiff} meters
               <br></br>
             </Card.Text>
-            <Form>
+            <Form onSubmit={this.handleSaveRoute}>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlSelect1"
-              >
+
+                controlId="drawRouteForm.ControlSelect1">
+
                 <Form.Label className={styles.form_label}>
                   Route type
                 </Form.Label>
                 <Form.Control
                   as="select"
                   onChange={this.handleRouteTypeChange}
-                  className={styles.placeholder}
-                >
+                  className={styles.placeholder}>
+
                   <option value="scenic">Scenic</option>
                   <option value="family friendly">Family Friendly</option>
                   <option value="off-road">Off-Road</option>
@@ -292,22 +297,25 @@ class Mapbox extends Component {
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea1"
-              >
+
+                controlId="drawRouteForm.ControlTextArea1">
+
                 <Form.Label className={styles.form_label}>
                   Route name
                 </Form.Label>
                 <Form.Control
+                  required
                   type="text"
                   placeholder="eg. West Didsbury to Chorlton"
                   onChange={this.handleRouteNameChange}
                   className={styles.placeholder}
-                ></Form.Control>
+
+                />
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea2"
-              >
+                controlId="drawRouteForm.ControlTextArea2">
+
                 <Form.Label className={styles.form_label}>
                   Route description
                 </Form.Label>
@@ -317,18 +325,19 @@ class Mapbox extends Component {
                   placeholder="Tell us a little about your route"
                   onChange={this.handleRouteDescriptionChange}
                   className={styles.placeholder}
-                ></Form.Control>
+                />
               </Form.Group>
 
               <Button
                 variant="primary"
                 type="submit"
                 onClick={this.handleSaveRoute}
-                className={styles.saveButton}
-              >
+                className={styles.saveButton}>
                 Save your route
               </Button>
               {err && <p>You must be logged in to post!</p>}
+              {formError && <p>Please input a route name and description</p>}
+              {drawError && <p>Dont forget to draw your route!</p>}
             </Form>
           </Card.Body>
         </Card>
@@ -532,26 +541,34 @@ class Mapbox extends Component {
       routeDescription
     } = this.state;
 
-    api
-      .getRouteCity(features[0].geometry.coordinates[0])
-      .then(city => {
-        return api.postRoute(
-          routeName,
-          routeType,
-          features,
-          calculatedDistance,
-          center,
-          zoom,
-          city,
-          routeDescription
-        );
-      })
-      .then(route => {
-        navigate(`/routes/id/${route.data.route._id}`);
-      })
-      .catch(err => {
-        this.setState({ err: true });
-      });
+    if (features.length === 0) {
+      this.setState({ drawError: true });
+    } else if (routeName.length === 0 || routeDescription.length === 0) {
+      this.setState({ formError: true, drawError: false });
+    } else {
+      api
+        .getRouteCity(features[0].geometry.coordinates[0])
+        .then(city => {
+          return api.postRoute(
+            routeName,
+            routeType,
+            features,
+            calculatedDistance,
+            center,
+            zoom,
+            city,
+            routeDescription
+          );
+        })
+        .then(route => {
+          if (route.data) {
+            navigate(`/routes/id/${route.data.route._id}`);
+          }
+        })
+        .catch(err => {
+          this.setState({ err: true, formError: false, drawError: false });
+        });
+    }
   };
 
   handleRouteTypeChange = e => {
