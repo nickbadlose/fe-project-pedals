@@ -1,5 +1,7 @@
+
 .carousel_caption {
-  left: 100px;
+  /* left: 100px; */
+  background-color: rgba(59, 58, 61, 0.6);
 }
 
 .carousel_title {
@@ -7,21 +9,70 @@
   font-family: 'Fredoka One';
   letter-spacing: 0.2vw;
   font-size: 4.3vh;
+  padding-left: 2vh;
 }
 .carousel_text {
   text-align: left;
+  padding-left: 2vh;
 }
 
 .pedals {
   color: #fc814a;
 }
 
-.carousel_item {
+/* .carousel_item {
   object-fit: cover;
   height: auto;
   width: auto;
-}
+} */
 
 .carousel_container {
+  background-color: #48515a;
+}
+
+.photo {
+  height: 70vh;
+  width: auto;
+}
+
+/* .homePageInfo {
   background-color: #fc814a;
+  height: 30vh;
+} */
+
+.introContainer {
+  background-color: rgb(252,129,74);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.info {
+  background-color: rgba(72, 81, 90, 0.8);
+  align-self: center;
+  width: 20vw;
+  height: 30vh;
+  margin: 4vh;
+}
+
+.icon {
+ padding: 1.2vh;
+}
+
+.icon2 {
+  padding: 2.7vh 2.7vh 3vh 2.7vh;
+}
+
+.infoTitle {
+  font-family: "Fredoka One";
+  color: white;
+  padding: 0.2vh;
+}
+
+.p {
+  color: white;
+  font-family: 'Didact Gothic';
+  font-size: 2vh;
+  padding: 0.5vh;
 }
