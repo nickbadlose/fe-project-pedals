@@ -10,43 +10,26 @@ class SortRoutes extends Component {
   };
   render() {
     return (
-      <Dropdown>
+      <Dropdown onSelect={this.onSelect}>
         <Dropdown.Toggle
           id="dropdown-basic-button"
           className={styles.sortButton}
-          onSelect={this.onSelect}
         >
           Sort by
         </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item className={styles.dropdownItem} eventKey="posted/desc">
-            Newest
-          </Dropdown.Item>
-          <Dropdown.Item className={styles.dropdownItem} eventKey="posted/asc">
-            Oldest
-          </Dropdown.Item>
-          <Dropdown.Item
-            className={styles.dropdownItem}
-            eventKey="calculatedDistance/desc"
-          >
+        <Dropdown.Menu className={styles.dropdownItems}>
+          <Dropdown.Item eventKey="posted/desc">Newest</Dropdown.Item>
+          <Dropdown.Item eventKey="posted/asc">Oldest</Dropdown.Item>
+          <Dropdown.Item eventKey="calculatedDistance/desc">
             Distance: Longest to Shortest
           </Dropdown.Item>
-          <Dropdown.Item
-            className={styles.dropdownItem}
-            eventKey="calculatedDistance/asc"
-          >
+          <Dropdown.Item eventKey="calculatedDistance/asc">
             Distance: Shortest to Longest
           </Dropdown.Item>
-          <Dropdown.Item
-            className={styles.dropdownItem}
-            eventKey="averageRating/desc"
-          >
+          <Dropdown.Item eventKey="averageRating/desc">
             Rating: Highest to Lowest
           </Dropdown.Item>
-          <Dropdown.Item
-            className={styles.dropdownItem}
-            eventKey="averageRating/asc"
-          >
+          <Dropdown.Item eventKey="averageRating/asc">
             Rating: Lowest to Highest
           </Dropdown.Item>
         </Dropdown.Menu>
@@ -55,6 +38,7 @@ class SortRoutes extends Component {
   }
 
   onSelect = eventKey => {
+    console.log(eventKey);
     const separatedEventKey = eventKey.split("/");
     const sort_by = separatedEventKey[0];
     const order = separatedEventKey[1];
