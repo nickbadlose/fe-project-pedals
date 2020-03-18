@@ -10,6 +10,7 @@ import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import axios from "axios";
 import * as api from "../../api";
+import * as utils from "../../utils/utils";
 
 const token =
   "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
@@ -20,7 +21,14 @@ const Map = ReactMapboxGl({
 });
 
 class SingleRoute extends Component {
-  state = { route: {}, isLoading: true, reviews: [] };
+  state = {
+    route: {},
+    isLoading: true,
+    reviews: [],
+    coordinates: [],
+    user: {},
+    disableButton: false
+  };
 
   render() {
     const {
@@ -33,6 +41,8 @@ class SingleRoute extends Component {
       type,
       averageRating
     } = this.state.route;
+    const { disableButton } = this.state;
+    const { saveRoute, closePopup, setSelectedMarker } = this;
 
     let center;
     let zoom = [15];
@@ -58,7 +68,8 @@ class SingleRoute extends Component {
               width: "90vw"
             }}
             center={center}
-            zoom={zoom}>
+            zoom={zoom}
+          >
             {features.map(feature => {
               if (feature.geometry.type === "LineString") {
                 return (
@@ -66,7 +77,8 @@ class SingleRoute extends Component {
                     type="line"
                     id="route"
                     key={feature.id}
-                    paint={{ "line-width": 3, "line-color": "#2F3288" }}>
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
+                  >
                     <Feature coordinates={feature.geometry.coordinates} />
                   </Layer>
                 );
@@ -80,13 +92,14 @@ class SingleRoute extends Component {
                 return (
                   <Marker
                     coordinates={feature.geometry.coordinates}
-                    key={feature.id}>
+                    key={feature.id}
+                  >
                     <img
                       alt="pin marker"
                       src={markerImage}
                       height="30px"
                       onClick={() => {
-                        this.setSelectedMarker(feature);
+                        setSelectedMarker(feature);
                       }}
                     />
                   </Marker>
@@ -96,7 +109,8 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={this.closePopup}>
+                onClick={closePopup}
+              >
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}
@@ -126,6 +140,13 @@ class SingleRoute extends Component {
             </Card.Body>
           </Card>
         </div>
+        {disableButton ? (
+          <button onClick={saveRoute} disabled>
+            Save Route
+          </button>
+        ) : (
+          <button onClick={saveRoute}>Save Route</button>
+        )}
         <AllReviews />
         <Directions coordinates={this.state.coordinates} />
       </div>
@@ -140,12 +161,29 @@ class SingleRoute extends Component {
       .then(res => {
         const { route } = res.data;
         const coordinates = res.data.route.features[0].geometry.coordinates;
-        this.setState({ route, coordinates, isLoading: false });
+        this.setState({
+          route,
+          coordinates,
+          isLoading: false
+        });
       });
 
     api.getReviews(route_id).then(reviews => {
       this.setState({ reviews });
     });
+
+    api.getUser(localStorage.username).then(user => {
+      this.setState({ user });
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { user } = this.state;
+    const { route_id } = this.props;
+    const { disableSaveRoute } = this;
+    if (prevState.user !== user) {
+      this.setState({ disableButton: disableSaveRoute(user, route_id) });
+    }
   }
 
   setSelectedMarker = feature => {
@@ -154,6 +192,17 @@ class SingleRoute extends Component {
 
   closePopup = () => {
     this.setState({ selectedMarker: null });
+  };
+
+  saveRoute = e => {
+    const { route } = this.state;
+    api.saveRoute(localStorage.username, route).then(user => {
+      this.setState({ user });
+    });
+  };
+
+  disableSaveRoute = (user, route_id) => {
+    return !utils.checkRouteIsSaved(user, route_id);
   };
 }
 

@@ -58,7 +58,9 @@ export const postLogIn = (username, password) => {
 };
 
 export const getReviews = route_id => {
-  return axios.get(baseURL + "/reviews/" + route_id).then(res => res.data.reviews);
+  return axios
+    .get(baseURL + "/reviews/" + route_id)
+    .then(res => res.data.reviews);
 };
 
 export const postUser = (_id, password) => {
@@ -75,8 +77,22 @@ export const getUsers = () => {
   });
 };
 
-export const getRouteCity = (coordinates) => {
-  return axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates[0]},${coordinates[1]}.json?access_token=pk.eyJ1IjoiY2FpdGxpbi1iIiwiYSI6ImNrN2cwNGxqMzA3cTYzZW1wdGNmN3lrNHMifQ.cAnpnGVhEh0RQTtHeYDxUg
-  `).then(res =>  res.data.features[3].text)
-}
+export const getRouteCity = coordinates => {
+  return axios
+    .get(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates[0]},${coordinates[1]}.json?access_token=pk.eyJ1IjoiY2FpdGxpbi1iIiwiYSI6ImNrN2cwNGxqMzA3cTYzZW1wdGNmN3lrNHMifQ.cAnpnGVhEh0RQTtHeYDxUg
+  `
+    )
+    .then(res => res.data.features[3].text);
+};
 
+export const saveRoute = (username, savedRoute) => {
+  return axios
+    .patch(`${baseURL}/users/${username}`, { savedRoute })
+    .then(({ data: { user } }) => {
+      return user;
+    })
+    .catch(err => {
+      console.dir(err);
+    });
+};
