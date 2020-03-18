@@ -108,6 +108,7 @@ export const saveRoute = (username, savedRoute) => {
       console.dir(err);
     });
 };
+
 export const postReview = (route_id, user_id, body, rating) => {
   return axios
     .post(
@@ -119,3 +120,9 @@ export const postReview = (route_id, user_id, body, rating) => {
     )
     .then(({ data }) => data.review);
 };
+
+export const removeRoute = route_id => {
+  console.log(route_id);
+  return axios.delete(`${baseURL}/routes/${route_id}`);
+};
+

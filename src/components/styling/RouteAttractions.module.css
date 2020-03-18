@@ -1,8 +1,12 @@
 .heading {
   font-size: 20px;
+  color: white;
+  font-family: 'Fredoka One';
 }
 
 .attractions,
 .warnings {
   list-style-type: none;
+  font-family: 'Didact Gothic';
+  color: white;
 }

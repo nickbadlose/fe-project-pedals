@@ -10,6 +10,7 @@ class SortRoutes extends Component {
   };
   render() {
     return (
+
       <Dropdown onSelect={this.onSelect}>
         <Dropdown.Toggle
           id="dropdown-basic-button"
@@ -18,6 +19,7 @@ class SortRoutes extends Component {
           Sort by
         </Dropdown.Toggle>
         <Dropdown.Menu className={styles.dropdownItems}>
+
           <Dropdown.Item eventKey="posted/desc">Newest</Dropdown.Item>
           <Dropdown.Item eventKey="posted/asc">Oldest</Dropdown.Item>
           <Dropdown.Item eventKey="calculatedDistance/desc">
