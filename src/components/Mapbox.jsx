@@ -80,7 +80,8 @@ class Mapbox extends Component {
             }}
             center={center}
             zoom={zoom}
-            onClick={onClickMap}>
+            onClick={onClickMap}
+          >
             <DrawControl
               onDrawCreate={onDrawCreate}
               onDrawUpdate={onDrawUpdate}
@@ -273,9 +274,16 @@ class Mapbox extends Component {
             <Form>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlSelect1">
-                <Form.Label className={styles.form_label}>Route type</Form.Label>
-                <Form.Control as="select" onChange={this.handleRouteTypeChange} className={styles.placeholder}>
+                controlId="drawRouteForm.ControlSelect1"
+              >
+                <Form.Label className={styles.form_label}>
+                  Route type
+                </Form.Label>
+                <Form.Control
+                  as="select"
+                  onChange={this.handleRouteTypeChange}
+                  className={styles.placeholder}
+                >
                   <option value="scenic">Scenic</option>
                   <option value="family friendly">Family Friendly</option>
                   <option value="off-road">Off-Road</option>
@@ -284,28 +292,40 @@ class Mapbox extends Component {
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea1">
-                <Form.Label className={styles.form_label}>Route name</Form.Label>
+                controlId="drawRouteForm.ControlTextArea1"
+              >
+                <Form.Label className={styles.form_label}>
+                  Route name
+                </Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="eg. West Didsbury to Chorlton"
-                  onChange={this.handleRouteNameChange} className={styles.placeholder}></Form.Control>
+                  onChange={this.handleRouteNameChange}
+                  className={styles.placeholder}
+                ></Form.Control>
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea2">
-                <Form.Label className={styles.form_label}>Route description</Form.Label>
+                controlId="drawRouteForm.ControlTextArea2"
+              >
+                <Form.Label className={styles.form_label}>
+                  Route description
+                </Form.Label>
                 <Form.Control
                   as="textarea"
                   rows="2"
                   placeholder="Tell us a little about your route"
-                  onChange={this.handleRouteDescriptionChange} className={styles.placeholder}></Form.Control>
+                  onChange={this.handleRouteDescriptionChange}
+                  className={styles.placeholder}
+                ></Form.Control>
               </Form.Group>
 
               <Button
                 variant="primary"
                 type="submit"
-                onClick={this.handleSaveRoute} className={styles.saveButton}>
+                onClick={this.handleSaveRoute}
+                className={styles.saveButton}
+              >
                 Save your route
               </Button>
               {err && <p>You must be logged in to post!</p>}
@@ -357,7 +377,7 @@ class Mapbox extends Component {
     };
 
     const error = err => {
-      this.setState({ center: [-2.2243669, 53.4672013], isLoading: false})
+      this.setState({ center: [-2.2243669, 53.4672013], isLoading: false });
       console.log(err);
     };
 
@@ -372,6 +392,7 @@ class Mapbox extends Component {
     const { currentDrawMode } = this.state;
     const { calculateDistance, calculateElevation } = this;
     event.preventDefault();
+    this.setState({ markerType: "attraction" });
     if (currentDrawMode === "draw_line_string") {
       const { lng, lat } = event.lngLat;
       const selectedCo = [lng, lat];
@@ -564,7 +585,8 @@ class Mapbox extends Component {
           ...currentState.selectedMarker,
           comments: [markerInfo]
         },
-        features: newFeatures
+        features: newFeatures,
+        markerType: "attraction"
       };
     });
   };
@@ -574,6 +596,5 @@ class Mapbox extends Component {
   };
 }
 export default Mapbox;
-
 
 //sub title className className="mb-2 text-muted"
