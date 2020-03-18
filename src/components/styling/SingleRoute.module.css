@@ -1,14 +1,37 @@
 .map_block {
   display: flex;
   margin: 30px;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .stats_card {
   width: 50em;
+  background-color: #96939b;
 }
 
 @media only screen and (max-width: 750px) {
   .map_block {
     flex-direction: column;
   }
+}
+
+.h2 {
+  font-family: "Fredoka One";
+  color: white;
+}
+
+.route_stats {
+   padding: 2vh;
+  background-color: #fc814a;
+  color: white;
+  font-family: "Didact Gothic";
+  line-height: 2;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.reviewsAndDirections {
+  margin: 30px;
+  display: flex;
+  justify-content: space-evenly;
+
 }

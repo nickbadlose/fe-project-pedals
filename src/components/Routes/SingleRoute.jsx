@@ -59,7 +59,8 @@ class SingleRoute extends Component {
               width: "90vw"
             }}
             center={center}
-            zoom={zoom}>
+            zoom={zoom}
+          >
             {features.map(feature => {
               if (feature.geometry.type === "LineString") {
                 return (
@@ -67,7 +68,8 @@ class SingleRoute extends Component {
                     type="line"
                     id="route"
                     key={feature.id}
-                    paint={{ "line-width": 3, "line-color": "#2F3288" }}>
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
+                  >
                     <Feature coordinates={feature.geometry.coordinates} />
                   </Layer>
                 );
@@ -81,7 +83,8 @@ class SingleRoute extends Component {
                 return (
                   <Marker
                     coordinates={feature.geometry.coordinates}
-                    key={feature.id}>
+                    key={feature.id}
+                  >
                     <img
                       alt="pin marker"
                       src={markerImage}
@@ -97,7 +100,8 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={this.closePopup}>
+                onClick={this.closePopup}
+              >
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}
@@ -105,18 +109,17 @@ class SingleRoute extends Component {
           <Card className={styles.stats_card}>
             <Card.Body>
               <Card.Title>
-                <h2>{routeName}</h2>
+                <h2 className={styles.h2}>{routeName}</h2>
               </Card.Title>
               <br></br>
-              <Card.Subtitle className="mb-2 text-muted">
-                Location · {city}
+              <Card.Subtitle className={styles.route_stats}>
+                <b>Location</b> · {city}
                 <br></br>
-                Distance · {calculatedDistance.toFixed(2)} miles
-                <br></br> Route type · {type}
+                <b>Distance</b> · {calculatedDistance.toFixed(2)} miles
+                <br></br> <b>Route Type</b> · {type}
                 <br></br>
-                Rating · {rating} / 5
-                <br></br>
-                Posted by · {user_id}
+                <b>Rating</b> · {rating} / 5<br></br>
+                <b>Posted by</b> · {user_id}
               </Card.Subtitle>
               <br></br>
               <Card.Body>
@@ -127,14 +130,19 @@ class SingleRoute extends Component {
             </Card.Body>
           </Card>
         </div>
-        <AllReviews reviews={reviews} handleSaveReview={this.handleSaveReview}/>
-        <Directions coordinates={this.state.coordinates} />
+        <div className={styles.reviewsAndDirections}>
+          <AllReviews
+            reviews={reviews}
+            handleSaveReview={this.handleSaveReview}
+          />
+          <Directions coordinates={this.state.coordinates} />
+        </div>
       </div>
     );
   }
 
   componentDidMount() {
-    const {route_id} = this.props;
+    const { route_id } = this.props;
 
     axios
       .get(`http://project-pedals.herokuapp.com/api/routes/${route_id}`)
@@ -148,19 +156,23 @@ class SingleRoute extends Component {
       const ratings = reviews.map(review => {
         return review.rating;
       });
-      const currentRating = (ratings.reduce((a, b) => a + b) / ratings.length).toFixed(1);
+      const currentRating = (
+        ratings.reduce((a, b) => a + b) / ratings.length
+      ).toFixed(1);
 
       this.setState({ reviews, rating: currentRating });
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {reviews} = this.state
-    if(prevState.reviews !== reviews) {
+    const { reviews } = this.state;
+    if (prevState.reviews !== reviews) {
       const ratings = reviews.map(review => {
         return review.rating;
       });
-      const currentRating = (ratings.reduce((a, b) => a + b) / ratings.length).toFixed(1);
+      const currentRating = (
+        ratings.reduce((a, b) => a + b) / ratings.length
+      ).toFixed(1);
       this.setState({ rating: currentRating });
     }
   }
@@ -174,17 +186,17 @@ class SingleRoute extends Component {
   };
 
   handleSaveReview = (body, rating) => {
-    const {route_id} = this.props;
-    const {username} = localStorage;
+    const { route_id } = this.props;
+    const { username } = localStorage;
 
     api.postReview(route_id, username, body, rating).then(review => {
       this.setState(currentState => {
-
-        return {reviews: [review, ...currentState.reviews]}
-      })
-    })
-
-  }
+        return { reviews: [review, ...currentState.reviews] };
+      });
+    });
+  };
 }
 
 export default SingleRoute;
+
+//card subtitle class className="mb-2 text-muted"

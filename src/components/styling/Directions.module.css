@@ -1,3 +1,16 @@
 .directionsList {
   list-style: none;
+  font-family: "Didact Gothic";
+  text-align: center;
+  line-height: 2.5;
+  color: white;
+  background-color: #272c31;
+  padding: 2vw;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.title {
+  font-family: "Fredoka One";
+  color: white;
+  padding-top: 20px;
 }

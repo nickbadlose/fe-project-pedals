@@ -10,30 +10,29 @@ class SortRoutes extends Component {
   };
   render() {
     return (
-      <DropdownButton
-        id="dropdown-basic-button"
-        title="Sort by"
-        className={styles.sortButton}
-        onSelect={this.onSelect}
-      >
-        <Dropdown.Item eventKey="posted/desc">Newest</Dropdown.Item>
-        <Dropdown.Item eventKey="posted/asc">Oldest</Dropdown.Item>
-        <Dropdown.Item eventKey="calculatedDistance/desc">
-          Distance: Longest to Shortest
-        </Dropdown.Item>
-        <Dropdown.Item eventKey="calculatedDistance/asc">
-          Distance: Shortest to Longest
-        </Dropdown.Item>
-        <Dropdown.Item eventKey="averageRating/desc">
-          Rating: Highest to Lowest
-        </Dropdown.Item>
-        <Dropdown.Item eventKey="averageRating/asc">
-          Rating: Lowest to Highest
-        </Dropdown.Item>
-      </DropdownButton>
+        <DropdownButton
+          id="dropdown-basic-button"
+          title="Sort by"
+          className={styles.sortButton}
+          onSelect={this.onSelect}
+        >
+          <Dropdown.Item eventKey="posted/desc">Newest</Dropdown.Item>
+          <Dropdown.Item eventKey="posted/asc">Oldest</Dropdown.Item>
+          <Dropdown.Item eventKey="calculatedDistance/desc">
+            Distance: Longest to Shortest
+          </Dropdown.Item>
+          <Dropdown.Item eventKey="calculatedDistance/asc">
+            Distance: Shortest to Longest
+          </Dropdown.Item>
+          <Dropdown.Item eventKey="averageRating/desc">
+            Rating: Highest to Lowest
+          </Dropdown.Item>
+          <Dropdown.Item eventKey="averageRating/asc">
+            Rating: Lowest to Highest
+          </Dropdown.Item>
+        </DropdownButton>
     );
   }
-
 
   onSelect = eventKey => {
     const separatedEventKey = eventKey.split("/");
