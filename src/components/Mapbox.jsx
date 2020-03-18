@@ -39,7 +39,9 @@ class Mapbox extends Component {
     markerType: "attraction",
     routeType: "scenic",
     routeDescription: "",
-    err: false
+    err: false,
+    formError: false,
+    drawError: false
   };
   render() {
     const {
@@ -52,7 +54,9 @@ class Mapbox extends Component {
       isLoading,
       selectedMarker,
       markerInfo,
-      err
+      err,
+      formError,
+      drawError
     } = this.state;
     const {
       onDrawCreate,
@@ -270,7 +274,7 @@ class Mapbox extends Component {
               <b>Elevation Difference</b> · {eleDiff} meters
               <br></br>
             </Card.Text>
-            <Form>
+            <Form onSubmit={this.handleSaveRoute}>
               <Form.Group
                 className={styles.input_label}
                 controlId="drawRouteForm.ControlSelect1">
@@ -294,10 +298,12 @@ class Mapbox extends Component {
                   Route name
                 </Form.Label>
                 <Form.Control
+                  required
                   type="text"
                   placeholder="eg. West Didsbury to Chorlton"
                   onChange={this.handleRouteNameChange}
-                  className={styles.placeholder}></Form.Control>
+                  className={styles.placeholder}
+                />
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
@@ -310,7 +316,8 @@ class Mapbox extends Component {
                   rows="2"
                   placeholder="Tell us a little about your route"
                   onChange={this.handleRouteDescriptionChange}
-                  className={styles.placeholder}></Form.Control>
+                  className={styles.placeholder}
+                />
               </Form.Group>
 
               <Button
@@ -321,6 +328,8 @@ class Mapbox extends Component {
                 Save your route
               </Button>
               {err && <p>You must be logged in to post!</p>}
+              {formError && <p>Please input a route name and description</p>}
+              {drawError && <p>Dont forget to draw your route!</p>}
             </Form>
           </Card.Body>
         </Card>
@@ -523,26 +532,34 @@ class Mapbox extends Component {
       routeDescription
     } = this.state;
 
-    api
-      .getRouteCity(features[0].geometry.coordinates[0])
-      .then(city => {
-        return api.postRoute(
-          routeName,
-          routeType,
-          features,
-          calculatedDistance,
-          center,
-          zoom,
-          city,
-          routeDescription
-        );
-      })
-      .then(route => {
-        navigate(`/routes/id/${route.data.route._id}`);
-      })
-      .catch(err => {
-        this.setState({ err: true });
-      });
+    if (features.length === 0) {
+      this.setState({ drawError: true });
+    } else if (routeName.length === 0 || routeDescription.length === 0) {
+      this.setState({ formError: true, drawError: false });
+    } else {
+      api
+        .getRouteCity(features[0].geometry.coordinates[0])
+        .then(city => {
+          return api.postRoute(
+            routeName,
+            routeType,
+            features,
+            calculatedDistance,
+            center,
+            zoom,
+            city,
+            routeDescription
+          );
+        })
+        .then(route => {
+          if (route.data) {
+            navigate(`/routes/id/${route.data.route._id}`);
+          }
+        })
+        .catch(err => {
+          this.setState({ err: true, formError: false, drawError: false });
+        });
+    }
   };
 
   handleRouteTypeChange = e => {
