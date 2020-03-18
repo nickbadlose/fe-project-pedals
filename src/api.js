@@ -15,6 +15,18 @@ export const getRoutes = (type, sort_by, order) => {
     });
 };
 
+export const getRoutesByUser = username => {
+  return axios
+    .get(`${baseURL}/routes/`, {
+      params: {
+        user: username
+      }
+    })
+    .then(({ data }) => {
+      return data.routes;
+    });
+};
+
 export const postRoute = (
   routeName,
   routeType,
@@ -113,3 +125,4 @@ export const removeRoute = route_id => {
   console.log(route_id);
   return axios.delete(`${baseURL}/routes/${route_id}`);
 };
+
