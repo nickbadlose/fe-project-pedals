@@ -10,9 +10,9 @@ import ErrorPage from "./ErrorPage";
 import RouteType from "./Routes/RouteType";
 import LogIn from "./LogIn";
 import SignUp from "../components/SignUp";
+import Footer from "../components/Footer";
 
 const MainSite = ({ logUserIn, logUserOut, invalidUser, signUp }) => {
-
   return (
     <div>
       <Navigation logUserOut={logUserOut} />
@@ -27,6 +27,7 @@ const MainSite = ({ logUserIn, logUserOut, invalidUser, signUp }) => {
         <SignUp path="/signup" signUp={signUp} />
         <ErrorPage default />
       </Router>
+      <Footer />
     </div>
   );
 };

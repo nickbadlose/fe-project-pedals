@@ -1,6 +1,8 @@
 import React from "react";
 import attractionFlag from "../icons/location-pin.png";
 import warningFlag from "../icons/warning-flag.png";
+import orange_flag from "../icons/orange_flag.png";
+import orange_marker from "../icons/orange_marker.png";
 import styles from "../styling/RouteAttractions.module.css";
 
 const RouteAttractions = props => {
@@ -18,7 +20,7 @@ const RouteAttractions = props => {
       <h2 className={styles.heading}>
         <img
           alt="attraction marker"
-          src={attractionFlag}
+          src={orange_marker}
           height="40"
           width="40"
         ></img>
@@ -35,7 +37,7 @@ const RouteAttractions = props => {
       </ul>
       <br></br>
       <h2 className={styles.heading}>
-        <img alt="warning flag" src={warningFlag} height="30" width="30"></img>
+        <img alt="warning flag" src={orange_flag} height="30" width="30"></img>
         {"  "}Warnings
       </h2>
       <ul>

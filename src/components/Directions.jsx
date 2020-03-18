@@ -20,7 +20,7 @@ class Directions extends Component {
 
     return (
       <div>
-        <p>Directions</p>
+        <h3 className={styles.title}>Directions</h3>
         <ul className={styles.directionsList}>
           {directions.map(direction => {
             return (
