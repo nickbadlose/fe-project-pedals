@@ -3,14 +3,13 @@ import RouteCard from "./RouteCard";
 import CardDeck from "react-bootstrap/CardDeck";
 import styles from "../styling/AllRoutes.module.css";
 import * as api from "../../api.js";
-// import FilterType from "../FilterType";
 import SortRoutes from "../SortRoutes";
 import SearchBox from "../SearchBox";
-
 
 class AllRoutes extends Component {
   state = {
     routes: [],
+    unfilteredRoutes: [],
     sort_by: "averageRating",
     order: "desc",
     isLoading: true,
@@ -25,9 +24,8 @@ class AllRoutes extends Component {
         <div>
           <h2>All routes</h2>
           <section className={styles.filterSection}>
-            {/* <FilterType /> */}
             <SortRoutes sortRoutes={this.sortRoutes} />
-            <SearchBox searchBoxButton={this.searchBoxButton} />
+            <SearchBox searchRoutes={this.searchRoutes} />
           </section>
           <CardDeck className={styles.routeCard_block}>
             {routes.map(route => {
@@ -37,6 +35,17 @@ class AllRoutes extends Component {
         </div>
       );
   }
+
+  searchRoutes = searchTerm => {
+    const { unfilteredRoutes } = this.state;
+    const filteredList = unfilteredRoutes.filter(route => {
+      return (
+        route.city.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        route.user_id.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+      );
+    });
+    this.setState({ routes: filteredList });
+  };
 
   sortRoutes = (sort_by, order) => {
     this.setState({ sort_by, order });
@@ -64,7 +73,12 @@ class AllRoutes extends Component {
     api
       .getRoutes(type, sort_by, order)
       .then(routes => {
-        this.setState({ routes, isLoading: false, err: false });
+        this.setState({
+          routes,
+          unfilteredRoutes: routes,
+          isLoading: false,
+          err: false
+        });
       })
       .catch(err => {
         console.log(err, "error <<");
