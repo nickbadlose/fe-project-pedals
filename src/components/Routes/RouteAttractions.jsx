@@ -1,6 +1,4 @@
 import React from "react";
-import attractionFlag from "../icons/location-pin.png";
-import warningFlag from "../icons/warning-flag.png";
 import orange_flag from "../icons/orange_flag.png";
 import orange_marker from "../icons/orange_marker.png";
 import styles from "../styling/RouteAttractions.module.css";
@@ -11,7 +9,7 @@ const RouteAttractions = props => {
   const attractions = features.filter(feature => {
     return feature.markerType === "attraction";
   });
-  // console.log(attractions);
+
   const warnings = features.filter(feature => {
     return feature.markerType === "warning";
   });
