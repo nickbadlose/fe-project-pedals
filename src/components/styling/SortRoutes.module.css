@@ -1,3 +1,12 @@
 .sortButton {
-  padding-left: 20px;
+  margin-left: 20px;
+  font-family: "Fredoka One";
+  font-size: 18px;
+  color: #fff;
+  background-color: #fc814a;
+  border-color: #fc814a;
+}
+
+.dropdownItems {
+  font-family: "Didact Gothic";
 }
