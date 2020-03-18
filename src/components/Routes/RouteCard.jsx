@@ -44,7 +44,11 @@ const RouteCard = props => {
           </Button>
         </Card.Body>
         <Card.Footer>
-          <small>By {route.user_id}</small>
+          {route.user_id === localStorage.username ? (
+            <small>By You</small>
+          ) : (
+            <small>By {route.user_id}</small>
+          )}
         </Card.Footer>
       </Card>
     </div>

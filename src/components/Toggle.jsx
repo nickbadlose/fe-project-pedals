@@ -4,10 +4,11 @@ import Button from "react-bootstrap/Button";
 class Toggle extends Component {
   state = { isShowing: false };
   render() {
+    const {isShowing} = this.state
     return (
       <div >
-        <Button onClick={this.showing}>{this.props.buttonMessage}</Button>
-          {this.state.isShowing && this.props.children}
+          {isShowing && this.props.children} 
+          {!isShowing && <Button onClick={this.showing}>{this.props.buttonMessage}</Button>}
       </div>
     );
   }
