@@ -138,9 +138,11 @@ const HomePage = () => {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          <Link to="/signup">
+          {localStorage.username ? <Link to="/routes/draw">
+            <button className={styles.button}>Get started!</button> </Link>:<Link to="/signup">
             <button className={styles.button}>Get started!</button>
           </Link>
+          }
         </div>
       </div>
     </div>
