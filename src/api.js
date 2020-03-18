@@ -96,7 +96,7 @@ export const saveRoute = (username, savedRoute) => {
     .catch(err => {
       console.dir(err);
     });
-
+  }
 export const postReview = (route_id, user_id, body, rating) => {
   return axios.post(
     `${baseURL}/reviews/${route_id}`,
@@ -106,4 +106,4 @@ export const postReview = (route_id, user_id, body, rating) => {
     }
   ).then(({data}) => data.review)
 
-};
+}
