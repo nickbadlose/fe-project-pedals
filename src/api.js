@@ -15,6 +15,18 @@ export const getRoutes = (type, sort_by, order) => {
     });
 };
 
+export const getRoutesByUser = username => {
+  return axios
+    .get(`${baseURL}/routes/`, {
+      params: {
+        user: username
+      }
+    })
+    .then(({ data }) => {
+      return data.routes;
+    });
+};
+
 export const postRoute = (
   routeName,
   routeType,
@@ -86,7 +98,6 @@ export const getRouteCity = coordinates => {
     .then(res => res.data.features[3].text);
 };
 
-
 export const saveRoute = (username, savedRoute) => {
   return axios
     .patch(`${baseURL}/users/${username}`, { savedRoute })
@@ -96,14 +107,15 @@ export const saveRoute = (username, savedRoute) => {
     .catch(err => {
       console.dir(err);
     });
-  }
+};
 export const postReview = (route_id, user_id, body, rating) => {
-  return axios.post(
-    `${baseURL}/reviews/${route_id}`,
-    {user_id, body, rating},
-    {
-      headers: { Authorization: "BEARER " + localStorage.token }
-    }
-  ).then(({data}) => data.review)
-
-}
+  return axios
+    .post(
+      `${baseURL}/reviews/${route_id}`,
+      { user_id, body, rating },
+      {
+        headers: { Authorization: "BEARER " + localStorage.token }
+      }
+    )
+    .then(({ data }) => data.review);
+};
