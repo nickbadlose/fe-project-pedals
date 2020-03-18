@@ -109,12 +109,12 @@ class SingleRoute extends Component {
               </Card.Title>
               <br></br>
               <Card.Subtitle className="mb-2 text-muted">
-                City · {city}
+                Location · {city}
                 <br></br>
                 Distance · {calculatedDistance.toFixed(2)} miles
                 <br></br> Route type · {type}
                 <br></br>
-                Rating · {rating}
+                Rating · {rating} / 5
                 <br></br>
                 Posted by · {user_id}
               </Card.Subtitle>
@@ -127,14 +127,14 @@ class SingleRoute extends Component {
             </Card.Body>
           </Card>
         </div>
-        <AllReviews reviews={reviews} />
+        <AllReviews reviews={reviews} handleSaveReview={this.handleSaveReview}/>
         <Directions coordinates={this.state.coordinates} />
       </div>
     );
   }
 
   componentDidMount() {
-    const route_id = this.props.route_id;
+    const {route_id} = this.props;
 
     axios
       .get(`http://project-pedals.herokuapp.com/api/routes/${route_id}`)
@@ -148,10 +148,21 @@ class SingleRoute extends Component {
       const ratings = reviews.map(review => {
         return review.rating;
       });
-      const currentRating = ratings.reduce((a, b) => a + b) / ratings.length;
+      const currentRating = (ratings.reduce((a, b) => a + b) / ratings.length).toFixed(1);
 
       this.setState({ reviews, rating: currentRating });
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {reviews} = this.state
+    if(prevState.reviews !== reviews) {
+      const ratings = reviews.map(review => {
+        return review.rating;
+      });
+      const currentRating = (ratings.reduce((a, b) => a + b) / ratings.length).toFixed(1);
+      this.setState({ rating: currentRating });
+    }
   }
 
   setSelectedMarker = feature => {
@@ -161,6 +172,19 @@ class SingleRoute extends Component {
   closePopup = () => {
     this.setState({ selectedMarker: null });
   };
+
+  handleSaveReview = (body, rating) => {
+    const {route_id} = this.props;
+    const {username} = localStorage;
+
+    api.postReview(route_id, username, body, rating).then(review => {
+      this.setState(currentState => {
+
+        return {reviews: [review, ...currentState.reviews]}
+      })
+    })
+
+  }
 }
 
 export default SingleRoute;
