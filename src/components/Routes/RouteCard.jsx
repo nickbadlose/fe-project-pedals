@@ -69,11 +69,11 @@ const RouteCard = props => {
         </Card.Body>
         <Card.Footer>
           {route.user_id === localStorage.username ? (
-            <small>By You
+            <small>By You on {' '}
             <Moment format="D MMM YYYY">{route.posted}</Moment>
             </small>
           ) : (
-            <small>By {route.user_id}
+            <small>By {route.user_id} on {' '}
             <Moment format="D MMM YYYY">{route.posted}</Moment>
             </small>
           )}
