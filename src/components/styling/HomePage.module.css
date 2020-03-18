@@ -16,7 +16,7 @@
   text-align: left;
   padding-left: 2vh;
   font-family: 'Didact Gothic';
-  font-size: 2vh;
+  font-size: 1em;
 }
 
 .pedals {
@@ -62,7 +62,7 @@
   background-color: rgba(72, 81, 90, 0.8);
   align-self: center;
   width: 250px;
-  height: 30vh;
+  height: 15em;
   margin: 4vh 0 4vh 0 ;
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -86,7 +86,7 @@
 .p {
   color: white;
   font-family: 'Didact Gothic';
-  font-size: 1.8vh;
+  font-size: 1em;
   padding: 0.5vh;
 }
 
