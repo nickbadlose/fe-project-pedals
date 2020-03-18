@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { checkUserExists } from "../utils/utils";
 import * as api from "../api";
+import styles from "../components/styling/SignUp.module.css";
 
 class SignUp extends Component {
   state = { username: "", password: "", userExists: false, users: [] };
@@ -8,41 +9,46 @@ class SignUp extends Component {
     const { username, password, userExists } = this.state;
     const { signUp } = this.props;
     return (
-      <div>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-            signUp(e, username, password);
-          }}
-        >
-          <label>
-            Username:{" "}
-            <input
-              type="text"
-              onChange={e => {
-                this.handleChange(e, "username");
-              }}
-              required
-            />
-          </label>
-          <label>
-            Password:{" "}
-            <input
-              type="password"
-              onChange={e => {
-                this.handleChange(e, "password");
-              }}
-              required
-            />
-          </label>
-          {userExists ? (
-            <>
-              <button disabled>Sign up</button> <p>Username is taken</p>{" "}
-            </>
-          ) : (
-            <button>Sign up</button>
-          )}
-        </form>
+      <div className={styles.pageContainer}>
+        <div className={styles.signUpForm}>
+          <h2 className={styles.h2}>Sign Up</h2>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              signUp(e, username, password);
+            }}
+          >
+            <label className={styles.inputLabel}>
+              Username:{" "}
+              <input
+                type="text"
+                onChange={e => {
+                  this.handleChange(e, "username");
+                }}
+                required
+                className={styles.inputBox}
+              />
+            </label>
+            <label className={styles.inputLabel}>
+              Password:{" "}
+              <input
+                type="password"
+                onChange={e => {
+                  this.handleChange(e, "password");
+                }}
+                required
+                className={styles.inputBox}
+              />
+            </label>
+            {userExists ? (
+              <>
+                <button disabled className={styles.signUpButton}>Sign up</button> <p>Username is taken</p>{" "}
+              </>
+            ) : (
+                <button className={styles.signUpButton}>Go!</button>
+            )}
+          </form>
+        </div>
       </div>
     );
   }
