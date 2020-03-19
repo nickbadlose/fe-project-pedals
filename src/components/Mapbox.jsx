@@ -493,9 +493,11 @@ class Mapbox extends Component {
       routeDescription: "",
       routeName: "",
       routeType: "scenic",
+      selectedMarker: null,
       err: false,
       calculatedDistance: 0,
       zoom: [10]
+
     });
   };
 
