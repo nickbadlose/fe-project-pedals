@@ -44,18 +44,18 @@ const Navigation = ({ logUserOut }) => {
             {localStorage.username ? (
               <NavDropdown
                 title={localStorage.username}
+
                 id="basic-nav-dropdown"
                 className={styles.navLabel}
-
-                // className="dropdown-menu dropdown-menu-left"
-              >
-                {/* <NavDropdown.Item href={`/users/${localStorage.username}`}> */}
+                alignRight={true} 
+     
                 <NavDropdown.Item
                   href={"/my_page"}
                   className={styles.navLabel2}
                 >
                   Profile
                 </NavDropdown.Item>
+
                 <NavDropdown.Divider />
 
                 <NavDropdown.Item
@@ -69,7 +69,7 @@ const Navigation = ({ logUserOut }) => {
               <NavDropdown
                 title="Log in"
                 id="basic-nav-dropdown"
-                // className="dropdown-menu dropdown-menu-left"
+                alignRight={true}
               >
                 <NavDropdown.Item href="/login" className={styles.navLabel2}>
                   Log in

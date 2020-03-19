@@ -7,10 +7,12 @@ const PreviewImg = coordinates => {
 
   const reverseCo = coordinates.map(lngLat => lngLat.reverse());
   const newPolyline = polyline.encode(reverseCo);
-  const lineSize = 2;
+  const encodedPolyline = encodeURIComponent(newPolyline);
+  const lineSize = 3;
   const color = "00F"; // 3 or 6 digit hexa-decimal colours only
 
-  const url = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/path-${lineSize}+${color}(${newPolyline})/auto/400x400?access_token=${token}`;
+  console.log(encodedPolyline);
+  const url = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/path-${lineSize}+${color}(${encodedPolyline})/auto/400x400?access_token=${token}`;
 
   return url;
 };

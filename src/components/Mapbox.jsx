@@ -12,8 +12,8 @@ import Button from "react-bootstrap/Button";
 import bike_spinner from "./icons/bike_spinner.gif";
 import * as api from "../api.js";
 import { navigate } from "@reach/router";
-import attractionFlag from "./icons/location-pin.png";
-import warningFlag from "./icons/warning-flag.png";
+import attractionFlag from "./icons/orange_marker.png";
+import warningFlag from "./icons/orange_flag.png";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -73,7 +73,9 @@ class Mapbox extends Component {
       onClickMap,
       handleMarkerForm,
       handleMarkerFormChange,
-      setMarkerType
+      setMarkerType,
+      setSelectedMarker,
+      closePopup
     } = this;
     return (
       <div className={styles.map_block}>
@@ -120,7 +122,7 @@ class Mapbox extends Component {
                       src={markerImage}
                       height="30px"
                       onClick={() => {
-                        // setSelectedMarker(feature);
+                        setSelectedMarker(feature);
                       }}
                     />
                   </Marker>
@@ -130,7 +132,7 @@ class Mapbox extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                // onClick={closePopup}
+                onClick={closePopup}
               >
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
@@ -554,10 +556,6 @@ class Mapbox extends Component {
     }
   };
 
-  // onDrawUpdate = ({ features }) => {
-  //   console.log("Update");
-  // };
-
   onDrawSelectionChange = ({ features }) => {
     const { currentDrawMode } = this.state;
     if (features.length) {
@@ -650,11 +648,6 @@ class Mapbox extends Component {
           }
         })
         .catch(err => {
-          // console.log(features[0]);
-          // localStorage.setItem("features", JSON.stringify(features));
-          // localStorage.setItem("routeType", routeType);
-          // localStorage.setItem("routeName", routeName);
-          // localStorage.setItem("routeDescription", routeDescription);
           this.setState({ err: true, formError: false, drawError: false });
           localStorage.setItem("features", JSON.stringify(features));
           localStorage.setItem("routeType", routeType);
@@ -662,6 +655,14 @@ class Mapbox extends Component {
           localStorage.setItem("routeDescription", routeDescription);
         });
     }
+  };
+
+  setSelectedMarker = feature => {
+    this.setState({ selectedMarker: feature });
+  };
+
+  closePopup = () => {
+    this.setState({ selectedMarker: null });
   };
 
   handleRouteTypeChange = e => {
@@ -706,5 +707,3 @@ class Mapbox extends Component {
   };
 }
 export default Mapbox;
-
-//sub title className className="mb-2 text-muted"

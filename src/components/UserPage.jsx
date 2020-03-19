@@ -7,7 +7,7 @@ import styles from "../components/styling/UserPage.module.css";
 
 class UserPage extends Component {
   state = {
-    username: "jessjelly",
+    username: null,
     userInfo: "",
     isLoadingInfo: true,
     isLoadingRoutes: true
