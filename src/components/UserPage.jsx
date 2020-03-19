@@ -3,6 +3,7 @@ import * as api from "../api";
 import LoadingIndicator from "./LoadingIndicator";
 import RoutesList from "./RoutesList";
 import { Link } from "@reach/router";
+import styles from "../components/styling/UserPage.module.css";
 
 class UserPage extends Component {
   state = {
@@ -24,7 +25,7 @@ class UserPage extends Component {
     if (localStorage.username === undefined) {
       return (
         <div>
-          <h2>Please sign in to view your user page</h2>
+          <h2 className={styles.h2}>Please sign in to view your user page</h2>
           <Link to={"/signup"}>Signup here!</Link>
         </div>
       );
@@ -33,18 +34,17 @@ class UserPage extends Component {
     return (
       <React.Fragment>
         <div>
-          <h2>Welcome to your page, {userInfo._id}!</h2>
-          <p>Your Routes</p>
+          <h2 className={styles.h2}>Welcome to your page, {userInfo._id}!</h2>
           {isLoadingRoutes ? (
             <LoadingIndicator />
           ) : usersRoutes.length !== 0 ? (
             <div>
-              <h3>Your Routes</h3>
+              <h3 className={styles.h3}>Your Routes</h3>
               <RoutesList routes={usersRoutes} />
             </div>
           ) : (
             <div>
-              <p>No Created Routes</p>
+              <h3 className={styles.h3}>No Created Routes</h3>
               <Link to={"/routes/draw"}>Create a route</Link>
             </div>
           )}
@@ -54,12 +54,12 @@ class UserPage extends Component {
             <LoadingIndicator />
           ) : savedRoutes.length !== 0 ? (
             <div>
-              <h3>Favourited Routes</h3>
+              <h3 className={styles.h3}>Favourited Routes</h3>
               <RoutesList routes={savedRoutes} />
             </div>
           ) : (
             <div>
-              <p>No Favourited Routes</p>
+              <p className={styles.h3}>No Favourited Routes</p>
             </div>
           )}
         </div>

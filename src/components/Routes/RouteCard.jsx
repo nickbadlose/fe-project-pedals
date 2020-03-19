@@ -29,6 +29,7 @@ const RouteCard = props => {
             {route.routeName}
           </Card.Title>
           <Card.Text className={styles.cardText}>
+            <div>
             <img
               className={styles.mapIcon}
               src={mapLocation}
@@ -42,7 +43,8 @@ const RouteCard = props => {
               alt="distance icon"
             />{" "}
             {route.calculatedDistance.toFixed(1)} miles
-            <br></br>
+            </div>
+            <div>
             <img
               className={styles.bikeIcon}
               src={bikeIcon}
@@ -55,7 +57,8 @@ const RouteCard = props => {
               src={starIcon}
               alt="bike icon"
             />{" "}
-            Rating: {route.averageRating}
+            Rating: {route.averageRating} / 5
+            </div>
           </Card.Text>
           <Button variant="primary" className={styles.cardButton}>
             {" "}
@@ -69,12 +72,13 @@ const RouteCard = props => {
         </Card.Body>
         <Card.Footer>
           {route.user_id === localStorage.username ? (
-            <small>By You on {' '}
-            <Moment format="D MMM YYYY">{route.posted}</Moment>
+            <small>
+              By You on <Moment format="D MMM YYYY">{route.posted}</Moment>
             </small>
           ) : (
-            <small>By {route.user_id} on {' '}
-            <Moment format="D MMM YYYY">{route.posted}</Moment>
+            <small>
+              By {route.user_id} on{" "}
+              <Moment format="D MMM YYYY">{route.posted}</Moment>
             </small>
           )}
         </Card.Footer>
