@@ -69,6 +69,7 @@ const Navigation = ({ logUserOut }) => {
                 title="Log in"
                 id="basic-nav-dropdown"
                 alignRight={true}
+                className={styles.navLabel}
               >
                 <NavDropdown.Item href="/login" className={styles.navLabel2}>
                   Log in
