@@ -1,6 +1,7 @@
 import React from "react";
 import Moment from "react-moment";
 import styles from "../styling/SingleReview.module.css";
+import StarRatingComponent from 'react-star-rating-component';
 
 const SingleReview = ({ review }) => {
   let reviewer;
@@ -12,11 +13,18 @@ const SingleReview = ({ review }) => {
   return (
     <div className={styles.reviewContainer}>
       <p className={styles.body}>'{review.body}'</p>
-      <p className={styles.rating}>
+      
+      <StarRatingComponent className={styles.rating}
+          name="rate1" 
+          starCount={5}
+          value={review.rating}
+          editing={false}
+        />
+        <p className={styles.rating}>
         <span className={styles.userName}>{reviewer}</span> gave this route{" "}
         {review.rating} stars!
       </p>
-      <br></br>
+      
     </div>
   );
 };

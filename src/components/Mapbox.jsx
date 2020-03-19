@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactMapboxGl from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
 import DrawControl from "react-mapbox-gl-draw";
 import { point, distance } from "@turf/turf";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
@@ -12,6 +12,8 @@ import Button from "react-bootstrap/Button";
 import bike_spinner from "./icons/bike_spinner.gif";
 import * as api from "../api.js";
 import { navigate } from "@reach/router";
+import attractionFlag from "./icons/location-pin.png";
+import warningFlag from "./icons/warning-flag.png";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -31,14 +33,14 @@ class Mapbox extends Component {
     endEle: 0,
     eleDiff: 0,
     currentDrawMode: null,
-    features: [],
+    features: localStorage.features ? JSON.parse(localStorage.features) : [],
     isLoading: true,
     selectedMarker: null,
     markerInfo: "",
-    routeName: "",
+    routeName: localStorage.routeName || "",
     markerType: "attraction",
-    routeType: "scenic",
-    routeDescription: "",
+    routeType: localStorage.routeType || "scenic",
+    routeDescription: localStorage.routeDescription || "",
     err: false,
     formError: false,
     drawError: false
@@ -56,7 +58,11 @@ class Mapbox extends Component {
       markerInfo,
       err,
       formError,
-      drawError
+      drawError,
+      routeDescription,
+      routeName,
+      routeType,
+      features
     } = this.state;
     const {
       onDrawCreate,
@@ -75,6 +81,61 @@ class Mapbox extends Component {
           <section className={styles.loading_section}>
             <img src={bike_spinner} alt="loading" />
           </section>
+        ) : localStorage.features ? (
+          <Map
+            style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
+            containerStyle={{
+              height: "100%",
+              width: "90vw"
+            }}
+            center={center}
+            zoom={zoom}
+          >
+            {features.map(feature => {
+              if (feature.geometry.type === "LineString") {
+                return (
+                  <Layer
+                    type="line"
+                    id="route"
+                    key={feature.id}
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
+                  >
+                    <Feature coordinates={feature.geometry.coordinates} />
+                  </Layer>
+                );
+              } else if (feature.geometry.type === "Point") {
+                let markerImage;
+                if (feature.markerType === "attraction") {
+                  markerImage = attractionFlag;
+                } else {
+                  markerImage = warningFlag;
+                }
+                return (
+                  <Marker
+                    coordinates={feature.geometry.coordinates}
+                    key={feature.id}
+                  >
+                    <img
+                      alt="pin marker"
+                      src={markerImage}
+                      height="30px"
+                      onClick={() => {
+                        // setSelectedMarker(feature);
+                      }}
+                    />
+                  </Marker>
+                );
+              }
+            })}
+            {selectedMarker && (
+              <Popup
+                coordinates={selectedMarker.geometry.coordinates}
+                // onClick={closePopup}
+              >
+                <p>{selectedMarker.markerComments[0]}</p>
+              </Popup>
+            )}
+          </Map>
         ) : (
           <Map
             style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
@@ -278,17 +339,17 @@ class Mapbox extends Component {
             <Form onSubmit={this.handleSaveRoute}>
               <Form.Group
                 className={styles.input_label}
-
-                controlId="drawRouteForm.ControlSelect1">
-
+                controlId="drawRouteForm.ControlSelect1"
+              >
                 <Form.Label className={styles.form_label}>
                   Route type
                 </Form.Label>
                 <Form.Control
                   as="select"
                   onChange={this.handleRouteTypeChange}
-                  className={styles.placeholder}>
-
+                  className={styles.placeholder}
+                  value={routeType}
+                >
                   <option value="scenic">Scenic</option>
                   <option value="family friendly">Family Friendly</option>
                   <option value="off-road">Off-Road</option>
@@ -297,9 +358,8 @@ class Mapbox extends Component {
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-
-                controlId="drawRouteForm.ControlTextArea1">
-
+                controlId="drawRouteForm.ControlTextArea1"
+              >
                 <Form.Label className={styles.form_label}>
                   Route name
                 </Form.Label>
@@ -309,13 +369,13 @@ class Mapbox extends Component {
                   placeholder="eg. West Didsbury to Chorlton"
                   onChange={this.handleRouteNameChange}
                   className={styles.placeholder}
-
+                  value={routeName}
                 />
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea2">
-
+                controlId="drawRouteForm.ControlTextArea2"
+              >
                 <Form.Label className={styles.form_label}>
                   Route description
                 </Form.Label>
@@ -324,15 +384,27 @@ class Mapbox extends Component {
                   rows="2"
                   placeholder="Tell us a little about your route"
                   onChange={this.handleRouteDescriptionChange}
+                  value={routeDescription}
                   className={styles.placeholder}
                 />
               </Form.Group>
-
+              {localStorage.features && (
+                <Button
+                  variant="primary"
+                  type="submit"
+                  onClick={this.handleDrawNewRoute}
+                  className={styles.saveButton}
+                >
+                  Draw a new route
+                </Button>
+              )}
               <Button
                 variant="primary"
                 type="submit"
                 onClick={this.handleSaveRoute}
-                className={styles.saveButton}>
+                className={styles.saveButton}
+                disabled={err}
+              >
                 Save your route
               </Button>
               {err && <p>You must be logged in to post!</p>}
@@ -529,6 +601,18 @@ class Mapbox extends Component {
     });
   };
 
+  handleDrawNewRoute = e => {
+    e.preventDefault();
+    localStorage.clear();
+    this.setState({
+      features: [],
+      routeDescription: "",
+      routeName: "",
+      routeType: "scenic",
+      err: false
+    });
+  };
+
   handleSaveRoute = e => {
     e.preventDefault();
     const {
@@ -566,7 +650,16 @@ class Mapbox extends Component {
           }
         })
         .catch(err => {
+          // console.log(features[0]);
+          // localStorage.setItem("features", JSON.stringify(features));
+          // localStorage.setItem("routeType", routeType);
+          // localStorage.setItem("routeName", routeName);
+          // localStorage.setItem("routeDescription", routeDescription);
           this.setState({ err: true, formError: false, drawError: false });
+          localStorage.setItem("features", JSON.stringify(features));
+          localStorage.setItem("routeType", routeType);
+          localStorage.setItem("routeName", routeName);
+          localStorage.setItem("routeDescription", routeDescription);
         });
     }
   };

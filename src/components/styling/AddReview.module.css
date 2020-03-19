@@ -10,6 +10,10 @@
   text-align: center;
 }
 
+.rating {
+  font-size: 2em
+}
+
 /* .rating {
   unicode-bidi: bidi-override;
   direction: rtl;

@@ -4,14 +4,15 @@ import AllReviews from "../Reviews/AllReviews";
 import Card from "react-bootstrap/Card";
 import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
 import RouteAttractions from "./RouteAttractions";
-import attractionFlag from "../icons/location-pin.png";
-import warningFlag from "../icons/warning-flag.png";
+import attractionFlag from "../icons/orange_marker.png";
+import warningFlag from "../icons/orange_flag.png";
 import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import axios from "axios";
 import * as api from "../../api";
 import { navigate } from "@reach/router";
 import * as utils from "../../utils/utils";
+import StarRatingComponent from "react-star-rating-component";
 
 const token =
   "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
@@ -30,20 +31,20 @@ class SingleRoute extends Component {
     user: {},
     disableButton: false,
     rating: 0,
-    deleteErr: false
+    deleteErr: false,
+    selectedMarker: null
   };
 
   render() {
     const {
       features,
-      selectedMarker,
       routeName,
       calculatedDistance,
       city,
       user_id,
-      type
+      type,
     } = this.state.route;
-    const { disableButton, deleteErr } = this.state;
+    const { disableButton, deleteErr, selectedMarker } = this.state;
     const { saveRoute, closePopup, setSelectedMarker, deleteRoute } = this;
 
     const { reviews, rating } = this.state;
@@ -72,8 +73,7 @@ class SingleRoute extends Component {
               width: "90vw"
             }}
             center={center}
-            zoom={zoom}
-          >
+            zoom={zoom}>
             {features.map(feature => {
               if (
                 feature.geometry.type === "LineString" ||
@@ -84,8 +84,7 @@ class SingleRoute extends Component {
                     type="line"
                     id="route"
                     key={feature.id}
-                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
-                  >
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}>
                     <Feature coordinates={feature.geometry.coordinates} />
                   </Layer>
                 );
@@ -99,8 +98,7 @@ class SingleRoute extends Component {
                 return (
                   <Marker
                     coordinates={feature.geometry.coordinates}
-                    key={feature.id}
-                  >
+                    key={feature.id}>
                     <img
                       alt="pin marker"
                       src={markerImage}
@@ -116,8 +114,8 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={closePopup}
-              >
+                onClick={closePopup}>
+
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}
@@ -127,12 +125,19 @@ class SingleRoute extends Component {
               <Card.Title>
                 <h2 className={styles.h2}>{routeName}</h2>
               </Card.Title>
-              <br></br>
+              <StarRatingComponent
+                className={styles.rating}
+                name="rate1"
+                starCount={5}
+                value={(rating)}
+                editing={false}
+              />
               <Card.Subtitle className={styles.route_stats}>
-                <b>Location</b> · {city}
+                <b>Location</b> · {city.charAt(0).toUpperCase() + city.slice(1)}
                 <br></br>
                 <b>Distance</b> · {calculatedDistance.toFixed(2)} miles
-                <br></br> <b>Route Type</b> · {type}
+                <br></br> <b>Route Type</b> ·{" "}
+                {type.charAt(0).toUpperCase() + type.slice(1)}
                 <br></br>
                 <b>Rating</b> · {rating} / 5<br></br>
                 <b>Posted by</b> · {user_id}
@@ -143,8 +148,7 @@ class SingleRoute extends Component {
                   <button
                     className={styles.save_button}
                     onClick={saveRoute}
-                    disabled
-                  >
+                    disabled>
                     Route saved
                   </button>
                 ) : (

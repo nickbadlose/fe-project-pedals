@@ -62,13 +62,15 @@
   background-color: rgba(72, 81, 90, 0.8);
   align-self: center;
   width: 250px;
-  height: 15em;
+  height: 18em;
   margin: 4vh 0 4vh 0 ;
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .icon {
  padding: 1.2vh;
+ height: auto;
+ width: auto;
 }
 
 .icon2 {

@@ -55,7 +55,7 @@ const RouteCard = props => {
               src={starIcon}
               alt="bike icon"
             />{" "}
-            Rating: {route.averageRating}
+            Rating: {route.averageRating} / 5
           </Card.Text>
           <Button variant="primary" className={styles.cardButton}>
             {" "}
@@ -69,12 +69,13 @@ const RouteCard = props => {
         </Card.Body>
         <Card.Footer>
           {route.user_id === localStorage.username ? (
-            <small>By You on {' '}
-            <Moment format="D MMM YYYY">{route.posted}</Moment>
+            <small>
+              By You on <Moment format="D MMM YYYY">{route.posted}</Moment>
             </small>
           ) : (
-            <small>By {route.user_id} on {' '}
-            <Moment format="D MMM YYYY">{route.posted}</Moment>
+            <small>
+              By {route.user_id} on{" "}
+              <Moment format="D MMM YYYY">{route.posted}</Moment>
             </small>
           )}
         </Card.Footer>
