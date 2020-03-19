@@ -104,7 +104,7 @@ class Directions extends Component {
           });
         });
 
-        this.setState({ directions, directionsLoaded: true });
+        this.setState({ directions, directionsLoaded: true }, () => {});
       });
   };
 
@@ -135,8 +135,8 @@ class Directions extends Component {
     coordinates.map(coordinate => {
       const index = coordinates.indexOf(coordinate);
       if (index === coordinates.length - 1) {
-         route += `${coordinate}`;
-      } else  route += `${coordinate};`;
+        route += `${coordinate}`;
+      } else route += `${coordinate};`;
     });
     return route;
   };

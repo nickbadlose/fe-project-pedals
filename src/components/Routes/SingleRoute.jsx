@@ -12,6 +12,7 @@ import axios from "axios";
 import * as api from "../../api";
 import { navigate } from "@reach/router";
 import * as utils from "../../utils/utils";
+import Elevation from "../Elevation";
 
 const token =
   "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
@@ -69,7 +70,7 @@ class SingleRoute extends Component {
             style="mapbox://styles/mapbox/streets-v11" // eslint-disable-line
             containerStyle={{
               height: "100%",
-              width: "90vw"
+              width: "100vw"
             }}
             center={center}
             zoom={zoom}
@@ -134,6 +135,7 @@ class SingleRoute extends Component {
                 <b>Distance</b> · {calculatedDistance.toFixed(2)} miles
                 <br></br> <b>Route Type</b> · {type}
                 <br></br>
+                <Elevation coordinates={features[0].geometry.coordinates} />
                 <b>Rating</b> · {rating} / 5<br></br>
                 <b>Posted by</b> · {user_id}
               </Card.Subtitle>
