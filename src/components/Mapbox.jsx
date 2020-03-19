@@ -15,6 +15,7 @@ import { navigate } from "@reach/router";
 import attractionFlag from "./icons/orange_marker.png";
 import warningFlag from "./icons/orange_flag.png";
 import foodFlag from "./icons/foodicon.png";
+import { mapStyles } from "./styling/map.styles";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -32,7 +33,8 @@ class Mapbox extends Component {
     zoom: [10],
     startEle: 0,
     endEle: 0,
-    eleDiff: 0,
+    CEG: 0,
+    allEle: [],
     currentDrawMode: null,
     features: localStorage.features ? JSON.parse(localStorage.features) : [],
     isLoading: true,
@@ -53,7 +55,7 @@ class Mapbox extends Component {
       zoom,
       startEle,
       endEle,
-      eleDiff,
+      CEG,
       isLoading,
       selectedMarker,
       markerInfo,
@@ -65,6 +67,7 @@ class Mapbox extends Component {
       routeType,
       features
     } = this.state;
+
     const {
       onDrawCreate,
       onDrawUpdate,
@@ -78,6 +81,7 @@ class Mapbox extends Component {
       setSelectedMarker,
       closePopup
     } = this;
+
     return (
       <div className={styles.map_block}>
         {isLoading ? (
@@ -92,7 +96,8 @@ class Mapbox extends Component {
               width: "90vw"
             }}
             center={center}
-            zoom={zoom}>
+            zoom={zoom}
+          >
             {features.map(feature => {
               if (feature.geometry.type === "LineString") {
                 return (
@@ -100,7 +105,8 @@ class Mapbox extends Component {
                     type="line"
                     id="route"
                     key={feature.id}
-                    paint={{ "line-width": 3, "line-color": "#2F3288" }}>
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
+                  >
                     <Feature coordinates={feature.geometry.coordinates} />
                   </Layer>
                 );
@@ -116,7 +122,8 @@ class Mapbox extends Component {
                 return (
                   <Marker
                     coordinates={feature.geometry.coordinates}
-                    key={feature.id}>
+                    key={feature.id}
+                  >
                     <img
                       alt="pin marker"
                       src={markerImage}
@@ -132,7 +139,8 @@ class Mapbox extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={closePopup}>
+                onClick={closePopup}
+              >
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}
@@ -146,7 +154,8 @@ class Mapbox extends Component {
             }}
             center={center}
             zoom={zoom}
-            onClick={onClickMap}>
+            onClick={onClickMap}
+          >
             <DrawControl
               onDrawCreate={onDrawCreate}
               onDrawUpdate={onDrawUpdate}
@@ -155,159 +164,7 @@ class Mapbox extends Component {
               onDrawDelete={onDrawDelete}
               displayControlsDefault={false}
               controls={{ line_string: true, trash: true, point: true }}
-              styles={[
-                // ACTIVE (being drawn)
-                // line stroke
-
-                {
-                  id: "gl-draw_point",
-                  type: "circle",
-                  filter: [
-                    "all",
-                    ["==", "$type", "Point"],
-                    ["!=", "mode", "static"]
-                  ],
-                  paint: {
-                    "circle-radius": 3,
-                    "circle-color": "#D20C0C"
-                  }
-                },
-                {
-                  id: "gl-draw-line",
-                  type: "line",
-                  filter: [
-                    "all",
-                    ["==", "$type", "LineString"],
-                    ["!=", "mode", "static"]
-                  ],
-                  layout: {
-                    "line-cap": "round",
-                    "line-join": "round"
-                  },
-                  paint: {
-                    "line-color": "#D20C0C",
-                    // "line-dasharray": [0.2, 2],
-                    "line-width": 2
-                  }
-                },
-                // polygon fill
-                {
-                  id: "gl-draw-polygon-fill",
-                  type: "fill",
-                  filter: [
-                    "all",
-                    ["==", "$type", "Polygon"],
-                    ["!=", "mode", "static"]
-                  ],
-                  paint: {
-                    "fill-color": "#D20C0C",
-                    "fill-outline-color": "#D20C0C",
-                    "fill-opacity": 0.1
-                  }
-                },
-                // polygon outline stroke
-                // This doesn't style the first edge of the polygon, which uses the line stroke styling instead
-                {
-                  id: "gl-draw-polygon-stroke-active",
-                  type: "line",
-                  filter: [
-                    "all",
-                    ["==", "$type", "Polygon"],
-                    ["!=", "mode", "static"]
-                  ],
-                  layout: {
-                    "line-cap": "round",
-                    "line-join": "round"
-                  },
-                  paint: {
-                    "line-color": "#D20C0C",
-                    "line-dasharray": [0.2, 2],
-                    "line-width": 2
-                  }
-                },
-                // vertex point halos
-                {
-                  id: "gl-draw-polygon-and-line-vertex-halo-active",
-                  type: "circle",
-                  filter: [
-                    "all",
-                    ["==", "meta", "vertex"],
-                    ["==", "$type", "Point"],
-                    ["!=", "mode", "static"]
-                  ],
-                  paint: {
-                    "circle-radius": 5,
-                    "circle-color": "#FFF"
-                  }
-                },
-                // vertex points
-                {
-                  id: "gl-draw-polygon-and-line-vertex-active",
-                  type: "circle",
-                  filter: [
-                    "all",
-                    ["==", "meta", "vertex"],
-                    ["==", "$type", "Point"],
-                    ["!=", "mode", "static"]
-                  ],
-                  paint: {
-                    "circle-radius": 3,
-                    "circle-color": "#D20C0C"
-                  }
-                },
-                // INACTIVE (static, already drawn)
-                // line stroke
-                {
-                  id: "gl-draw-line-static",
-                  type: "line",
-                  filter: [
-                    "all",
-                    ["==", "$type", "LineString"],
-                    ["==", "mode", "static"]
-                  ],
-                  layout: {
-                    "line-cap": "round",
-                    "line-join": "round"
-                  },
-                  paint: {
-                    "line-color": "#000",
-                    "line-width": 3
-                  }
-                },
-                // polygon fill
-                {
-                  id: "gl-draw-polygon-fill-static",
-                  type: "fill",
-                  filter: [
-                    "all",
-                    ["==", "$type", "Polygon"],
-                    ["==", "mode", "static"]
-                  ],
-                  paint: {
-                    "fill-color": "#000",
-                    "fill-outline-color": "#000",
-                    "fill-opacity": 0.1
-                  }
-                },
-                // polygon outline
-                {
-                  id: "gl-draw-polygon-stroke-static",
-                  type: "line",
-                  filter: [
-                    "all",
-                    ["==", "$type", "Polygon"],
-                    ["==", "mode", "static"]
-                  ],
-                  layout: {
-                    "line-cap": "round",
-                    "line-join": "round"
-                  },
-                  paint: {
-                    "line-color": "#000",
-                    "line-width": 3
-                  }
-                }
-              ]}
+              styles={mapStyles}
             />
             <DrawPopup
               selectedMarker={selectedMarker}
@@ -333,13 +190,14 @@ class Mapbox extends Component {
               <b>Distance</b> · {calculatedDistance.toFixed(2)} miles <br></br>
               <b>Starting Elevation</b> · {startEle} meters <br></br>
               <b>End Elevation</b> · {endEle} meters <br></br>
-              <b>Elevation Difference</b> · {eleDiff} meters
+              <b>CEG</b> · {CEG} meters
               <br></br>
             </Card.Text>
             <Form onSubmit={this.handleSaveRoute}>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlSelect1">
+                controlId="drawRouteForm.ControlSelect1"
+              >
                 <Form.Label className={styles.form_label}>
                   Route type
                 </Form.Label>
@@ -347,7 +205,8 @@ class Mapbox extends Component {
                   as="select"
                   onChange={this.handleRouteTypeChange}
                   className={styles.placeholder}
-                  value={routeType}>
+                  value={routeType}
+                >
                   <option value="scenic">Scenic</option>
                   <option value="family friendly">Family Friendly</option>
                   <option value="off-road">Off-Road</option>
@@ -356,7 +215,8 @@ class Mapbox extends Component {
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea1">
+                controlId="drawRouteForm.ControlTextArea1"
+              >
                 <Form.Label className={styles.form_label}>
                   Route name
                 </Form.Label>
@@ -371,7 +231,8 @@ class Mapbox extends Component {
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea2">
+                controlId="drawRouteForm.ControlTextArea2"
+              >
                 <Form.Label className={styles.form_label}>
                   Route description
                 </Form.Label>
@@ -389,7 +250,8 @@ class Mapbox extends Component {
                   variant="primary"
                   type="submit"
                   onClick={this.handleDrawNewRoute}
-                  className={styles.saveButton}>
+                  className={styles.saveButton}
+                >
                   Draw a new route
                 </Button>
               )}
@@ -398,7 +260,8 @@ class Mapbox extends Component {
                 type="submit"
                 onClick={this.handleSaveRoute}
                 className={styles.saveButton}
-                disabled={err}>
+                disabled={err}
+              >
                 Save your route
               </Button>
               {err && <p>You must be logged in to post!</p>}
@@ -425,7 +288,8 @@ class Mapbox extends Component {
         calculatedDistance: 0,
         startEle: 0,
         endEle: 0,
-        eleDiff: 0
+        CEG: 0,
+        allEle: []
       });
     }
   }
@@ -498,7 +362,7 @@ class Mapbox extends Component {
   };
 
   calculateElevation = () => {
-    const { coordinates, startEle } = this.state;
+    const { coordinates } = this.state;
     const { length } = coordinates;
     const start = coordinates[0];
     const end = coordinates[length - 1];
@@ -523,12 +387,24 @@ class Mapbox extends Component {
           elevations.push(ele);
         });
 
-        const maxEle = Math.max(...elevations);
+        const ele = Math.max(...elevations);
 
         if (length <= 1) {
-          this.setState({ startEle: maxEle });
+          this.setState({
+            startEle: ele,
+            CEG: 0,
+            endEle: ele,
+            allEle: [ele]
+          });
         } else {
-          this.setState({ endEle: maxEle, eleDiff: startEle - maxEle });
+          this.setState(prevState => {
+            const CEG =
+              ele > prevState.endEle
+                ? prevState.CEG + ele - prevState.endEle
+                : prevState.CEG;
+
+            return { endEle: ele, CEG, allEle: [...prevState.allEle, ele] };
+          });
         }
       });
   };
@@ -585,7 +461,6 @@ class Mapbox extends Component {
       calculatedDistance: 0,
       startEle: 0,
       endEle: 0,
-      eleDiff: 0,
       selectedMarker: null,
       features: newFeatures
     });
@@ -593,10 +468,10 @@ class Mapbox extends Component {
 
   handleDrawNewRoute = e => {
     e.preventDefault();
-    localStorage.removeItem('features')
-    localStorage.removeItem('routeName')
-    localStorage.removeItem('routeType')
-    localStorage.removeItem('routeDescription')
+    localStorage.removeItem("features");
+    localStorage.removeItem("routeName");
+    localStorage.removeItem("routeType");
+    localStorage.removeItem("routeDescription");
     this.setState({
       features: [],
       routeDescription: "",
@@ -643,7 +518,7 @@ class Mapbox extends Component {
           }
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
           this.setState({ err: true, formError: false, drawError: false });
           localStorage.setItem("features", JSON.stringify(features));
           localStorage.setItem("routeType", routeType);
