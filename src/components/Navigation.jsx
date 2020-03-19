@@ -53,7 +53,8 @@ const Navigation = ({ logUserOut }) => {
                 // className="dropdown-menu dropdown-menu-left"
 
               >
-                <NavDropdown.Item href={`/users/${localStorage.username}`}>
+                {/* <NavDropdown.Item href={`/users/${localStorage.username}`}> */}
+                <NavDropdown.Item href={"/my_page"}>
                   Profile
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
