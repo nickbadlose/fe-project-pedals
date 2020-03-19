@@ -42,7 +42,7 @@ class SingleRoute extends Component {
       calculatedDistance,
       city,
       user_id,
-      type,
+      type
     } = this.state.route;
     const { disableButton, deleteErr, selectedMarker } = this.state;
     const { saveRoute, closePopup, setSelectedMarker, deleteRoute } = this;
@@ -73,7 +73,8 @@ class SingleRoute extends Component {
               width: "90vw"
             }}
             center={center}
-            zoom={zoom}>
+            zoom={zoom}
+          >
             {features.map(feature => {
               if (
                 feature.geometry.type === "LineString" ||
@@ -84,7 +85,8 @@ class SingleRoute extends Component {
                     type="line"
                     id="route"
                     key={feature.id}
-                    paint={{ "line-width": 3, "line-color": "#2F3288" }}>
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
+                  >
                     <Feature coordinates={feature.geometry.coordinates} />
                   </Layer>
                 );
@@ -98,7 +100,8 @@ class SingleRoute extends Component {
                 return (
                   <Marker
                     coordinates={feature.geometry.coordinates}
-                    key={feature.id}>
+                    key={feature.id}
+                  >
                     <img
                       alt="pin marker"
                       src={markerImage}
@@ -114,7 +117,9 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={closePopup}>
+
+                onClick={closePopup}
+              >
 
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
@@ -129,7 +134,7 @@ class SingleRoute extends Component {
                 className={styles.rating}
                 name="rate1"
                 starCount={5}
-                value={(rating)}
+                value={rating}
                 editing={false}
               />
               <Card.Subtitle className={styles.route_stats}>
@@ -148,7 +153,8 @@ class SingleRoute extends Component {
                   <button
                     className={styles.save_button}
                     onClick={saveRoute}
-                    disabled>
+                    disabled
+                  >
                     Route saved
                   </button>
                 ) : (
@@ -162,13 +168,16 @@ class SingleRoute extends Component {
                 <br></br>
               </Card.Body>
             </Card.Body>
+            <div className={styles.buttonContainer}>
+              {localStorage.username === user_id && (
+                <button onClick={deleteRoute} className={styles.delete_button}>
+                  Delete Route
+                </button>
+              )}
+              {deleteErr && <p>Route could not be deleted!</p>}
+            </div>
           </Card>
         </div>
-
-        {localStorage.username === user_id && (
-          <button onClick={deleteRoute}>Delete Route</button>
-        )}
-        {deleteErr && <p>Route could not be deleted!</p>}
 
         <div className={styles.reviewsAndDirections}>
           <AllReviews
