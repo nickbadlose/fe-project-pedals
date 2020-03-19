@@ -44,11 +44,10 @@ const Navigation = ({ logUserOut }) => {
             {localStorage.username ? (
               <NavDropdown
                 title={localStorage.username}
-
                 id="basic-nav-dropdown"
                 className={styles.navLabel}
-                alignRight={true} 
-     
+                alignRight={true}
+              >
                 <NavDropdown.Item
                   href={"/my_page"}
                   className={styles.navLabel2}
