@@ -27,9 +27,23 @@ const mapboxTerrainToken =
 class Mapbox extends Component {
   state = {
     coordinates: [],
-    calculatedDistance: 0,
+    calculatedDistance: +localStorage.calculatedDistance || 0,
+    drawCenter: localStorage.features
+      ? JSON.parse(localStorage.features)[0].geometry.coordinates[0]
+      : [],
     center: [],
-    zoom: [10],
+    zoom:
+      localStorage.calculatedDistance === 0
+        ? [14]
+        : localStorage.calculatedDistance < 1
+        ? [15.5]
+        : localStorage.calculatedDistance < 2
+        ? [14]
+        : localStorage.calculatedDistance < 3
+        ? [13.5]
+        : localStorage.calculatedDistance < 30
+        ? [12]
+        : [10],
     startEle: 0,
     endEle: 0,
     eleDiff: 0,
@@ -63,7 +77,8 @@ class Mapbox extends Component {
       routeDescription,
       routeName,
       routeType,
-      features
+      features,
+      drawCenter
     } = this.state;
     const {
       onDrawCreate,
@@ -78,6 +93,7 @@ class Mapbox extends Component {
       setSelectedMarker,
       closePopup
     } = this;
+
     return (
       <div className={styles.map_block}>
         {isLoading ? (
@@ -91,8 +107,9 @@ class Mapbox extends Component {
               height: "100%",
               width: "90vw"
             }}
-            center={center}
-            zoom={zoom}>
+            center={drawCenter}
+            zoom={zoom}
+          >
             {features.map(feature => {
               if (feature.geometry.type === "LineString") {
                 return (
@@ -100,7 +117,8 @@ class Mapbox extends Component {
                     type="line"
                     id="route"
                     key={feature.id}
-                    paint={{ "line-width": 3, "line-color": "#2F3288" }}>
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
+                  >
                     <Feature coordinates={feature.geometry.coordinates} />
                   </Layer>
                 );
@@ -116,7 +134,8 @@ class Mapbox extends Component {
                 return (
                   <Marker
                     coordinates={feature.geometry.coordinates}
-                    key={feature.id}>
+                    key={feature.id}
+                  >
                     <img
                       alt="pin marker"
                       src={markerImage}
@@ -132,7 +151,8 @@ class Mapbox extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={closePopup}>
+                onClick={closePopup}
+              >
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}
@@ -146,7 +166,8 @@ class Mapbox extends Component {
             }}
             center={center}
             zoom={zoom}
-            onClick={onClickMap}>
+            onClick={onClickMap}
+          >
             <DrawControl
               onDrawCreate={onDrawCreate}
               onDrawUpdate={onDrawUpdate}
@@ -339,7 +360,8 @@ class Mapbox extends Component {
             <Form onSubmit={this.handleSaveRoute}>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlSelect1">
+                controlId="drawRouteForm.ControlSelect1"
+              >
                 <Form.Label className={styles.form_label}>
                   Route type
                 </Form.Label>
@@ -347,7 +369,8 @@ class Mapbox extends Component {
                   as="select"
                   onChange={this.handleRouteTypeChange}
                   className={styles.placeholder}
-                  value={routeType}>
+                  value={routeType}
+                >
                   <option value="scenic">Scenic</option>
                   <option value="family friendly">Family Friendly</option>
                   <option value="off-road">Off-Road</option>
@@ -356,7 +379,8 @@ class Mapbox extends Component {
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea1">
+                controlId="drawRouteForm.ControlTextArea1"
+              >
                 <Form.Label className={styles.form_label}>
                   Route name
                 </Form.Label>
@@ -371,7 +395,8 @@ class Mapbox extends Component {
               </Form.Group>
               <Form.Group
                 className={styles.input_label}
-                controlId="drawRouteForm.ControlTextArea2">
+                controlId="drawRouteForm.ControlTextArea2"
+              >
                 <Form.Label className={styles.form_label}>
                   Route description
                 </Form.Label>
@@ -389,7 +414,8 @@ class Mapbox extends Component {
                   variant="primary"
                   type="submit"
                   onClick={this.handleDrawNewRoute}
-                  className={styles.saveButton}>
+                  className={styles.saveButton}
+                >
                   Draw a new route
                 </Button>
               )}
@@ -398,7 +424,8 @@ class Mapbox extends Component {
                 type="submit"
                 onClick={this.handleSaveRoute}
                 className={styles.saveButton}
-                disabled={err}>
+                disabled={err}
+              >
                 Save your route
               </Button>
               {err && <p>You must be logged in to post!</p>}
@@ -593,16 +620,19 @@ class Mapbox extends Component {
 
   handleDrawNewRoute = e => {
     e.preventDefault();
-    localStorage.removeItem('features')
-    localStorage.removeItem('routeName')
-    localStorage.removeItem('routeType')
-    localStorage.removeItem('routeDescription')
+    localStorage.removeItem("features");
+    localStorage.removeItem("routeName");
+    localStorage.removeItem("routeType");
+    localStorage.removeItem("routeDescription");
+    localStorage.removeItem("calculatedDistance");
     this.setState({
       features: [],
       routeDescription: "",
       routeName: "",
       routeType: "scenic",
-      err: false
+      err: false,
+      calculatedDistance: 0,
+      zoom: [10]
     });
   };
 
@@ -643,12 +673,13 @@ class Mapbox extends Component {
           }
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
           this.setState({ err: true, formError: false, drawError: false });
           localStorage.setItem("features", JSON.stringify(features));
           localStorage.setItem("routeType", routeType);
           localStorage.setItem("routeName", routeName);
           localStorage.setItem("routeDescription", routeDescription);
+          localStorage.setItem("calculatedDistance", calculatedDistance);
         });
     }
   };
