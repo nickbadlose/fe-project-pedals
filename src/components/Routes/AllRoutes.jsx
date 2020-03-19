@@ -69,6 +69,7 @@ class AllRoutes extends Component {
   fetchRoutes = () => {
     const { type } = this.props;
     const { sort_by, order } = this.state;
+
     api
       .getRoutes(type, sort_by, order)
       .then(routes => {
