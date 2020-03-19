@@ -75,7 +75,10 @@ class SingleRoute extends Component {
             center={center}
             zoom={zoom}>
             {features.map(feature => {
-              if (feature.geometry.type === "LineString") {
+              if (
+                feature.geometry.type === "LineString" ||
+                feature.type === "LineString"
+              ) {
                 return (
                   <Layer
                     type="line"
@@ -112,6 +115,7 @@ class SingleRoute extends Component {
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
                 onClick={closePopup}>
+
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}

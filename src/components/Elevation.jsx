@@ -63,8 +63,7 @@ export default class App extends Component {
             };
           } else {
             return {
-              data: [...prevState.data, { x, y }],
-              isLoading: true
+              data: [...prevState.data, { x, y }]
             };
           }
         });
