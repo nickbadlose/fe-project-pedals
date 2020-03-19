@@ -31,20 +31,20 @@ class SingleRoute extends Component {
     user: {},
     disableButton: false,
     rating: 0,
-    deleteErr: false
+    deleteErr: false,
+    selectedMarker: null
   };
 
   render() {
     const {
       features,
-      selectedMarker,
       routeName,
       calculatedDistance,
       city,
       user_id,
-      type
+      type,
     } = this.state.route;
-    const { disableButton, deleteErr } = this.state;
+    const { disableButton, deleteErr, selectedMarker } = this.state;
     const { saveRoute, closePopup, setSelectedMarker, deleteRoute } = this;
 
     const { reviews, rating } = this.state;
