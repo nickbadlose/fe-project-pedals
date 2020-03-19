@@ -24,17 +24,6 @@ class AddReview extends Component {
         </Form.Group>
         <Form.Group controlId="addReview.reviewRating">
           <Form.Label className={styles.label}>Rate the route</Form.Label>
-          {/* <Form.Control
-            as="select"
-            onChange={this.handleReviewRatingChange}
-            className={styles.placeholder}
-          >
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </Form.Control> */}
           <div>
         <StarRatingComponent className={styles.rating}
           name="rate1" 
