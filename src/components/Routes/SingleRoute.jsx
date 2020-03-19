@@ -4,8 +4,8 @@ import AllReviews from "../Reviews/AllReviews";
 import Card from "react-bootstrap/Card";
 import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
 import RouteAttractions from "./RouteAttractions";
-import attractionFlag from "../icons/location-pin.png";
-import warningFlag from "../icons/warning-flag.png";
+import attractionFlag from "../icons/orange_marker.png";
+import warningFlag from "../icons/orange_flag.png";
 import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import axios from "axios";
@@ -113,9 +113,7 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-
                 onClick={closePopup}
-
               >
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
@@ -128,24 +126,31 @@ class SingleRoute extends Component {
               </Card.Title>
               <br></br>
               <Card.Subtitle className={styles.route_stats}>
-                <b>Location</b> · {city}
+                <b>Location</b> · {city.charAt(0).toUpperCase() + city.slice(1)}
                 <br></br>
                 <b>Distance</b> · {calculatedDistance.toFixed(2)} miles
-                <br></br> <b>Route Type</b> · {type}
+                <br></br> <b>Route Type</b> ·{" "}
+                {type.charAt(0).toUpperCase() + type.slice(1)}
                 <br></br>
                 <b>Rating</b> · {rating} / 5<br></br>
                 <b>Posted by</b> · {user_id}
               </Card.Subtitle>
-              
+
               <Card.Body>
-              {disableButton ? (
-          <button className={styles.save_button} onClick={saveRoute} disabled>
-            Route saved
-          </button>
-        ) : (
-          <button className={styles.save_button} onClick={saveRoute}>Save Route</button>
-        )}
-        <br></br>
+                {disableButton ? (
+                  <button
+                    className={styles.save_button}
+                    onClick={saveRoute}
+                    disabled
+                  >
+                    Route saved
+                  </button>
+                ) : (
+                  <button className={styles.save_button} onClick={saveRoute}>
+                    Save Route
+                  </button>
+                )}
+                <br></br>
                 <br></br>
                 <RouteAttractions features={features} />
                 <br></br>
@@ -160,10 +165,10 @@ class SingleRoute extends Component {
         {deleteErr && <p>Route could not be deleted!</p>}
 
         <div className={styles.reviewsAndDirections}>
-        <AllReviews
-          reviews={reviews}
-          handleSaveReview={this.handleSaveReview}
-        />
+          <AllReviews
+            reviews={reviews}
+            handleSaveReview={this.handleSaveReview}
+          />
           <Directions coordinates={this.state.coordinates} />
         </div>
       </div>
@@ -202,7 +207,6 @@ class SingleRoute extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-
     const { user, reviews } = this.state;
     const { route_id } = this.props;
     const { disableSaveRoute } = this;
@@ -250,7 +254,6 @@ class SingleRoute extends Component {
     });
   };
 
-
   deleteRoute = () => {
     const { route_id } = this.props;
     this.setState({ deleteErr: false });
@@ -264,7 +267,6 @@ class SingleRoute extends Component {
         this.setState({ deleteErr: true });
       });
   };
-
 }
 
 export default SingleRoute;
