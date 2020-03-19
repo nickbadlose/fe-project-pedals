@@ -15,6 +15,12 @@ export const getRoutes = (type, sort_by, order) => {
     });
 };
 
+export const getRouteById = route_id => {
+  return axios.get(
+    `http://project-pedals.herokuapp.com/api/routes/${route_id}`
+  );
+};
+
 export const getRoutesByUser = username => {
   return axios
     .get(`${baseURL}/routes?user=${username}`)
