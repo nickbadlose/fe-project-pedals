@@ -95,9 +95,14 @@ class RouteCard extends Component {
       const ratings = reviews.map(review => {
         return review.rating;
       });
-      const currentRating = (
-        ratings.reduce((a, b) => a + b) / ratings.length
-      ).toFixed(1);
+
+      let currentRating = 0;
+      
+      if (ratings.length !== 0) {
+        currentRating = (
+          ratings.reduce((a, b) => a + b) / ratings.length
+        ).toFixed(1)
+      }
 
       this.setState({ rating: currentRating });
     });
