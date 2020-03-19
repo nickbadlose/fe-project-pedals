@@ -21,6 +21,7 @@ const RouteAttractions = props => {
 
   return (
     <section>
+      <br></br>
       <h2 className={styles.heading}>
         <img
           alt="attraction marker"

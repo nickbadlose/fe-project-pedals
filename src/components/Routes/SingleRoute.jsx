@@ -35,7 +35,8 @@ class SingleRoute extends Component {
     disableButton: false,
     rating: 0,
     deleteErr: false,
-    selectedMarker: null
+    selectedMarker: null,
+    reviewed: false
   };
 
   render() {
@@ -50,7 +51,7 @@ class SingleRoute extends Component {
     const { disableButton, deleteErr, selectedMarker } = this.state;
     const { saveRoute, closePopup, setSelectedMarker, deleteRoute } = this;
 
-    const { reviews, rating } = this.state;
+    const { reviews, rating, reviewed } = this.state;
 
     let center;
     let zoom = [15];
@@ -170,7 +171,7 @@ class SingleRoute extends Component {
                 )}
                 <br></br>
                 <br></br>
-                <RouteAttractions features={features} />
+                
                 <br></br>
               </Card.Body>
             </Card.Body>
@@ -188,9 +189,10 @@ class SingleRoute extends Component {
         <div className={styles.reviewsAndDirections}>
           <AllReviews
             reviews={reviews}
-            handleSaveReview={this.handleSaveReview}
+            handleSaveReview={this.handleSaveReview} reviewed={reviewed}
           />
-          <Directions coordinates={this.state.coordinates} />
+          <RouteAttractions features={features} />
+          {/* <Directions coordinates={this.state.coordinates} /> */}
         </div>
       </div>
     );
@@ -276,9 +278,10 @@ class SingleRoute extends Component {
     const { route_id } = this.props;
     const { username } = localStorage;
 
+
     api.postReview(route_id, username, body, rating).then(review => {
       this.setState(currentState => {
-        return { reviews: [review, ...currentState.reviews] };
+        return { reviews: [review, ...currentState.reviews], reviewed: true };
       });
     });
   };
