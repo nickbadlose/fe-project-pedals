@@ -556,10 +556,6 @@ class Mapbox extends Component {
     }
   };
 
-  // onDrawUpdate = ({ features }) => {
-  //   console.log("Update");
-  // };
-
   onDrawSelectionChange = ({ features }) => {
     const { currentDrawMode } = this.state;
     if (features.length) {
@@ -652,11 +648,6 @@ class Mapbox extends Component {
           }
         })
         .catch(err => {
-          // console.log(features[0]);
-          // localStorage.setItem("features", JSON.stringify(features));
-          // localStorage.setItem("routeType", routeType);
-          // localStorage.setItem("routeName", routeName);
-          // localStorage.setItem("routeDescription", routeDescription);
           this.setState({ err: true, formError: false, drawError: false });
           localStorage.setItem("features", JSON.stringify(features));
           localStorage.setItem("routeType", routeType);
@@ -716,5 +707,3 @@ class Mapbox extends Component {
   };
 }
 export default Mapbox;
-
-//sub title className className="mb-2 text-muted"
