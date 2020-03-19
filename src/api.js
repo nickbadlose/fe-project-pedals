@@ -122,7 +122,5 @@ export const postReview = (route_id, user_id, body, rating) => {
 };
 
 export const removeRoute = route_id => {
-  console.log(route_id);
   return axios.delete(`${baseURL}/routes/${route_id}`);
 };
-
