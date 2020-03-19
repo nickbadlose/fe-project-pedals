@@ -36,9 +36,8 @@ class SingleRoute extends Component {
     deleteErr: false,
     selectedMarker: null,
     err: false,
-    zoom: [1]
+    zoom: [12],
     reviewed: false
-
   };
 
   render() {
@@ -175,7 +174,7 @@ class SingleRoute extends Component {
                 )}
                 <br></br>
                 <br></br>
-                
+
                 <br></br>
               </Card.Body>
             </Card.Body>
@@ -193,7 +192,8 @@ class SingleRoute extends Component {
         <div className={styles.reviewsAndDirections}>
           <AllReviews
             reviews={reviews}
-            handleSaveReview={this.handleSaveReview} reviewed={reviewed}
+            handleSaveReview={this.handleSaveReview}
+            reviewed={reviewed}
           />
           <RouteAttractions features={features} />
           {/* <Directions coordinates={this.state.coordinates} /> */}
@@ -219,7 +219,9 @@ class SingleRoute extends Component {
             ? [14]
             : route.calculatedDistance < 3
             ? [13.5]
-            : route.calculatedDistance < 30
+            : route.calculatedDistance < 7
+            ? [12.8]
+            : route.calculatedDistance < 10
             ? [12]
             : [10];
         this.setState({
@@ -297,7 +299,6 @@ class SingleRoute extends Component {
   handleSaveReview = (body, rating) => {
     const { route_id } = this.props;
     const { username } = localStorage;
-
 
     api.postReview(route_id, username, body, rating).then(review => {
       this.setState(currentState => {
