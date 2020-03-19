@@ -28,9 +28,23 @@ const mapboxTerrainToken =
 class Mapbox extends Component {
   state = {
     coordinates: [],
-    calculatedDistance: 0,
+    calculatedDistance: +localStorage.calculatedDistance || 0,
+    drawCenter: localStorage.features
+      ? JSON.parse(localStorage.features)[0].geometry.coordinates[0]
+      : [],
     center: [],
-    zoom: [10],
+    zoom:
+      localStorage.calculatedDistance === 0
+        ? [14]
+        : localStorage.calculatedDistance < 1
+        ? [15.5]
+        : localStorage.calculatedDistance < 2
+        ? [14]
+        : localStorage.calculatedDistance < 3
+        ? [13.5]
+        : localStorage.calculatedDistance < 30
+        ? [12]
+        : [10],
     startEle: 0,
     endEle: 0,
     CEG: 0,
@@ -65,7 +79,8 @@ class Mapbox extends Component {
       routeDescription,
       routeName,
       routeType,
-      features
+      features,
+      drawCenter
     } = this.state;
 
     const {
@@ -95,7 +110,7 @@ class Mapbox extends Component {
               height: "100%",
               width: "90vw"
             }}
-            center={center}
+            center={drawCenter}
             zoom={zoom}
           >
             {features.map(feature => {
@@ -472,12 +487,15 @@ class Mapbox extends Component {
     localStorage.removeItem("routeName");
     localStorage.removeItem("routeType");
     localStorage.removeItem("routeDescription");
+    localStorage.removeItem("calculatedDistance");
     this.setState({
       features: [],
       routeDescription: "",
       routeName: "",
       routeType: "scenic",
-      err: false
+      err: false,
+      calculatedDistance: 0,
+      zoom: [10]
     });
   };
 
@@ -524,6 +542,7 @@ class Mapbox extends Component {
           localStorage.setItem("routeType", routeType);
           localStorage.setItem("routeName", routeName);
           localStorage.setItem("routeDescription", routeDescription);
+          localStorage.setItem("calculatedDistance", calculatedDistance);
         });
     }
   };

@@ -9,13 +9,12 @@ import warningFlag from "../icons/orange_flag.png";
 import foodFlag from "../icons/orange_food_drink.png";
 import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
-import axios from "axios";
 import * as api from "../../api";
 import { navigate } from "@reach/router";
 import * as utils from "../../utils/utils";
 import Elevation from "../Elevation";
 import StarRatingComponent from "react-star-rating-component";
-
+import ErrorPage from "../ErrorPage";
 
 const token =
   "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
@@ -36,7 +35,10 @@ class SingleRoute extends Component {
     rating: 0,
     deleteErr: false,
     selectedMarker: null,
+    err: false,
+    zoom: [1]
     reviewed: false
+
   };
 
   render() {
@@ -48,20 +50,20 @@ class SingleRoute extends Component {
       user_id,
       type
     } = this.state.route;
-    const { disableButton, deleteErr, selectedMarker } = this.state;
+    const { disableButton, deleteErr, selectedMarker, err, zoom } = this.state;
     const { saveRoute, closePopup, setSelectedMarker, deleteRoute } = this;
-
     const { reviews, rating, reviewed } = this.state;
-
     let center;
-    let zoom = [15];
+    // let zoom = [15];
     if (features) {
       const { length } = features[0].geometry.coordinates;
       center = features[0].geometry.coordinates[Math.round(length / 2)];
     }
-    if (calculatedDistance > 4) zoom = [11];
+    // if (calculatedDistance > 4) zoom = [11];
 
-    return this.state.isLoading ? (
+    return err ? (
+      <ErrorPage err={err} />
+    ) : this.state.isLoading ? (
       <div className={styles.map_block}>
         <div className={styles.loading_section}>
           <img src={bike_spinner} alt="loading" />
@@ -127,10 +129,8 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-
                 onClick={closePopup}
               >
-
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}
@@ -205,16 +205,32 @@ class SingleRoute extends Component {
   componentDidMount() {
     const { route_id } = this.props;
 
-    axios
-      .get(`http://project-pedals.herokuapp.com/api/routes/${route_id}`)
+    api
+      .getRouteById(route_id)
       .then(res => {
         const { route } = res.data;
         const coordinates = res.data.route.features[0].geometry.coordinates;
+        const zoom =
+          route.calculatedDistance === 0
+            ? [14]
+            : route.calculatedDistance < 1
+            ? [15.5]
+            : route.calculatedDistance < 2
+            ? [14]
+            : route.calculatedDistance < 3
+            ? [13.5]
+            : route.calculatedDistance < 30
+            ? [12]
+            : [10];
         this.setState({
           route,
           coordinates,
-          isLoading: false
+          isLoading: false,
+          zoom
         });
+      })
+      .catch(() => {
+        this.setState({ err: { status: 404, msg: "Route doesn't exist!" } });
       });
 
     api.getReviews(route_id).then(reviews => {
