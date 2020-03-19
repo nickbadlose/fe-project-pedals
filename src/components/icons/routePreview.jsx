@@ -11,7 +11,6 @@ const PreviewImg = coordinates => {
   const lineSize = 3;
   const color = "00F"; // 3 or 6 digit hexa-decimal colours only
 
-  console.log(encodedPolyline);
   const url = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/path-${lineSize}+${color}(${encodedPolyline})/auto/400x400?access_token=${token}`;
 
   return url;

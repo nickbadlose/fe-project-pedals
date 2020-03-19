@@ -18,7 +18,7 @@ const MainSite = ({ logUserIn, logUserOut, invalidUser, signUp }) => {
       <Navigation logUserOut={logUserOut} />
       <Router>
         <HomePage path="/" />
-        <RouteType path="/routes" type={''}/>
+        <RouteType path="/routes" type={""} />
         <UserPage path="/my_page" />
         <DrawRoute path="/routes/draw" />
         <RouteType path="/routes/:type" />
