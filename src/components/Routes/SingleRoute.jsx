@@ -12,6 +12,7 @@ import axios from "axios";
 import * as api from "../../api";
 import { navigate } from "@reach/router";
 import * as utils from "../../utils/utils";
+import StarRatingComponent from "react-star-rating-component";
 
 const token =
   "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
@@ -72,8 +73,7 @@ class SingleRoute extends Component {
               width: "90vw"
             }}
             center={center}
-            zoom={zoom}
-          >
+            zoom={zoom}>
             {features.map(feature => {
               if (feature.geometry.type === "LineString") {
                 return (
@@ -81,8 +81,7 @@ class SingleRoute extends Component {
                     type="line"
                     id="route"
                     key={feature.id}
-                    paint={{ "line-width": 3, "line-color": "#2F3288" }}
-                  >
+                    paint={{ "line-width": 3, "line-color": "#2F3288" }}>
                     <Feature coordinates={feature.geometry.coordinates} />
                   </Layer>
                 );
@@ -96,8 +95,7 @@ class SingleRoute extends Component {
                 return (
                   <Marker
                     coordinates={feature.geometry.coordinates}
-                    key={feature.id}
-                  >
+                    key={feature.id}>
                     <img
                       alt="pin marker"
                       src={markerImage}
@@ -113,8 +111,7 @@ class SingleRoute extends Component {
             {selectedMarker && (
               <Popup
                 coordinates={selectedMarker.geometry.coordinates}
-                onClick={closePopup}
-              >
+                onClick={closePopup}>
                 <p>{selectedMarker.markerComments[0]}</p>
               </Popup>
             )}
@@ -124,7 +121,13 @@ class SingleRoute extends Component {
               <Card.Title>
                 <h2 className={styles.h2}>{routeName}</h2>
               </Card.Title>
-              <br></br>
+              <StarRatingComponent
+                className={styles.rating}
+                name="rate1"
+                starCount={5}
+                value={(rating)}
+                editing={false}
+              />
               <Card.Subtitle className={styles.route_stats}>
                 <b>Location</b> · {city.charAt(0).toUpperCase() + city.slice(1)}
                 <br></br>
@@ -141,8 +144,7 @@ class SingleRoute extends Component {
                   <button
                     className={styles.save_button}
                     onClick={saveRoute}
-                    disabled
-                  >
+                    disabled>
                     Route saved
                   </button>
                 ) : (

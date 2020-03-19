@@ -36,7 +36,7 @@ class AddReview extends Component {
             <option>5</option>
           </Form.Control> */}
           <div>
-        <StarRatingComponent 
+        <StarRatingComponent className={styles.rating}
           name="rate1" 
           starCount={5}
           value={rating}
