@@ -29,6 +29,7 @@ const RouteCard = props => {
             {route.routeName}
           </Card.Title>
           <Card.Text className={styles.cardText}>
+            <div>
             <img
               className={styles.mapIcon}
               src={mapLocation}
@@ -42,7 +43,8 @@ const RouteCard = props => {
               alt="distance icon"
             />{" "}
             {route.calculatedDistance.toFixed(1)} miles
-            <br></br>
+            </div>
+            <div>
             <img
               className={styles.bikeIcon}
               src={bikeIcon}
@@ -56,6 +58,7 @@ const RouteCard = props => {
               alt="bike icon"
             />{" "}
             Rating: {route.averageRating} / 5
+            </div>
           </Card.Text>
           <Button variant="primary" className={styles.cardButton}>
             {" "}
