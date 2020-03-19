@@ -6,6 +6,7 @@ import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
 import RouteAttractions from "./RouteAttractions";
 import attractionFlag from "../icons/orange_marker.png";
 import warningFlag from "../icons/orange_flag.png";
+import foodFlag from "../icons/foodicon.png";
 import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import axios from "axios";
@@ -92,6 +93,8 @@ class SingleRoute extends Component {
                 let markerImage;
                 if (feature.markerType === "attraction") {
                   markerImage = attractionFlag;
+                } else if (feature.markerType === "food") {
+                  markerImage = foodFlag;
                 } else {
                   markerImage = warningFlag;
                 }

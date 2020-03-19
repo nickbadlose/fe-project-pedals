@@ -21,6 +21,7 @@ const DrawPopup = props => {
               <Form.Control size="sm" as="select" onChange={setMarkerType}>
                 <option value="attraction">Attraction</option>
                 <option value="warning">Warning</option>
+                <option value="food">Food & Drink</option>
               </Form.Control>
             </Form.Group>
             <Form.Group controlId="popupInput.ControlTextArea1">
