@@ -6,7 +6,7 @@ import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
 import RouteAttractions from "./RouteAttractions";
 import attractionFlag from "../icons/orange_marker.png";
 import warningFlag from "../icons/orange_flag.png";
-import foodFlag from "../icons/foodicon.png";
+import foodFlag from "../icons/orange_food_drink.png";
 import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import axios from "axios";
@@ -96,12 +96,16 @@ class SingleRoute extends Component {
                 );
               } else if (feature.geometry.type === "Point") {
                 let markerImage;
+                let height;
                 if (feature.markerType === "attraction") {
                   markerImage = attractionFlag;
+                  height = "50px";
                 } else if (feature.markerType === "food") {
                   markerImage = foodFlag;
+                  height = "40px";
                 } else {
                   markerImage = warningFlag;
+                  height = "40px";
                 }
                 return (
                   <Marker
@@ -111,7 +115,7 @@ class SingleRoute extends Component {
                     <img
                       alt="pin marker"
                       src={markerImage}
-                      height="30px"
+                      height={height}
                       onClick={() => {
                         setSelectedMarker(feature);
                       }}
