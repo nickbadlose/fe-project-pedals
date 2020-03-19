@@ -6,7 +6,7 @@ import { Link } from "@reach/router";
 
 class UserPage extends Component {
   state = {
-    username: "jessjelly",
+    username: null,
     userInfo: "",
     isLoadingInfo: true,
     isLoadingRoutes: true
