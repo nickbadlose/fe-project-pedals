@@ -98,8 +98,6 @@ class RouteCard extends Component {
       const ratings = reviews.map(review => {
         return review.rating;
       });
-
-      let currentRating = 0;
       
       if (ratings.length !== 0) {
         currentRating = (
