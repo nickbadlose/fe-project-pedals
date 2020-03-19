@@ -11,7 +11,6 @@ import RouteType from "./Routes/RouteType";
 import LogIn from "./LogIn";
 import SignUp from "../components/SignUp";
 import Footer from "../components/Footer";
-import Elevation from "../components/Elevation";
 
 const MainSite = ({ logUserIn, logUserOut, invalidUser, signUp }) => {
   return (
@@ -26,7 +25,6 @@ const MainSite = ({ logUserIn, logUserOut, invalidUser, signUp }) => {
         <SingleRoute path="/routes/id/:route_id" />
         <LogIn path="/login" logUserIn={logUserIn} invalidUser={invalidUser} />
         <SignUp path="/signup" signUp={signUp} />
-        <Elevation path="/test" />
         <ErrorPage default />
       </Router>
       <Footer />
