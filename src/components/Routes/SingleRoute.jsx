@@ -6,7 +6,7 @@ import ReactMapboxGl, { Layer, Feature, Marker, Popup } from "react-mapbox-gl";
 import RouteAttractions from "./RouteAttractions";
 import attractionFlag from "../icons/orange_marker.png";
 import warningFlag from "../icons/orange_flag.png";
-import foodFlag from "../icons/foodicon.png";
+import foodFlag from "../icons/orange_food_drink.png";
 import bike_spinner from "../icons/bike_spinner.gif";
 import styles from "../styling/SingleRoute.module.css";
 import * as api from "../../api";
@@ -37,6 +37,8 @@ class SingleRoute extends Component {
     selectedMarker: null,
     err: false,
     zoom: [1]
+    reviewed: false
+
   };
 
   render() {
@@ -50,8 +52,7 @@ class SingleRoute extends Component {
     } = this.state.route;
     const { disableButton, deleteErr, selectedMarker, err, zoom } = this.state;
     const { saveRoute, closePopup, setSelectedMarker, deleteRoute } = this;
-
-    const { reviews, rating } = this.state;
+    const { reviews, rating, reviewed } = this.state;
     let center;
     // let zoom = [15];
     if (features) {
@@ -97,12 +98,16 @@ class SingleRoute extends Component {
                 );
               } else if (feature.geometry.type === "Point") {
                 let markerImage;
+                let height;
                 if (feature.markerType === "attraction") {
                   markerImage = attractionFlag;
+                  height = "50px";
                 } else if (feature.markerType === "food") {
                   markerImage = foodFlag;
+                  height = "40px";
                 } else {
                   markerImage = warningFlag;
+                  height = "40px";
                 }
                 return (
                   <Marker
@@ -112,7 +117,7 @@ class SingleRoute extends Component {
                     <img
                       alt="pin marker"
                       src={markerImage}
-                      height="30px"
+                      height={height}
                       onClick={() => {
                         setSelectedMarker(feature);
                       }}
@@ -170,7 +175,7 @@ class SingleRoute extends Component {
                 )}
                 <br></br>
                 <br></br>
-                <RouteAttractions features={features} />
+                
                 <br></br>
               </Card.Body>
             </Card.Body>
@@ -188,9 +193,10 @@ class SingleRoute extends Component {
         <div className={styles.reviewsAndDirections}>
           <AllReviews
             reviews={reviews}
-            handleSaveReview={this.handleSaveReview}
+            handleSaveReview={this.handleSaveReview} reviewed={reviewed}
           />
-          <Directions coordinates={this.state.coordinates} />
+          <RouteAttractions features={features} />
+          {/* <Directions coordinates={this.state.coordinates} /> */}
         </div>
       </div>
     );
@@ -292,9 +298,10 @@ class SingleRoute extends Component {
     const { route_id } = this.props;
     const { username } = localStorage;
 
+
     api.postReview(route_id, username, body, rating).then(review => {
       this.setState(currentState => {
-        return { reviews: [review, ...currentState.reviews] };
+        return { reviews: [review, ...currentState.reviews], reviewed: true };
       });
     });
   };

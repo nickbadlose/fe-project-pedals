@@ -8,19 +8,20 @@ import styles from "../components/styling/UserPage.module.css";
 class UserPage extends Component {
   state = {
     username: null,
-    userInfo: "",
+    userSavedRoutes: [],
+    userRoutes: [],
     isLoadingInfo: true,
     isLoadingRoutes: true
   };
 
   render() {
     const {
-      userInfo,
-      usersRoutes,
+      userSavedRoutes,
+      userRoutes,
       isLoadingRoutes,
       isLoadingInfo
     } = this.state;
-    const { savedRoutes } = userInfo;
+    const { username } = localStorage;
 
     if (localStorage.username === undefined) {
       return (
@@ -34,13 +35,13 @@ class UserPage extends Component {
     return (
       <React.Fragment>
         <div>
-          <h2 className={styles.h2}>Welcome to your page, {userInfo._id}!</h2>
+          <h2 className={styles.h2}>Welcome to your page, {username}!</h2>
           {isLoadingRoutes ? (
             <LoadingIndicator />
-          ) : usersRoutes.length !== 0 ? (
+          ) : userRoutes.length !== 0 ? (
             <div>
               <h3 className={styles.h3}>Your Routes</h3>
-              <RoutesList routes={usersRoutes} />
+              <RoutesList routes={userRoutes} />
             </div>
           ) : (
             <div>
@@ -52,10 +53,10 @@ class UserPage extends Component {
         <div>
           {isLoadingInfo ? (
             <LoadingIndicator />
-          ) : savedRoutes.length !== 0 ? (
+          ) : userSavedRoutes.length !== 0 ? (
             <div>
               <h3 className={styles.h3}>Favourited Routes</h3>
-              <RoutesList routes={savedRoutes} />
+              <RoutesList routes={userSavedRoutes} />
             </div>
           ) : (
             <div>
@@ -67,35 +68,27 @@ class UserPage extends Component {
     );
   }
 
-  getUserNameFromStorage = () => {
-    const username = localStorage.username;
-    this.setState({ username });
-  };
 
-  getUserInfo = () => {
-    const { username } = this.state;
+  getUserSavedRoutes = () => {
+    const { username } = localStorage;
     api.getUser(username).then(user => {
-      this.setState({ userInfo: user, isLoadingInfo: false });
+      this.setState({ userSavedRoutes: user.savedRoutes, isLoadingInfo: false });
     });
   };
 
   getUserRoutes = () => {
-    const { username } = this.state;
+    const { username } = localStorage;
 
+    
     api.getRoutesByUser(username).then(routes => {
-      this.setState({ usersRoutes: routes, isLoadingRoutes: false });
+      this.setState({ userRoutes: routes, isLoadingRoutes: false });
     });
   };
 
   componentDidMount() {
-    localStorage.setItem(
-      "token",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1ODQzNjcxMDA5OTJ9.Gb7BZ_QNwIXi0ooYbHq0cMY30cOGpEjPIDxap08rs0I"
-    );
-    //localStorage.setItem("username", "jessjelly");
-    this.getUserNameFromStorage();
-    this.getUserInfo();
-    this.getUserRoutes();
+  
+  this.getUserSavedRoutes()
+  this.getUserRoutes()
   }
 }
 

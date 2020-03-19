@@ -23,12 +23,9 @@ export const getRouteById = route_id => {
 
 export const getRoutesByUser = username => {
   return axios
-    .get(`${baseURL}/routes/`, {
-      params: {
-        user: username
-      }
-    })
+    .get(`${baseURL}/routes?user=${username}`)
     .then(({ data }) => {
+      console.log(data.routes)
       return data.routes;
     });
 };

@@ -4,15 +4,15 @@ import SingleReview from "./SingleReview";
 import Toggle from "../Toggle";
 import styles from "../styling/AllReviews.module.css";
 
-const AllReviews = ({ reviews, handleSaveReview }) => {
+const AllReviews = ({ reviews, handleSaveReview, reviewed }) => {
   return (
     <div>
-      {localStorage.token && (
+      <h3 className={styles.h3}>Reviews</h3>
+      {localStorage.token && !reviewed && (
         <Toggle buttonMessage="Leave a review">
           <AddReview handleSaveReview={handleSaveReview} />
         </Toggle>
       )}
-      <h3 className={styles.h3}>Reviews</h3>
       {reviews.length !== 0 && (
         <div className={styles.reviewsContainer}>
           

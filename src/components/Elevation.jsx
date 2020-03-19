@@ -40,7 +40,6 @@ export default class App extends Component {
             hideXAxis={true}
             hideYAxis={true}
             hidePoints={true}
-            // pointRadius={1}
             data={dataObj}
           />{" "}
         </div>
@@ -102,7 +101,10 @@ export default class App extends Component {
                 data: [...prevState.data, { x, y }],
                 thisEle: y,
                 maxEle: y > prevState.maxEle ? y : prevState.maxEle,
-                CEG: y > prevState.thisEle ? prevState.CEG + y : prevState.CEG
+                CEG:
+                  y > prevState.thisEle
+                    ? prevState.CEG + y - prevState.thisEle
+                    : prevState.CEG
               };
             }
           }
