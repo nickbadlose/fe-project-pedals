@@ -5,8 +5,12 @@ const PreviewImg = coordinates => {
   const token =
     "pk.eyJ1IjoiY3ljbGluZ2lzZnVuIiwiYSI6ImNrN2Z6cWIzNjA3bnAzZnBlbzVseWkxYWYifQ.U9iDr2Ez6ryAqDlkDK7jeA";
 
-  const reverseCo = coordinates.map(lngLat => lngLat.reverse());
-  const newPolyline = polyline.encode(reverseCo);
+  let coordinatesArr = coordinates;
+
+  if (coordinates[0][0] < coordinates[0][1]) {
+    coordinatesArr = coordinates.map(lngLat => lngLat.reverse());
+  }
+  const newPolyline = polyline.encode(coordinatesArr);
   const encodedPolyline = encodeURIComponent(newPolyline);
   const lineSize = 3;
   const color = "00F"; // 3 or 6 digit hexa-decimal colours only

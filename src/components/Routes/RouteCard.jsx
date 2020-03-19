@@ -68,7 +68,8 @@ class RouteCard extends Component {
               {" "}
               <Link
                 style={{ color: "white", textDecoration: "none" }}
-                to={`/routes/id/${route._id}`}>
+                to={`/routes/id/${route._id}`}
+              >
                 See route
               </Link>
             </Button>
@@ -92,12 +93,17 @@ class RouteCard extends Component {
 
   componentDidMount() {
     api.getReviews(this.props.route._id).then(reviews => {
+      let currentRating = 0;
+
       const ratings = reviews.map(review => {
         return review.rating;
       });
-      const currentRating = (
-        ratings.reduce((a, b) => a + b) / ratings.length
-      ).toFixed(1);
+
+      if (ratings.length !== 0) {
+        currentRating = (
+          ratings.reduce((a, b) => a + b) / ratings.length
+        ).toFixed(1);
+      }
 
       this.setState({ rating: currentRating });
     });
