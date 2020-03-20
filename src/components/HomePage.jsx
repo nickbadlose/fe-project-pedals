@@ -129,7 +129,8 @@ const HomePage = () => {
             <img
               src={paper_plane}
               alt={"paper plane icon"}
-              className={styles.icon}></img>
+              className={styles.icon}
+            ></img>
             <h3 className={styles.infoTitle}>Share your way</h3>
             <p className={styles.p}>
               Share your expertise, and learn from others. Find the route that's
@@ -138,11 +139,15 @@ const HomePage = () => {
           </div>
         </div>
         <div className={styles.buttonContainer}>
-          {localStorage.username ? <Link to="/routes/draw">
-            <button className={styles.button}>Get started!</button> </Link>:<Link to="/signup">
-            <button className={styles.button}>Get started!</button>
-          </Link>
-          }
+          {localStorage.username ? (
+            <Link to="/routes/draw">
+              <button className={styles.button}>Get started!</button>{" "}
+            </Link>
+          ) : (
+            <Link to="/login">
+              <button className={styles.button}>Get started!</button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
