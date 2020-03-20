@@ -29,7 +29,7 @@ class App extends Component {
       .then(() => {
         this.setState({ invalidUser: false, loggedIn: true });
         // navigate(`/user/${username}`);
-        navigate("/");
+        navigate("/routes/draw");
       })
       .catch(() => {
         this.setState({ invalidUser: true });
