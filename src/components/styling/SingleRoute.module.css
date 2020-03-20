@@ -1,0 +1,124 @@
+.map_block {
+  display: flex;
+  margin: 30px;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 600px;
+}
+
+.stats_card {
+  width: 50em;
+  background-color: #96939b;
+}
+
+@media only screen and (max-width: 1024) {
+  .map_block {
+    flex-direction: column;
+    height: 70em;
+  }
+
+  #map {
+    width: 100%;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
+.h2 {
+  font-family: "Fredoka One";
+  color: white;
+}
+
+.route_stats {
+  padding: 2vh;
+  background-color: #fc814a;
+  color: white;
+  font-family: "Didact Gothic";
+  line-height: 2;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.rating {
+  font-size: 2em;
+}
+
+.reviewsAndDirections {
+  margin: 30px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.save_button {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #df5718;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  font-family: "Didact Gothic";
+}
+
+.save_button:hover {
+  background: #434343;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
+  transition: all 0.4s ease 0s;
+}
+
+.save_button:focus {
+  background: #434343;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
+  transition: all 0.4s ease 0s;
+}
+
+.save_button:disabled {
+  background: #96939b;
+}
+
+.delete_button {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #df5718;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  font-family: "Didact Gothic";
+  width: 10vw;
+}
+
+.delete_button:hover {
+  background: #434343;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
+  transition: all 0.4s ease 0s;
+}
+
+.delete_button:focus {
+  background: #434343;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
+  transition: all 0.4s ease 0s;
+}
+
+.delete_button:disabled {
+  background: #96939b;
+}
+
+
+.buttonContainer {
+  padding: 2vh;
+}

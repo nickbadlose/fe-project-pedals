@@ -1,0 +1,122 @@
+
+.carousel_caption {
+  /* left: 100px; */
+  background-color: rgba(59, 58, 61, 0.6);
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.carousel_title {
+  text-align: left;
+  font-family: 'Fredoka One';
+  letter-spacing: 0.2vw;
+  font-size: 4.3vh;
+  padding-left: 2vh;
+}
+.carousel_text {
+  text-align: left;
+  padding-left: 2vh;
+  font-family: 'Didact Gothic';
+  font-size: 1em;
+}
+
+.pedals {
+  color: #df5718;
+}
+
+/* .carousel_item {
+  object-fit: cover;
+  height: auto;
+  width: auto;
+} */
+
+.carousel_container {
+  background-color: #48515a;
+}
+
+.photo {
+  height: 70vh;
+  width: auto;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* .homePageInfo {
+  background-color: #fc814a;
+  height: 30vh;
+} */
+
+.introContainer {
+  background-color: rgb(252,129,74);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+@media only screen and (max-width: 855px) {
+  .introContainer {
+  flex-direction: column;
+  }
+}
+/*less than 855 width make flex column*/
+.info {
+  background-color: rgba(72, 81, 90, 0.8);
+  align-self: center;
+  width: 250px;
+  height: 18em;
+  margin: 4vh 0 4vh 0 ;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.icon {
+ padding: 1.2vh;
+ height: auto;
+ width: auto;
+}
+
+.icon2 {
+  padding: 2.7vh 2.7vh 3vh 2.7vh;
+  
+}
+
+.infoTitle {
+  font-family: "Fredoka One";
+  color: white;
+  padding: 0.2vh;
+  font-size: 2.5vh;
+}
+
+.p {
+  color: white;
+  font-family: 'Didact Gothic';
+  font-size: 1em;
+  padding: 0.5vh;
+}
+
+.buttonContainer {
+  background-color: rgb(252,129,74);
+}
+
+.button {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #434343;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  font-family: "Fredoka One";
+  margin: 1vh;
+}
+
+
+
+.button:hover {
+  background: #df5718;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
+  transition: all 0.4s ease 0s;
+}

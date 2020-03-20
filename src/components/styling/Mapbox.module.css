@@ -1,0 +1,112 @@
+.map_block {
+  display: flex;
+  margin: 30px;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 700px;
+}
+
+.mapContainer {
+  height: "100%";
+  width: "150em";
+}
+
+.card {
+  background-color: #96939b;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+@media only screen and (max-width: 1024px) {
+  .map_block {
+    flex-direction: column;
+    height: 70em;
+  }
+
+  #map {
+    width: 100%;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  #map {
+    height: 50%;
+  }
+}
+
+.stats_list {
+  list-style-type: none;
+}
+
+.input_label {
+  text-align: left;
+}
+
+.loading_section {
+  padding: 50em 150em 50em 150em;
+}
+
+.card-body {
+  width: 30em;
+}
+
+.h2 {
+  font-family: "Fredoka One";
+  color: white;
+  /* box-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2),
+    0px -5px 35px rgba(255, 255, 255, 0.3); */
+}
+
+.subtitle {
+  font-family: "Didact Gothic";
+  line-height: 1.5;
+  color: white;
+}
+
+.form_label {
+  font-family: "Fredoka One";
+  color: white;
+  /* box-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2),
+    0px -5px 35px rgba(255, 255, 255, 0.3); */
+}
+
+.placeholder {
+  font-family: "Didact Gothic";
+}
+
+.saveButton {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #df5718;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  font-family: "Fredoka One";
+}
+
+.saveButton:hover {
+  background: #434343;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);
+  transition: all 0.4s ease 0s;
+}
+
+.route_stats {
+  padding: 2vh;
+  background-color: #fc814a;
+  color: white;
+  font-family: "Didact Gothic";
+  line-height: 2;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.pop_up {
+  border: solid blue;
+}

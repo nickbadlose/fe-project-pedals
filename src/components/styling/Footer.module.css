@@ -1,0 +1,18 @@
+
+.footer {
+  padding: 0.7vh;
+  background-color: #272c31;
+  /* position: sticky; */
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.pedals {
+  padding-top: 1vh;
+  font-family: "Didact Gothic";
+  color: white;
+  letter-spacing: 0.2vw;
+  font-size: 1.2vh;
+}
+

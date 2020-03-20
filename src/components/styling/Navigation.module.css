@@ -1,0 +1,24 @@
+.colorNav {
+  background-color: #272c31;
+}
+
+.logo {
+  height: 50px;
+}
+
+.navLabel {
+  font-family: "Didact Gothic";
+  font-size: 1.5em;
+  letter-spacing: 0.1vw;
+}
+
+.navUserName {
+  font-family: "Didact Gothic";
+  font-size: 2vh;
+  letter-spacing: 0.1vw;
+}
+
+.navLabel2 {
+  color: #272c31;
+  font-family: 'Didact Gothic';
+}

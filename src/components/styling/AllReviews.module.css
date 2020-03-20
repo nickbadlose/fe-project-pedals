@@ -1,0 +1,28 @@
+/* .reviewsContainer {
+  margin: 30px;
+} */
+
+.allReviews {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.h3 {
+  font-family: "Fredoka One";
+  color: white;
+  padding: 2vh;
+  font-size: 2em
+}
+
+.noReviews {
+  background-color: #272c31;
+  padding: 2vh;
+  width: 40vw;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.noReviewComment {
+  color: white;
+  font-family: "Didact Gothic";
+}

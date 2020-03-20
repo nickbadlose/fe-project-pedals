@@ -1,0 +1,95 @@
+.cardBlock {
+  /* padding: 20px; */
+  background-color: rgba(72, 81, 90, 0.8);
+  width: 410px;
+  margin-bottom: 10px;
+}
+
+.card{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 620px;
+  width: 400px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .card{
+    width: 350px;
+  }
+  .cardBlock {
+    width: 350px;
+  }
+}
+.cardBody {
+  background-color: white;
+}
+.mapIcon {
+  margin-right: 10px;
+  margin-bottom: 15px;
+  width: 40px;
+  height: 40px;
+}
+.distanceIcon {
+  margin-right: 5px;
+  margin-bottom: 10px;
+  width: 35px;
+  height: 35px;
+}
+
+.bikeIcon {
+  margin-right: 10px;
+  margin-left: 8px;
+  margin-bottom: 10px;
+  width: 45px;
+  height: 50px;
+}
+
+.starIcon {
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+}
+
+.cardFooter {
+  background-color: white;
+  font-family: "Fredoka One";
+  font-size: 20px;
+  color: rgba(72, 81, 90, 0.8);
+}
+
+.cardButton {
+  font-family: "Fredoka One";
+  font-size: 18px;
+  background-color: rgb(252, 129, 74);
+  border: none;
+  width: 200px;
+}
+
+.routeImage {
+  width: 300px;
+  height: 300px;
+}
+.cardText {
+  display: flex;
+  justify-content: space-around;
+  font-family: "Didact Gothic";
+  font-size: 18px;
+}
+
+.cardTitle {
+  font-family: "Fredoka One";
+  color: rgb(252, 129, 74);
+  font-size: 26px;
+}
+
+.filterSection {
+  display: flex;
+}
+
+/* @media only screen and (max-width: 800px) {
+  .routeCard_block {
+    display: flex;
+    flex-direction: column;
+  }
+} */
