@@ -212,7 +212,7 @@ class SingleRoute extends Component {
         const coordinates = res.data.route.features[0].geometry.coordinates;
         const zoom =
           route.calculatedDistance === 0
-            ? [14]
+            ? [12]
             : route.calculatedDistance < 1
             ? [15.5]
             : route.calculatedDistance < 2

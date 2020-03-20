@@ -29,24 +29,9 @@ class Mapbox extends Component {
   state = {
     coordinates: [],
     calculatedDistance: +localStorage.calculatedDistance || 0,
-    drawCenter: localStorage.features
-      ? JSON.parse(localStorage.features)[0].geometry.coordinates[0]
-      : [],
+    drawCenter: [],
     center: [],
-    zoom:
-      localStorage.calculatedDistance === 0
-        ? [14]
-        : localStorage.calculatedDistance < 1
-        ? [15.5]
-        : localStorage.calculatedDistance < 2
-        ? [14]
-        : localStorage.calculatedDistance < 3
-        ? [13.5]
-        : localStorage.calculatedDistance < 7
-        ? [12]
-        : localStorage.calculatedDistance < 10
-        ? [11]
-        : [10],
+    zoom: [12],
     startEle: localStorage.startEle || 0,
     endEle: localStorage.endEle || 0,
     CEG: localStorage.CEG || 0,
@@ -293,6 +278,31 @@ class Mapbox extends Component {
 
   componentDidMount() {
     this.getCurrentLocation();
+    if (localStorage.features) {
+      const { length } = JSON.parse(
+        localStorage.features
+      )[0].geometry.coordinates;
+
+      this.setState({
+        zoom:
+          localStorage.calculatedDistance === 0
+            ? [12]
+            : localStorage.calculatedDistance < 1
+            ? [15.5]
+            : localStorage.calculatedDistance < 2
+            ? [14]
+            : localStorage.calculatedDistance < 3
+            ? [13.5]
+            : localStorage.calculatedDistance < 7
+            ? [12]
+            : localStorage.calculatedDistance < 10
+            ? [11]
+            : [10],
+        drawCenter: JSON.parse(localStorage.features)[0].geometry.coordinates[
+          Math.round(length / 2)
+        ]
+      });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
