@@ -42,12 +42,14 @@ class Mapbox extends Component {
         ? [14]
         : localStorage.calculatedDistance < 3
         ? [13.5]
-        : localStorage.calculatedDistance < 30
+        : localStorage.calculatedDistance < 7
         ? [12]
+        : localStorage.calculatedDistance < 10
+        ? [11]
         : [10],
-    startEle: 0,
-    endEle: 0,
-    CEG: 0,
+    startEle: localStorage.startEle || 0,
+    endEle: localStorage.endEle || 0,
+    CEG: localStorage.CEG || 0,
     allEle: [],
     currentDrawMode: null,
     features: localStorage.features ? JSON.parse(localStorage.features) : [],
@@ -488,6 +490,9 @@ class Mapbox extends Component {
     localStorage.removeItem("routeType");
     localStorage.removeItem("routeDescription");
     localStorage.removeItem("calculatedDistance");
+    localStorage.removeItem("startEle");
+    localStorage.removeItem("endEle");
+    localStorage.removeItem("CEG");
     this.setState({
       features: [],
       routeDescription: "",
@@ -496,8 +501,10 @@ class Mapbox extends Component {
       selectedMarker: null,
       err: false,
       calculatedDistance: 0,
-      zoom: [10]
-
+      zoom: [10],
+      startEle: 0,
+      endEle: 0,
+      CEG: 0
     });
   };
 
@@ -510,7 +517,10 @@ class Mapbox extends Component {
       calculatedDistance,
       center,
       zoom,
-      routeDescription
+      routeDescription,
+      startEle,
+      endEle,
+      CEG
     } = this.state;
 
     if (features.length === 0) {
@@ -538,13 +548,15 @@ class Mapbox extends Component {
           }
         })
         .catch(err => {
-          console.log(err);
           this.setState({ err: true, formError: false, drawError: false });
           localStorage.setItem("features", JSON.stringify(features));
           localStorage.setItem("routeType", routeType);
           localStorage.setItem("routeName", routeName);
           localStorage.setItem("routeDescription", routeDescription);
           localStorage.setItem("calculatedDistance", calculatedDistance);
+          localStorage.setItem("startEle", startEle);
+          localStorage.setItem("endEle", endEle);
+          localStorage.setItem("CEG", CEG);
         });
     }
   };
