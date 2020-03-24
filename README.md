@@ -2,7 +2,7 @@
 
 Pedals is a web application for cycle routes. Users can draw and plan routes, pin attractions along the way, and share these routes with other users.
 
-Hosted: https://cb-nc-news.netlify.com/
+Hosted: https://pedals.netlify.com/
 
 Back-end Github: https://github.com/Caitlin-B/be-project-pedals
 
@@ -37,3 +37,8 @@ npm install
 ```
 npm start
 ```
+## Acknowledgments
+
+Contributors: https://github.com/Caitlin-B, https://github.com/nickbadlose, https://github.com/akl28, https://github.com/sfmoulton, https://github.com/Neil10july
+
+Thanks: Northcoders Manchester
